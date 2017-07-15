@@ -1,7 +1,8 @@
-package com.ntankard.GuiUtil;
+package com.ntankard.DynamicGUI.GuiUtil;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.ntankard.DynamicGUI.Generator.ReflectionGuiGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -103,11 +104,12 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
     private void createUIComponents() {
         this.removeAll();
 
+        JScrollPane scrollPane = new JScrollPane();
         structure_list = new JList(model);
-
+        scrollPane.setViewportView(structure_list);
         this.setBorder(new EmptyBorder(12, 12, 12, 12));
         this.setLayout(new BorderLayout());
-        this.add(structure_list, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
         this.add(buttons.getButtonPanel(), BorderLayout.SOUTH);
     }
 
@@ -181,7 +183,13 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
     public void onEdit(){
         if(structure_list.getSelectedIndex() != -1)
         {
-            BoundStructure_Dialog.openPanel(objects.get(structure_list.getSelectedIndex()).getPanel());
+            //BoundStructure_Generator o = objects.get(structure_list.getSelectedIndex());
+
+           // ReflectionGuiGenerator ref = new ReflectionGuiGenerator(objects.get(structure_list.getSelectedIndex()));
+
+            ReflectionGuiGenerator r = new ReflectionGuiGenerator();
+                BoundStructure_Dialog.openPanel(r.get(objects.get(structure_list.getSelectedIndex())));
+
             update();
         }
         if(master != null) {

@@ -1,10 +1,10 @@
-package com.ntankard.DynamicGUI.Event;
+package com.ntankard.DynamicGUI.Unused.Event;
 
 
 
 import java.io.Serializable;
 
-import com.ntankard.GuiUtil.BoundStructure_Generator;
+import com.ntankard.DynamicGUI.GuiUtil.BoundStructure_Generator;
 
 /**
  * Created by Nicholas on 5/06/2016.

@@ -1,9 +1,9 @@
-package com.ntankard.GuiUtil;
+package com.ntankard.DynamicGUI.GuiUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import com.ntankard.DynamicGUI.PanelManager;
+import com.ntankard.DynamicGUI.Components.BoundComposite_JPanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -24,7 +24,7 @@ public class BoundStructure_Dialog extends JDialog  {
      * GUI objects
      */
     private JPanel dialogPanel;
-    private PanelManager structurePanel;
+    private BoundComposite_JPanel structurePanel;
     private JPanel buttonPanel;
         private JButton buttonOK;
         private JButton buttonCancel;
@@ -39,7 +39,7 @@ public class BoundStructure_Dialog extends JDialog  {
      * @param p
      * @return
      */
-    public static boolean openPanel(PanelManager p) {
+    public static boolean openPanel(BoundComposite_JPanel p) {
         BoundStructure_Dialog dialog = new BoundStructure_Dialog(p);
         dialog.pack();
         dialog.setVisible(true);
@@ -58,7 +58,7 @@ public class BoundStructure_Dialog extends JDialog  {
      * Default constructor
      * @param structure
      */
-    public BoundStructure_Dialog(PanelManager structure) {
+    public BoundStructure_Dialog(BoundComposite_JPanel structure) {
         // load the child panel
         this.structurePanel = structure;
 

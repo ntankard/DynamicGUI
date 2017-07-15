@@ -1,14 +1,16 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Unused;
+
+import com.ntankard.DynamicGUI.Components.Bound_JComponent;
 
 import javax.swing.*;
 
 /**
  * Created by Nicholas on 30/06/2016.
  */
-public abstract class Bound_JButton extends JButton implements Bound {
+public abstract class Bound_JButton extends JButton implements Bound_JComponent {
 
     //------------------------------------------------------------------------------------------------------------------
-    //####################################### General Bound Implementation #############################################
+    //####################################### General Bound_JComponent Implementation #############################################
     //------------------------------------------------------------------------------------------------------------------
 
     public Bound_JButton(String name){

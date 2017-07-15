@@ -1,4 +1,7 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
+
+import com.ntankard.DynamicGUI.Bindable;
+import com.ntankard.DynamicGUI.Components.Bound_JComboBox;
 
 import java.util.ArrayList;
 
@@ -24,11 +27,12 @@ public class BoundOptions_JComboBox<T> extends Bound_JComboBox {
     public BoundOptions_JComboBox(Bindable<T> data, ArrayList<T> options) {
         this.data = data;
         this.options = options;
+        this.setEditable(data.canEdit());
         load();
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound Implementation #################################################
+    //########################################### Bound_JComponent Implementation #################################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**

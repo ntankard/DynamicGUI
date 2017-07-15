@@ -36,4 +36,8 @@ public class Bindable<T> implements Serializable {
     public T get(){
         return this.value;
     }
+
+    public boolean canEdit(){
+        return true;
+    }
 }

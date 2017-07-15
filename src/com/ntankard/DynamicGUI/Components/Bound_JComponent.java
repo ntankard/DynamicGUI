@@ -1,11 +1,11 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
 
 import javax.swing.*;
 
 /**
  * Wrapper for JComponents that allow them to be updated
  */
-public interface Bound {
+public interface Bound_JComponent {
 
     /**
      * Update the GUI component from the bound data

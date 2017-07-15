@@ -1,26 +1,32 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
+
+import com.ntankard.DynamicGUI.Bindable;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by Nicholas on 8/06/2016.
  */
-public class BoundInteger_JTextField extends Bound_JTextField {
+public class BoundDouble_JTextField extends Bound_JTextField {
 
     /**
      * The data source
      */
-    private Bindable<Integer> data;
+    private Bindable<Double> data;
 
     /**
      * Default constructor
      * @param data
      */
-    public BoundInteger_JTextField(Bindable<Integer> data) {
+    public BoundDouble_JTextField(Bindable<Double> data) {
         this.data = data;
+        this.setEditable(data.canEdit());
         load();
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound Implementation #################################################
+    //########################################### Bound_JComponent Implementation #################################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -28,7 +34,8 @@ public class BoundInteger_JTextField extends Bound_JTextField {
      */
     @Override
     public void load() {
-        setText(data.get() + "");
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        setText(formatter.format(data.get()));
     }
 
     /**
@@ -36,7 +43,7 @@ public class BoundInteger_JTextField extends Bound_JTextField {
      */
     @Override
     public void save() {
-        data.set(Integer.parseInt(getText()));
+        data.set(Double.parseDouble(getText()));
     }
 
     /**
@@ -45,7 +52,7 @@ public class BoundInteger_JTextField extends Bound_JTextField {
     @Override
     public boolean validateState(){
         try{
-            Integer.parseInt(getText());
+            Double.parseDouble(getText());
             return true;
         }catch (Exception e){
             return false;

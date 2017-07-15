@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.FocusListener;
 /**
  * Created by Nicholas on 8/06/2016.
  */
-public abstract class Bound_JTextField extends JTextField implements Bound,FocusListener {
+public abstract class Bound_JTextField extends JTextField implements Bound_JComponent,FocusListener {
 
     /**
      * The default color of the field
@@ -62,7 +62,7 @@ public abstract class Bound_JTextField extends JTextField implements Bound,Focus
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //####################################### General Bound Implementation #############################################
+    //####################################### General Bound_JComponent Implementation #############################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**

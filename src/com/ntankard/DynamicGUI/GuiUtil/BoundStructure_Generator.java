@@ -1,6 +1,6 @@
-package com.ntankard.GuiUtil;
+package com.ntankard.DynamicGUI.GuiUtil;
 
-import com.ntankard.DynamicGUI.PanelManager;
+import com.ntankard.DynamicGUI.Components.BoundComposite_JPanel;
 
 /**
  * Created by Nicholas on 26/06/2016.
@@ -11,7 +11,7 @@ public interface BoundStructure_Generator {
      * Gets a panel with all the parameters available
      * @return
      */
-    PanelManager getPanel();
+    BoundComposite_JPanel getPanel();
 
     /**
      * A name representation of the object

@@ -1,7 +1,8 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.ntankard.DynamicGUI.Bindable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +12,10 @@ import java.util.GregorianCalendar;
 /**
  * Created by Nicholas on 8/06/2016.
  */
-public class BoundCalendar_JPanel extends JPanel implements Bound {
+public class BoundCalendar_JPanel extends JPanel implements Bound_JComponent {
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound Implementation #################################################
+    //########################################### Bound_JComponent Implementation #################################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -80,6 +81,7 @@ public class BoundCalendar_JPanel extends JPanel implements Bound {
     public BoundCalendar_JPanel(Bindable<Calendar> data) {
         this.data = data;
         createUIComponents();
+        this.setEnabled(data.canEdit());
         load();
     }
 
@@ -135,7 +137,7 @@ public class BoundCalendar_JPanel extends JPanel implements Bound {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //####################################### General Bound Implementation #############################################
+    //####################################### General Bound_JComponent Implementation #############################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**

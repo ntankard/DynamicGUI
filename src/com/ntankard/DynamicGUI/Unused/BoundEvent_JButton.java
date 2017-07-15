@@ -1,7 +1,8 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.Event.Event;
-import com.ntankard.GuiUtil.BoundStructure_Dialog;
+import com.ntankard.DynamicGUI.Bindable;
+import com.ntankard.DynamicGUI.Unused.Event.Event;
+import com.ntankard.DynamicGUI.GuiUtil.BoundStructure_Dialog;
 
 /**
  * Created by Nicholas on 30/06/2016.

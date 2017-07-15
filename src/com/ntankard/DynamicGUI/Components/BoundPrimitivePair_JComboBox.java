@@ -1,5 +1,7 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
 
+import com.ntankard.DynamicGUI.Bindable;
+import com.ntankard.DynamicGUI.Components.Bound_JComboBox;
 import javafx.util.Pair;
 
 import javax.swing.*;
@@ -29,11 +31,12 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
         this.data = data;
         this.options = options;
         this.setRenderer(new ComboBoxRenderer(this.getRenderer()));
+        this.setEditable(data.canEdit());
         load();
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound Implementation #################################################
+    //########################################### Bound_JComponent Implementation #################################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**

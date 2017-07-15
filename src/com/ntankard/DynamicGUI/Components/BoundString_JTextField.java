@@ -1,4 +1,7 @@
-package com.ntankard.DynamicGUI;
+package com.ntankard.DynamicGUI.Components;
+
+import com.ntankard.DynamicGUI.Bindable;
+import com.ntankard.DynamicGUI.Components.Bound_JTextField;
 
 /**
  * Created by Nicholas on 8/06/2016.
@@ -16,11 +19,12 @@ public class BoundString_JTextField extends Bound_JTextField {
      */
     public BoundString_JTextField(Bindable<String> data) {
         this.data = data;
+        this.setEditable(data.canEdit());
         load();
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound Implementation #################################################
+    //########################################### Bound_JComponent Implementation #################################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**
