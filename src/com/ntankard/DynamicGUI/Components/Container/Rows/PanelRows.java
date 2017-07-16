@@ -1,11 +1,11 @@
-package com.ntankard.DynamicGUI.Generator.Rows;
+package com.ntankard.DynamicGUI.Components.Container.Rows;
 
 /**
  * Created by Nicholas on 16/07/2017.
  */
 
 import com.intellij.uiDesigner.core.GridConstraints;
-import com.ntankard.DynamicGUI.Components.BoundComposite_JPanel;
+import com.ntankard.DynamicGUI.Components.Container.BoundComposite_JPanel;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

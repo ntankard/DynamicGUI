@@ -188,7 +188,7 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
            // ReflectionGuiGenerator ref = new ReflectionGuiGenerator(objects.get(structure_list.getSelectedIndex()));
 
             ReflectionGuiGenerator r = new ReflectionGuiGenerator();
-                BoundStructure_Dialog.openPanel(r.get(objects.get(structure_list.getSelectedIndex())));
+                BoundStructure_Dialog.openPanel(ReflectionGuiGenerator.generate(objects.get(structure_list.getSelectedIndex())));
 
             update();
         }

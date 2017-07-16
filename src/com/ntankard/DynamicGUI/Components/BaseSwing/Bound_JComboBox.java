@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components;
+package com.ntankard.DynamicGUI.Components.BaseSwing;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +62,7 @@ public abstract class Bound_JComboBox extends JComboBox implements Bound_JCompon
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //####################################### General Bound_JComponent Implementation #############################################
+    //##################################### General Bound_JComponent Implementation ####################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -72,16 +72,4 @@ public abstract class Bound_JComboBox extends JComboBox implements Bound_JCompon
     public JComponent getComponent() {
         return this;
     }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disableAdmin(){}
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disableAdminSort(){}
 }

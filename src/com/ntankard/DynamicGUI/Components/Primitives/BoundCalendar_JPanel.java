@@ -1,8 +1,9 @@
-package com.ntankard.DynamicGUI.Components;
+package com.ntankard.DynamicGUI.Components.Primitives;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.ntankard.DynamicGUI.Bindable;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +13,10 @@ import java.util.GregorianCalendar;
 /**
  * Created by Nicholas on 8/06/2016.
  */
-public class BoundCalendar_JPanel extends JPanel implements Bound_JComponent {
+public class BoundCalendar_JPanel extends Bound_JPanel {
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound_JComponent Implementation #################################################
+    //######################################### Bound_JComponent Implementation ########################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -135,30 +136,6 @@ public class BoundCalendar_JPanel extends JPanel implements Bound_JComponent {
         this.add(year_comboBox, year_comboBox_C);
         this.add(month_comboBox, month_comboBox_C);
     }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //####################################### General Bound_JComponent Implementation #############################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public JComponent getComponent() {
-        return this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disableAdmin(){}
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disableAdminSort(){}
 
     //------------------------------------------------------------------------------------------------------------------
     //############################################### GUI Objects ######################################################

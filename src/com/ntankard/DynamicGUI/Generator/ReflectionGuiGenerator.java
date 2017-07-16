@@ -1,91 +1,68 @@
 package com.ntankard.DynamicGUI.Generator;
 
-import com.ntankard.DynamicGUI.Bindable;
-import com.ntankard.DynamicGUI.Components.*;
-import com.ntankard.DynamicGUI.EditableBindable;
-import com.ntankard.DynamicGUI.GuiUtil.BoundStructure_Generator;
-import com.ntankard.DynamicGUI.NonEditableBindable;
-import com.ntankard.DynamicGUI.Unused.BoundEvent_JButton;
-import javafx.util.Pair;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.DataBinding.BindableReflection;
+import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComponent;
+import com.ntankard.DynamicGUI.Components.Container.BoundComposite_JPanel;
+import com.ntankard.DynamicGUI.Components.Primitives.BoundCalendar_JPanel;
+import com.ntankard.DynamicGUI.Components.Primitives.BoundDouble_JTextField;
+import com.ntankard.DynamicGUI.Components.Primitives.BoundInteger_JTextField;
+import com.ntankard.DynamicGUI.Components.Primitives.BoundString_JTextField;
 
-import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 /**
  * Created by Nicholas on 14/07/2017.
  */
 public class ReflectionGuiGenerator {
-    BoundComposite_JPanel panel = new BoundComposite_JPanel();
 
-    public BoundComposite_JPanel get(Object o)  {
+    /**
+     * Generate a panel with all components in an object
+     * @param o The object to get the data from
+     * @return The panel created from, and bound to the the object
+     */
+    public static BoundComposite_JPanel generate(Object o)  {
+        BoundComposite_JPanel panel = new BoundComposite_JPanel();
+        ExtendedClass context = new ExtendedClass(o);
 
-        Class<?> baseType = o.getClass();
-        ArrayList<Class<?>> inheritedClasses = new ArrayList<>();
-        inheritedClasses.add(baseType);
-
-        // find all relevant classes in the hierarchy and pull any relevant annotations
-        while(true) {
-            Class child = inheritedClasses.get(inheritedClasses.size()-1);
-            ClassGuiProperties properties = (ClassGuiProperties)child.getAnnotation(ClassGuiProperties.class);
-            if (properties!= null && properties.includeParent()) {
-                Class<?> parent = child.getSuperclass();
-                if (parent != null) {
-                    inheritedClasses.add(parent);
-                    continue;
-                }
-            }
-            break;
-        }
-
-        for(Method getter : baseType.getMethods() ){
+        for(Method getter : context.getBaseType().getMethods() ) {
 
             // is this method an accessor for a field?
             String fieldName = getter.getName().replace("get", "");
-            if(!getter.getName().contains("get") || fieldName.equals("")){
+            if (!getter.getName().contains("get") || fieldName.equals("")) {
                 continue;
             }
 
             // is this a getter for a field at the right level (eg not one for Object)
-            boolean validLayer = false;
-            for(Class<?> c : inheritedClasses)
-                if(getter.getDeclaringClass().equals(c))
-                    validLayer = true;
-            if(!validLayer)
+            if (!context.inheritsFrom(getter.getDeclaringClass())) {
                 continue;
+            }
 
             // can the field be edited?
             Method setter = null;
             try {
-                setter = baseType.getMethod("set" + fieldName, getter.getReturnType());
-            } catch (NoSuchMethodException e) {}
+                setter = context.getBaseType().getMethod("set" + fieldName, getter.getReturnType());
+            } catch (NoSuchMethodException e) {
+            }
 
             // pull out any provided properties
             boolean generate = true;
             boolean editable = true;
-            for(Class<?> layer : inheritedClasses){
-                try {
-                    Field field = layer.getDeclaredField(fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1));
-                    FieldGuiProperties properties = field.getAnnotation(FieldGuiProperties.class);
-                    if(properties != null){
-                        generate = properties.generate();
-                        editable = properties.editable();
-                    }
-                } catch (NoSuchFieldException e) {}
+            Field field = context.getDeclaredField(fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1));
+            if (field != null){
+                FieldGuiProperties properties = field.getAnnotation(FieldGuiProperties.class);
+                if (properties != null) {
+                    generate = properties.generate();
+                    editable = properties.editable();
+                }
             }
 
             // generate the component
-            try {
-                if (generate) {
-                    if (setter != null && editable) {
-                        add(fieldName, new EditableBindable(o, getter, setter));
-                    } else {
-                        add(fieldName, new NonEditableBindable(o, getter));
-                    }
-                }
-            }catch (Exception e) {}
+            if (generate) {
+                add(panel,fieldName,o,getter,setter,editable);
+            }
         }
 
         // finalize the panel
@@ -93,87 +70,65 @@ public class ReflectionGuiGenerator {
         return panel;
     }
 
-    // Defaults
-    public void add(String name, Bindable toAdd){add(name,toAdd,false);}
-    public <T> void add(String name, Bindable data, ArrayList<T> options){add(name,data,options,false);}
-    public void add(String name, Bound_JComponent toAdd){add(name,toAdd,false);}
-
     /**
-     * Add a new row, automatically figures out what kind and binds appropriately
-     * @param name
-     * @param toAdd
+     * Add a field to the panel
+     * @param panel The panel to add to
+     * @param fieldName The name of the field
+     * @param o The object that stores the core data
+     * @param getter The getter of the data
+     * @param setter The setter of the data
+     * @param editable Can the data be changed
      */
-    public void add(String name, Bindable toAdd, Boolean isRestricted){
-        if(toAdd == null || toAdd.get() == null){
+    public static void add(BoundComposite_JPanel panel, String fieldName,Object o, Method getter, Method setter, boolean editable){
+
+        // verify that the field, getter and setter combination are valid
+        try {
+            if(getter.invoke(o) == null)
+                return;
+            if(setter != null)
+                if (setter.getParameterCount() != 1 || !getter.getReturnType().equals(setter.getParameterTypes()[0]))
+                    return;
+        } catch (Exception e) {
             return;
         }
 
+        // create and add a component
+        try {
+            // try to generate a bindable primitive
+            Bindable b = new BindableReflection(o, getter, setter,editable);
+            Bound_JComponent component = getPrimitiveComponent(b);
+            if(component != null){
+                panel.addDataAccess(fieldName,component,false);
+                return;
+            }
+
+            // no primitive was supported, try to generate a larger panel of primitives
+            BoundComposite_JPanel subPanel = ReflectionGuiGenerator.generate(getter.invoke(o));
+            panel.addPanelManager(fieldName,subPanel,false);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Attempt get create a JComponent around the object, if its a supported primitivee
+     * @param toAdd The data to build the component around
+     * @return Bound_JComponent or null if its not supported
+     */
+    public static Bound_JComponent getPrimitiveComponent(Bindable toAdd){
         Class toAddType = toAdd.get().getClass();
         if(toAddType == Double.class){
-            panel.addDataAccess(name,new BoundDouble_JTextField(toAdd),isRestricted);
-            return;
+            return  new BoundDouble_JTextField(toAdd);
         }
         if(toAddType == Integer.class){
-            panel.addDataAccess(name,new BoundInteger_JTextField(toAdd),isRestricted);
-            return;
+            return new BoundInteger_JTextField(toAdd);
         }
         if(toAddType == String.class){
-            panel.addDataAccess(name,new BoundString_JTextField(toAdd),isRestricted);
-            return;
+            return new BoundString_JTextField(toAdd);
         }
-        if(toAddType == GregorianCalendar.class){   //@TODO make this more abstract
-            panel.addDataAccess(name,new BoundCalendar_JPanel(toAdd),isRestricted);
-            return;
+        if(toAddType == GregorianCalendar.class){
+            return new BoundCalendar_JPanel(toAdd);
         }
-
-
-        ReflectionGuiGenerator r = new ReflectionGuiGenerator();
-        panel.addPanelManager(name, r.get(toAdd.get()),isRestricted);
-
-        throw new IllegalStateException("Option not supported");
+        return null;
     }
-
-    /**
-     * Add for combo box types
-     * @param name
-     * @param data
-     * @param options
-     * @param isRestricted
-     */
-    public <T> void add(String name, Bindable<T> data, ArrayList<T> options, Boolean isRestricted) {
-
-        if(options == null){
-            options = new ArrayList<>();
-            options.add(data.get());
-        }
-
-        if(options.get(0).getClass() == Pair.class){
-            panel.addDataAccess(name,new BoundPrimitivePair_JComboBox(data,options),isRestricted);
-            return;
-        }else{
-            panel.addDataAccess(name,new BoundOptions_JComboBox(data,options),isRestricted);
-            return;
-        }
-    }
-
-    /**
-     * Add for panels
-     * @param name
-     * @param toAdd
-     */
-    public void add(String name, Bound_JComponent toAdd, Boolean isRestricted){
-        panel.addPanelManager(name,(BoundComposite_JPanel)toAdd,isRestricted);
-    }
-
-    /**
-     * Add for buttons
-     * @param name
-     * @param toAdd
-     */
-    public void add(String name, BoundStructure_Generator toAdd){
-        // add(name,toAdd,false);
-    }
-
-
-
 }

@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Generator.Rows;
+package com.ntankard.DynamicGUI.Components.Container.Rows;
 
 import javax.swing.*;
 

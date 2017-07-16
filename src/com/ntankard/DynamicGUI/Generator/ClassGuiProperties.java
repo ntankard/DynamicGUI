@@ -9,6 +9,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ClassGuiProperties {
 
-    /** should fields from the class this extends be included when generating a GUI? */
+    /** Should fields from the class this extends be included when generating a GUI? */
     boolean includeParent() default false;
 }

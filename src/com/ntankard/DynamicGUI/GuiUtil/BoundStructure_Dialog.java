@@ -1,9 +1,11 @@
 package com.ntankard.DynamicGUI.GuiUtil;
 
+import com.ntankard.DynamicGUI.Components.Container.BoundComposite_JPanel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import com.ntankard.DynamicGUI.Components.BoundComposite_JPanel;
+
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

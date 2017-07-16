@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.GuiUtil;
 
-import com.ntankard.DynamicGUI.Components.BoundComposite_JPanel;
+import com.ntankard.DynamicGUI.Components.Container.BoundComposite_JPanel;
 
 /**
  * Created by Nicholas on 26/06/2016.

@@ -1,7 +1,7 @@
-package com.ntankard.DynamicGUI.Components;
+package com.ntankard.DynamicGUI.Components.Primitives;
 
-import com.ntankard.DynamicGUI.Bindable;
-import com.ntankard.DynamicGUI.Components.Bound_JTextField;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JTextField;
 
 /**
  * Created by Nicholas on 8/06/2016.
@@ -24,7 +24,7 @@ public class BoundString_JTextField extends Bound_JTextField {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //########################################### Bound_JComponent Implementation #################################################
+    //######################################### Bound_JComponent Implementation ########################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**

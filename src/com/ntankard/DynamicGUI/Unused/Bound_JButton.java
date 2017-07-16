@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.Components.Bound_JComponent;
+import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComponent;
 
 import javax.swing.*;
 
@@ -24,18 +24,6 @@ public abstract class Bound_JButton extends JButton implements Bound_JComponent 
     public JComponent getComponent() {
         return this;
     }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disableAdmin(){}
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void disableAdminSort(){}
 
     /**
      * @inheritDoc

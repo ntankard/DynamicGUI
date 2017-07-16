@@ -1,21 +1,19 @@
-package com.ntankard.DynamicGUI.Components;
+package com.ntankard.DynamicGUI.Components.Container;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.ntankard.DynamicGUI.Unused.Bound_JButton;
-
-import com.ntankard.DynamicGUI.Generator.Rows.BoundRows;
-import com.ntankard.DynamicGUI.Generator.Rows.PanelRows;
-import com.ntankard.DynamicGUI.Generator.Rows.TableRow;
+import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComponent;
+import com.ntankard.DynamicGUI.Components.Container.Rows.BoundRows;
+import com.ntankard.DynamicGUI.Components.Container.Rows.PanelRows;
+import com.ntankard.DynamicGUI.Components.Container.Rows.TableRow;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.ntankard.DynamicGUI.Generator.Rows.BoundRows.data_C;
-import static com.ntankard.DynamicGUI.Generator.Rows.BoundRows.lbl_C;
-import static com.ntankard.DynamicGUI.Generator.Rows.PanelRows.panel_C;
+import static com.ntankard.DynamicGUI.Components.Container.Rows.BoundRows.data_C;
+import static com.ntankard.DynamicGUI.Components.Container.Rows.BoundRows.lbl_C;
 
 /**
  * Created by Nicholas on 30/06/2016.
@@ -26,7 +24,6 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
     //##################################################### Adders #####################################################
     //------------------------------------------------------------------------------------------------------------------
 
-
     /**
      * Add an dynamic panel (one of these)
      * @param name
@@ -35,6 +32,7 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      */
     public void addPanelManager(String name, BoundComposite_JPanel toAdd, Boolean isRestricted){
         allRows.add(new PanelRows(name,isRestricted,toAdd));
+        boundObjects.add(toAdd);
     }
 
     /**
@@ -44,9 +42,8 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      */
     public void addDataAccess(String name, Bound_JComponent toAdd, Boolean isRestricted){
         allRows.add(new BoundRows(name,isRestricted,toAdd));
+        boundObjects.add(toAdd);
     }
-
-
 
     //------------------------------------------------------------------------------------------------------------------
     //############################################### Panel Construction ###############################################
@@ -168,6 +165,11 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
     private ArrayList<TableRow> allRows = new ArrayList<>();
 
     /**
+     * All bindable objects used for saving and loading
+     */
+    private ArrayList<Bound_JComponent> boundObjects = new ArrayList<>();
+
+    /**
      * The general rows to add (dynamically generated)
      */
     private ArrayList<TableRow> generalRows = new ArrayList<>();
@@ -176,7 +178,6 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      * The restricted rows to add (dynamically generated)
      */
     private ArrayList<TableRow> restrictedRows = new ArrayList<>();
-
 
     /**
      * Are there any restricted rows?
@@ -211,20 +212,20 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      * {@inheritDoc}
      */
     @Override
-    public void load() {}
+    public void load() {
+        for(Bound_JComponent component : boundObjects){
+            component.load();
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void save() {
-        for(TableRow row : allRows){
-            if(row instanceof BoundRows){
-                BoundRows bound = (BoundRows)row;
-                bound.data.save();
-            }
+        for(Bound_JComponent component : boundObjects){
+            component.save();
         }
-
     }
 
     /**
@@ -232,7 +233,13 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      */
     @Override
     public boolean validateState() {
-        return true;
+        boolean state = true;
+        for(Bound_JComponent component : boundObjects){
+            if(!component.validateState()){
+                state = false;
+            }
+        }
+        return state;
     }
 
     /**
@@ -243,23 +250,11 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void disableAdmin() {}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void disableAdminSort() {}
-
     //------------------------------------------------------------------------------------------------------------------
     //##################################################### Unused #####################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    @Deprecated
+    /*@Deprecated
     private ArrayList<Bound_JButton> buttonRows = new ArrayList<>();
 
     @Deprecated
@@ -275,10 +270,6 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
         return true;
     }
 
-    /**
-     * Create a panel with all the general controls
-     * @return
-     */
     @Deprecated
     public JPanel getButtonPanel(){
         JPanel toReturn = new JPanel();
@@ -302,7 +293,7 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
         return toReturn;
     }
 
-    /*public void finalizePanel(){
+    public void finalizePanel(){
         if(hasButtons()) {
             toAddP = getButtonPanel();
             toAddP.setBorder(new TitledBorder("Events"));

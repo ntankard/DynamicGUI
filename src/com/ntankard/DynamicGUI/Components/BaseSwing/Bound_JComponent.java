@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components;
+package com.ntankard.DynamicGUI.Components.BaseSwing;
 
 import javax.swing.*;
 
@@ -32,18 +32,4 @@ public interface Bound_JComponent {
      * @return
      */
     JComponent getComponent();
-
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################ Panel only options ##################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Don't put an admin override on the panel
-     */
-    void disableAdmin();
-
-    /**
-     * Prevent the separation of admin and non admin components (order by insert)
-     */
-     void disableAdminSort();
 }

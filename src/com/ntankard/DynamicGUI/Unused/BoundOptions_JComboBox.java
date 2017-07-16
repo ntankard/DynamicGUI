@@ -1,7 +1,7 @@
-package com.ntankard.DynamicGUI.Components;
+package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.Bindable;
-import com.ntankard.DynamicGUI.Components.Bound_JComboBox;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComboBox;
 
 import java.util.ArrayList;
 
