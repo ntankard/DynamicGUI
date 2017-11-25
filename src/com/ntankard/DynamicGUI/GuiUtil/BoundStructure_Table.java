@@ -51,39 +51,15 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     //############################################## Constructors ######################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Create a new List designed to edit objects
-     * @param objects
-     * @param master
-     * @param newObject
-     * @param <T>
-     * @return
-     */
-    /*public static <T extends BoundStructure_Generator> BoundStructure_List newStandardEditList(ArrayList<T> objects,
-                                                                                               Updatable master,
-                                                                                               T newObject){
-        BoundStructure_List list = new BoundStructure_List(objects,master);
+    public static <T extends BoundStructure_Generator> BoundStructure_Table newStandardEditTable(ArrayList<T> objects,
+                                                                                                 Updatable master,
+                                                                                                 T newObject){
+        BoundStructure_Table list = new BoundStructure_Table(objects,master);
         list.addNewBtn(newObject);
         list.addEditBtn();
         list.addDeleteBtn();
         return list;
-    }*/
-
-    /**
-     * Create a new List designed to execute objects
-     * @param objects
-     * @param master
-     * @param executeFunction
-     * @param <T>
-     * @return
-     */
-    /*public static <T extends BoundStructure_Generator> BoundStructure_List newStandardExecuteList(ArrayList<T> objects,
-                                                                                                  Updatable master,
-                                                                                                  String executeFunction){
-        BoundStructure_List list = new BoundStructure_List(objects,master);
-        list.addExecuteBtn(executeFunction,executeFunction);
-        return list;
-    }*/
+    }
 
 
     /**
@@ -195,7 +171,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
      * Create a new structure
      */
     public void onNew(){
-        T n = (T)newObject.clone();
+       /* T n = (T)newObject.clone();
         if(BoundStructure_Dialog.openPanel(n.getPanel()))
         {
             objects.add(n);
@@ -203,7 +179,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
         update();
         if(master != null) {
             master.notifyUpdate();
-        }
+        }*/
     }
 
     /**

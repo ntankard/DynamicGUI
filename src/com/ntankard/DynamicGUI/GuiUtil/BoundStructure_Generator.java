@@ -11,7 +11,7 @@ public interface BoundStructure_Generator {
      * Gets a panel with all the parameters available
      * @return
      */
-    BoundComposite_JPanel getPanel();
+   // BoundComposite_JPanel getPanel();
 
     /**
      * A name representation of the object
@@ -27,5 +27,5 @@ public interface BoundStructure_Generator {
      * Deep copy
      * @return
      */
-    BoundStructure_Generator clone();
+   // BoundStructure_Generator clone();
 }

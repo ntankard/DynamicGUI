@@ -18,6 +18,6 @@ public class BoundEvent_JButton extends Bound_JButton {
     }
 
     private void onClick(){
-        BoundStructure_Dialog.openPanel(data.get().getPanel());
+       // BoundStructure_Dialog.openPanel(data.get().getPanel());
     }
 }

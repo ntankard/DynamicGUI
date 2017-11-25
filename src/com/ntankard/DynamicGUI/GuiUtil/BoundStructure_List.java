@@ -68,16 +68,6 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
         return list;
     }
 
-    public static <T extends BoundStructure_Generator> BoundStructure_Table newStandardEditTable(ArrayList<T> objects,
-                                                                                               Updatable master,
-                                                                                               T newObject){
-        BoundStructure_Table list = new BoundStructure_Table(objects,master);
-        list.addNewBtn(newObject);
-        list.addEditBtn();
-        list.addDeleteBtn();
-        return list;
-    }
-
     /**
      * Create a new List designed to execute objects
      * @param objects
@@ -176,7 +166,8 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
      * Create a new structure
      */
     public void onNew(){
-        T n = (T)newObject.clone();
+        /*T n = (T)newObject.clone();
+        // @TODO finish this
         if(BoundStructure_Dialog.openPanel(n.getPanel()))
         {
             objects.add(n);
@@ -184,7 +175,7 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
         update();
         if(master != null) {
             master.notifyUpdate();
-        }
+        }*/
     }
 
     /**
@@ -225,7 +216,9 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
      * Execute an object
      */
     public void onExecute(){
-        if(structure_list.getSelectedIndex() != -1) {
+        //@TODO finish this
+
+        /*if(structure_list.getSelectedIndex() != -1) {
             T toExecute = objects.get(structure_list.getSelectedIndex());
             if(BoundStructure_Dialog.openPanel(toExecute.getPanel())){
                 update();
@@ -242,7 +235,7 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
         }
         if(master != null) {
             master.notifyUpdate();
-        }
+        }*/
     }
 
     //------------------------------------------------------------------------------------------------------------------
