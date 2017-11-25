@@ -6,6 +6,7 @@ import com.ntankard.DynamicGUI.Generator.ReflectionGuiGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class BoundStructure_List<T extends BoundStructure_Generator> extends JPanel implements Updatable {
+public class BoundStructure_Table<T extends BoundStructure_Generator> extends JPanel implements Updatable {
 
     /**
      * GUI Objects
      */
-    private JList structure_list;
-        private Button_PanelGenerator buttons;
+    private JTable structure_table;
+    private Button_PanelGenerator buttons;
 
     /**
      * The master content of the list
@@ -29,7 +30,7 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
     /**
      * The names of the above objects
      */
-    private DefaultListModel model;
+    private DefaultTableModel model;
 
     /**
      * Reference object used to for new objects
@@ -58,7 +59,7 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
      * @param <T>
      * @return
      */
-    public static <T extends BoundStructure_Generator> BoundStructure_List newStandardEditList(ArrayList<T> objects,
+    /*public static <T extends BoundStructure_Generator> BoundStructure_List newStandardEditList(ArrayList<T> objects,
                                                                                                Updatable master,
                                                                                                T newObject){
         BoundStructure_List list = new BoundStructure_List(objects,master);
@@ -66,17 +67,7 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
         list.addEditBtn();
         list.addDeleteBtn();
         return list;
-    }
-
-    public static <T extends BoundStructure_Generator> BoundStructure_Table newStandardEditTable(ArrayList<T> objects,
-                                                                                               Updatable master,
-                                                                                               T newObject){
-        BoundStructure_Table list = new BoundStructure_Table(objects,master);
-        list.addNewBtn(newObject);
-        list.addEditBtn();
-        list.addDeleteBtn();
-        return list;
-    }
+    }*/
 
     /**
      * Create a new List designed to execute objects
@@ -86,24 +77,24 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
      * @param <T>
      * @return
      */
-    public static <T extends BoundStructure_Generator> BoundStructure_List newStandardExecuteList(ArrayList<T> objects,
+    /*public static <T extends BoundStructure_Generator> BoundStructure_List newStandardExecuteList(ArrayList<T> objects,
                                                                                                   Updatable master,
                                                                                                   String executeFunction){
         BoundStructure_List list = new BoundStructure_List(objects,master);
         list.addExecuteBtn(executeFunction,executeFunction);
         return list;
-    }
+    }*/
 
 
     /**
      *
      * @param objects
      */
-    public BoundStructure_List(ArrayList<T> objects, Updatable master) {
+    public BoundStructure_Table(ArrayList<T> objects, Updatable master) {
         this.objects = objects;
         this.master = master;
         this.buttons = new Button_PanelGenerator();
-        this.model = new DefaultListModel();
+        this.model = new DefaultTableModel();
         createUIComponents();
         update();
     }
@@ -115,8 +106,36 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
         this.removeAll();
 
         JScrollPane scrollPane = new JScrollPane();
-        structure_list = new JList(model);
-        scrollPane.setViewportView(structure_list);
+        structure_table = new JTable(model);
+         scrollPane.setViewportView(structure_table);
+
+
+
+
+        String[] columnNames = {"First Name",
+                "Last Name",
+                "Sport",
+                "# of Years",
+                "Vegetarian"};
+
+        Object[][] data = {
+                {"Kathy", "Smith",
+                        "Snowboarding", new Integer(5), new Boolean(false)},
+                {"John", "Doe",
+                        "Rowing", new Integer(3), new Boolean(true)},
+                {"Sue", "Black",
+                        "Knitting", new Integer(2), new Boolean(false)},
+                {"Jane", "White",
+                        "Speed reading", new Integer(20), new Boolean(true)},
+                {"Joe", "Brown",
+                        "Pool", new Integer(10), new Boolean(false)}
+        };
+
+
+
+
+       // JTable test =  new JTable(data, columnNames);
+       // scrollPane.setViewportView(test);
         this.setBorder(new EmptyBorder(12, 12, 12, 12));
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
@@ -191,58 +210,58 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
      * Edit an existing object
      */
     public void onEdit(){
-        if(structure_list.getSelectedIndex() != -1)
-        {
-            //BoundStructure_Generator o = objects.get(structure_list.getSelectedIndex());
-
-           // ReflectionGuiGenerator ref = new ReflectionGuiGenerator(objects.get(structure_list.getSelectedIndex()));
-
-            ReflectionGuiGenerator r = new ReflectionGuiGenerator();
-                BoundStructure_Dialog.openPanel(ReflectionGuiGenerator.generate(objects.get(structure_list.getSelectedIndex())));
-
-            update();
-        }
-        if(master != null) {
-            master.notifyUpdate();
-        }
+//        if(structure_list.getSelectedIndex() != -1)
+//        {
+//            //BoundStructure_Generator o = objects.get(structure_list.getSelectedIndex());
+//
+//            // ReflectionGuiGenerator ref = new ReflectionGuiGenerator(objects.get(structure_list.getSelectedIndex()));
+//
+//            ReflectionGuiGenerator r = new ReflectionGuiGenerator();
+//            BoundStructure_Dialog.openPanel(ReflectionGuiGenerator.generate(objects.get(structure_list.getSelectedIndex())));
+//
+//            update();
+//        }
+//        if(master != null) {
+//            master.notifyUpdate();
+//        }
     }
 
     /**
      * Delete an object
      */
     public void onDelete(){
-        if(structure_list.getSelectedIndex() != -1)
-        {
-            objects.remove(structure_list.getSelectedIndex());
-            update();
-        }
-        if(master != null) {
-            master.notifyUpdate();
-        }
+//        if(structure_list.getSelectedIndex() != -1)
+//        {
+//            objects.remove(structure_list.getSelectedIndex());
+//            update();
+//        }
+//        if(master != null) {
+//            master.notifyUpdate();
+//        }
     }
 
     /**
      * Execute an object
      */
     public void onExecute(){
-        if(structure_list.getSelectedIndex() != -1) {
-            T toExecute = objects.get(structure_list.getSelectedIndex());
-            if(BoundStructure_Dialog.openPanel(toExecute.getPanel())){
-                update();
-                try {
-                    toExecute.getClass().getMethod(executeFunction).invoke(toExecute);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if(master != null) {
-            master.notifyUpdate();
-        }
+//        if(structure_list.getSelectedIndex() != -1) {
+//            T toExecute = objects.get(structure_list.getSelectedIndex());
+//            if(BoundStructure_Dialog.openPanel(toExecute.getPanel())){
+//                update();
+//                try {
+//                    toExecute.getClass().getMethod(executeFunction).invoke(toExecute);
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();
+//                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();
+//                } catch (NoSuchMethodException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        if(master != null) {
+//            master.notifyUpdate();
+//        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -253,18 +272,26 @@ public class BoundStructure_List<T extends BoundStructure_Generator> extends JPa
      * @inheritDoc
      * Bottom of the tree
      */
-    public void update()
-    {
-        model.clear();
+    public void update() {
+        model = new DefaultTableModel();
+
+        for (String col : objects.get(0).getHeaders()) {
+            model.addColumn(col);
+        }
+
+       // model.addColumn("test1");
+       // model.addColumn("test2");
+
+        String[] dat =  {"a","b"};
 
         if(objects != null) {
             for (BoundStructure_Generator o : objects) {
-                model.addElement(o.toString());
+                model.addRow(o.getStringParts());
             }
         }
 
         // force update
-        structure_list.setModel(model);
+        structure_table.setModel(model);
     }
 
     /**

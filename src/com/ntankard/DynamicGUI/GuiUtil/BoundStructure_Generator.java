@@ -19,6 +19,10 @@ public interface BoundStructure_Generator {
      */
     String toString();
 
+    String[] getHeaders();
+
+    String[] getStringParts();
+
     /**
      * Deep copy
      * @return
