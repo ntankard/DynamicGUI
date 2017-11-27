@@ -19,6 +19,7 @@ public class BoundExecute_JButton extends Bound_JButton {
 
     /**
      * Default constructor
+     *
      * @param toExecute
      * @param function
      */
@@ -29,7 +30,7 @@ public class BoundExecute_JButton extends Bound_JButton {
         addActionListener(e -> onClick());
     }
 
-    private void onClick(){
+    private void onClick() {
         try {
             toExecute.getClass().getMethod(function).invoke(toExecute);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

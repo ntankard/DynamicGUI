@@ -8,7 +8,7 @@ import java.awt.event.FocusListener;
 /**
  * Created by Nicholas on 8/06/2016.
  */
-public abstract class Bound_JComboBox extends JComboBox implements Bound_JComponent,FocusListener {
+public abstract class Bound_JComboBox extends JComboBox implements Bound_JComponent, FocusListener {
 
     /**
      * The default color of the field
@@ -23,7 +23,7 @@ public abstract class Bound_JComboBox extends JComboBox implements Bound_JCompon
     /**
      * Default constructor
      */
-    public Bound_JComboBox(){
+    public Bound_JComboBox() {
         this.addFocusListener(this);
         this.validColor = getBackground();
         this.invalidColor = Color.red;
@@ -33,16 +33,17 @@ public abstract class Bound_JComboBox extends JComboBox implements Bound_JCompon
      * @inheritDoc
      */
     @Override
-    public void focusGained(FocusEvent e) { }
+    public void focusGained(FocusEvent e) {
+    }
 
     /**
      * @inheritDoc
      */
     @Override
     public void focusLost(FocusEvent e) {
-        if(validateState()){
+        if (validateState()) {
             setValid();
-        }else{
+        } else {
             setInvalid();
         }
     }
@@ -50,14 +51,14 @@ public abstract class Bound_JComboBox extends JComboBox implements Bound_JCompon
     /**
      * Show to the user that the field is valid
      */
-    public void setValid(){
+    public void setValid() {
         setBackground(validColor);
     }
 
     /**
      * Show to the user that the field is invalid
      */
-    public void setInvalid(){
+    public void setInvalid() {
         setBackground(invalidColor);
     }
 

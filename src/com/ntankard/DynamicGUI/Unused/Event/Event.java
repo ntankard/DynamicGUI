@@ -1,10 +1,9 @@
 package com.ntankard.DynamicGUI.Unused.Event;
 
 
+import com.ntankard.DynamicGUI.GuiUtil.BoundStructure_Generator;
 
 import java.io.Serializable;
-
-import com.ntankard.DynamicGUI.GuiUtil.BoundStructure_Generator;
 
 /**
  * Created by Nicholas on 5/06/2016.
@@ -19,13 +18,13 @@ public abstract class Event implements Serializable, BoundStructure_Generator {
 
     public abstract void execute();
 
-    public BoundStructure_Generator clone(){
+    public BoundStructure_Generator clone() {
         return null;
     }
 
-   // public BoundStructure_JPanel getEditPanel(){
+    // public BoundStructure_JPanel getEditPanel(){
     //    return null;
-  //  }
+    //  }
 
 
 }

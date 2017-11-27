@@ -13,7 +13,7 @@ public abstract class Bound_JButton extends JButton implements Bound_JComponent 
     //####################################### General Bound_JComponent Implementation #############################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public Bound_JButton(String name){
+    public Bound_JButton(String name) {
         super(name);
     }
 
@@ -29,17 +29,21 @@ public abstract class Bound_JButton extends JButton implements Bound_JComponent 
      * @inheritDoc
      */
     @Override
-    public void load(){}
+    public void load() {
+    }
 
     /**
      * @inheritDoc
      */
     @Override
-    public void save(){}
+    public void save() {
+    }
 
     /**
      * @inheritDoc
      */
     @Override
-    public boolean validateState(){return true;}
+    public boolean validateState() {
+        return true;
+    }
 }

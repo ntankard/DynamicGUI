@@ -9,9 +9,13 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldGuiProperties {
 
-    /** Should a component be generated for this field? */
+    /**
+     * Should a component be generated for this field?
+     */
     boolean generate() default true;
 
-    /** Can this field be edited? */
+    /**
+     * Can this field be edited?
+     */
     boolean editable() default true;
 }

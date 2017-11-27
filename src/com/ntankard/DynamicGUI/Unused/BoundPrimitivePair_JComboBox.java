@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComboBox;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
 import javafx.util.Pair;
 
 import javax.swing.*;
@@ -21,13 +21,14 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
     /**
      * The possible options (must have toString)
      */
-    private ArrayList<Pair<String,T>> options;
+    private ArrayList<Pair<String, T>> options;
 
     /**
      * Default constructor
+     *
      * @param data
      */
-    public BoundPrimitivePair_JComboBox(Bindable<T> data, ArrayList<Pair<String,T>> options) {
+    public BoundPrimitivePair_JComboBox(Bindable<T> data, ArrayList<Pair<String, T>> options) {
         this.data = data;
         this.options = options;
         this.setRenderer(new ComboBoxRenderer(this.getRenderer()));
@@ -51,8 +52,8 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
 
         // find the option
         int index = 0;
-        for (Pair<String,T> o:options){
-            if(data.get().equals(o.getValue())){
+        for (Pair<String, T> o : options) {
+            if (data.get().equals(o.getValue())) {
                 this.setSelectedIndex(index);
                 break;
             }
@@ -60,7 +61,7 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
         }
 
         // sanity check
-        if(index == options.size()){
+        if (index == options.size()) {
             throw new IllegalStateException("The data isn't in the option");
         }
     }
@@ -70,15 +71,15 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
      */
     @Override
     public void save() {
-        data.set(((Pair<String,T>)this.getSelectedItem()).getValue());
+        data.set(((Pair<String, T>) this.getSelectedItem()).getValue());
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public boolean validateState(){
-        if(getSelectedIndex() < 0 || getSelectedIndex() > options.size()){
+    public boolean validateState() {
+        if (getSelectedIndex() < 0 || getSelectedIndex() > options.size()) {
             return false;
         }
         return true;
@@ -105,6 +106,7 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
 
         /**
          * Default constructor
+         *
          * @param defaultCellRenderer
          */
         public ComboBoxRenderer(ListCellRenderer defaultCellRenderer) {
@@ -115,7 +117,7 @@ public class BoundPrimitivePair_JComboBox<T> extends Bound_JComboBox {
          * Drill down to the string
          */
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Component c = defaultCellRenderer.getListCellRendererComponent(list,((Pair<String,T>)value).getKey(),index,isSelected,cellHasFocus);
+            Component c = defaultCellRenderer.getListCellRendererComponent(list, ((Pair<String, T>) value).getKey(), index, isSelected, cellHasFocus);
             return c;
         }
     }

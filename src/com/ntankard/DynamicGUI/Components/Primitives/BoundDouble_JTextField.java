@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Primitives;
 
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JTextField;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -18,6 +18,7 @@ public class BoundDouble_JTextField extends Bound_JTextField {
 
     /**
      * Default constructor
+     *
      * @param data
      */
     public BoundDouble_JTextField(Bindable<Double> data) {
@@ -51,11 +52,11 @@ public class BoundDouble_JTextField extends Bound_JTextField {
      * @inheritDoc
      */
     @Override
-    public boolean validateState(){
-        try{
+    public boolean validateState() {
+        try {
             Double.parseDouble(getText());
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

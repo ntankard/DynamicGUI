@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComboBox;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,7 @@ public class BoundOptions_JComboBox<T> extends Bound_JComboBox {
 
     /**
      * Default constructor
+     *
      * @param data
      */
     public BoundOptions_JComboBox(Bindable<T> data, ArrayList<T> options) {
@@ -46,15 +47,15 @@ public class BoundOptions_JComboBox<T> extends Bound_JComboBox {
         options.forEach(this::addItem);
 
         // if null, have no selection
-        if(data.get() == null){
+        if (data.get() == null) {
             this.setSelectedIndex(-1);
             return;
         }
 
         // find the option
         int index = 0;
-        for (T o:options){
-            if(o == data.get()){
+        for (T o : options) {
+            if (o == data.get()) {
                 this.setSelectedIndex(index);
                 return;
             }
@@ -76,8 +77,8 @@ public class BoundOptions_JComboBox<T> extends Bound_JComboBox {
      * @inheritDoc
      */
     @Override
-    public boolean validateState(){
-        if(getSelectedIndex() < 0 || getSelectedIndex() > options.size()){
+    public boolean validateState() {
+        if (getSelectedIndex() < 0 || getSelectedIndex() > options.size()) {
             return false;
         }
         return true;

@@ -2,13 +2,11 @@ package com.ntankard.DynamicGUI.GuiUtil;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.ntankard.DynamicGUI.Generator.ReflectionGuiGenerator;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -53,8 +51,8 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
 
     public static <T extends BoundStructure_Generator> BoundStructure_Table newStandardEditTable(ArrayList<T> objects,
                                                                                                  Updatable master,
-                                                                                                 T newObject){
-        BoundStructure_Table list = new BoundStructure_Table(objects,master);
+                                                                                                 T newObject) {
+        BoundStructure_Table list = new BoundStructure_Table(objects, master);
         list.addNewBtn(newObject);
         list.addEditBtn();
         list.addDeleteBtn();
@@ -63,7 +61,6 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
 
 
     /**
-     *
      * @param objects
      */
     public BoundStructure_Table(ArrayList<T> objects, Updatable master) {
@@ -83,9 +80,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
 
         JScrollPane scrollPane = new JScrollPane();
         structure_table = new JTable(model);
-         scrollPane.setViewportView(structure_table);
-
-
+        scrollPane.setViewportView(structure_table);
 
 
         String[] columnNames = {"First Name",
@@ -108,10 +103,8 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
         };
 
 
-
-
-       // JTable test =  new JTable(data, columnNames);
-       // scrollPane.setViewportView(test);
+        // JTable test =  new JTable(data, columnNames);
+        // scrollPane.setViewportView(test);
         this.setBorder(new EmptyBorder(12, 12, 12, 12));
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
@@ -124,9 +117,10 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
 
     /**
      * Add a New button to the list
+     *
      * @param newObject
      */
-    public void addNewBtn(T newObject){
+    public void addNewBtn(T newObject) {
         this.newObject = newObject;
         JButton new_btn = new JButton("New");
         new_btn.addActionListener(e -> onNew());
@@ -137,7 +131,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     /**
      * Add an Edit button to the list
      */
-    public void addEditBtn(){
+    public void addEditBtn() {
         JButton edit_btn = new JButton("Edit");
         edit_btn.addActionListener(e -> onEdit());
         buttons.addButton(edit_btn);
@@ -147,7 +141,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     /**
      * Add a Delete button to the list
      */
-    public void addDeleteBtn(){
+    public void addDeleteBtn() {
         JButton delete_btn = new JButton("Delete");
         delete_btn.addActionListener(e -> onDelete());
         buttons.addButton(delete_btn);
@@ -156,10 +150,11 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
 
     /**
      * Add a Execute button to the list
+     *
      * @param btnText
      * @param executeFunction
      */
-    public void addExecuteBtn(String btnText, String executeFunction){
+    public void addExecuteBtn(String btnText, String executeFunction) {
         this.executeFunction = executeFunction;
         JButton execute_btn = new JButton(btnText);
         execute_btn.addActionListener(e -> onExecute());
@@ -170,7 +165,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     /**
      * Create a new structure
      */
-    public void onNew(){
+    public void onNew() {
        /* T n = (T)newObject.clone();
         if(BoundStructure_Dialog.openPanel(n.getPanel()))
         {
@@ -185,7 +180,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     /**
      * Edit an existing object
      */
-    public void onEdit(){
+    public void onEdit() {
 //        if(structure_list.getSelectedIndex() != -1)
 //        {
 //            //BoundStructure_Generator o = objects.get(structure_list.getSelectedIndex());
@@ -205,7 +200,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     /**
      * Delete an object
      */
-    public void onDelete(){
+    public void onDelete() {
 //        if(structure_list.getSelectedIndex() != -1)
 //        {
 //            objects.remove(structure_list.getSelectedIndex());
@@ -219,7 +214,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     /**
      * Execute an object
      */
-    public void onExecute(){
+    public void onExecute() {
 //        if(structure_list.getSelectedIndex() != -1) {
 //            T toExecute = objects.get(structure_list.getSelectedIndex());
 //            if(BoundStructure_Dialog.openPanel(toExecute.getPanel())){
@@ -245,8 +240,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * @inheritDoc
-     * Bottom of the tree
+     * @inheritDoc Bottom of the tree
      */
     public void update() {
         model = new DefaultTableModel();
@@ -255,12 +249,12 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
             model.addColumn(col);
         }
 
-       // model.addColumn("test1");
-       // model.addColumn("test2");
+        // model.addColumn("test1");
+        // model.addColumn("test2");
 
-        String[] dat =  {"a","b"};
+        String[] dat = {"a", "b"};
 
-        if(objects != null) {
+        if (objects != null) {
             for (BoundStructure_Generator o : objects) {
                 model.addRow(o.getStringParts());
             }
@@ -271,10 +265,10 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
     }
 
     /**
-     * @inheritDoc
-     * Bottom of the tree
+     * @inheritDoc Bottom of the tree
      */
-    public void notifyUpdate(){}
+    public void notifyUpdate() {
+    }
 
     /**
      * Formatter for a variable amount of buttons
@@ -289,7 +283,7 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
         /**
          * The constraint for a a button
          */
-        private final GridConstraints button_C =  new GridConstraints(
+        private final GridConstraints button_C = new GridConstraints(
                 0, 1, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -297,27 +291,27 @@ public class BoundStructure_Table<T extends BoundStructure_Generator> extends JP
                 null, null, null);
 
         /**
-         *
          * @param toAdd
          */
-        public void addButton(JButton toAdd){
+        public void addButton(JButton toAdd) {
             buttons.add(toAdd);
         }
 
         /**
          * Finalize the panel by adding all the buttons
+         *
          * @return
          */
-        public JPanel getButtonPanel(){
-            if(buttons.size() == 0){
+        public JPanel getButtonPanel() {
+            if (buttons.size() == 0) {
                 return new JPanel();
             }
 
             JPanel button_panel = new JPanel(new GridLayoutManager(1, buttons.size(), new Insets(0, 0, 0, 0), -1, -1));
 
-            for(int i=0;i<buttons.size();i++){
+            for (int i = 0; i < buttons.size(); i++) {
                 button_C.setColumn(i);
-                button_panel.add(buttons.get(i),button_C);
+                button_panel.add(buttons.get(i), button_C);
             }
 
             return button_panel;

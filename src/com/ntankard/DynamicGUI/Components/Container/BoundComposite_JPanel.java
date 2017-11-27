@@ -26,22 +26,24 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
     /**
      * Add an dynamic panel (one of these)
+     *
      * @param name
      * @param toAdd
      * @param isRestricted
      */
-    public void addPanelManager(String name, BoundComposite_JPanel toAdd, Boolean isRestricted){
-        allRows.add(new PanelRows(name,isRestricted,toAdd));
+    public void addPanelManager(String name, BoundComposite_JPanel toAdd, Boolean isRestricted) {
+        allRows.add(new PanelRows(name, isRestricted, toAdd));
         boundObjects.add(toAdd);
     }
 
     /**
      * Add a new standard component
+     *
      * @param name
      * @param toAdd
      */
-    public void addDataAccess(String name, Bound_JComponent toAdd, Boolean isRestricted){
-        allRows.add(new BoundRows(name,isRestricted,toAdd));
+    public void addDataAccess(String name, Bound_JComponent toAdd, Boolean isRestricted) {
+        allRows.add(new BoundRows(name, isRestricted, toAdd));
         boundObjects.add(toAdd);
     }
 
@@ -52,14 +54,14 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
     /**
      * Build the panel
      */
-    public void finalizePanel(){
+    public void finalizePanel() {
         // create the base panel
         this.removeAll();
         this.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         JPanel toAddP;
 
         // add general
-        if(hadPublic()) {
+        if (hadPublic()) {
             toAddP = getGeneralPanel();
             toAddP.setBorder(new TitledBorder("General"));
             lbl_C.setRow(0);
@@ -70,7 +72,7 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
         }
 
         // add restricted
-        if(hasPrivate()) {
+        if (hasPrivate()) {
             toAddP = getRestrictedPanel();
             toAddP.setBorder(new TitledBorder("Restricted"));
             data_C.setRow(0);
@@ -81,9 +83,10 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
     /**
      * Create a panel with all the general controls
+     *
      * @return
      */
-    public JPanel getGeneralPanel(){
+    public JPanel getGeneralPanel() {
         JPanel toReturn = new JPanel();
         updateDynamicRows();
 
@@ -93,8 +96,8 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
         // add all rows
         int insertIndex = 0;
-        for(TableRow t: generalRows){
-            t.addToPanel(toReturn,insertIndex,false);
+        for (TableRow t : generalRows) {
+            t.addToPanel(toReturn, insertIndex, false);
             insertIndex++;
         }
 
@@ -103,13 +106,14 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
     /**
      * Create a panel with all the restricted controls
+     *
      * @return
      */
-    public JPanel getRestrictedPanel(){
+    public JPanel getRestrictedPanel() {
         JPanel toReturn = new JPanel();
         updateDynamicRows();
 
-        if(restrictedRows.size() == 0){
+        if (restrictedRows.size() == 0) {
             return toReturn;
         }
         // create the base panel
@@ -118,8 +122,8 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
         // add all rows
         int insertIndex = 0;
-        for(TableRow t: restrictedRows){
-            t.addToPanel(toReturn,insertIndex,true);
+        for (TableRow t : restrictedRows) {
+            t.addToPanel(toReturn, insertIndex, true);
             insertIndex++;
         }
 
@@ -129,21 +133,21 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
     /**
      * Generate the general and restricted rows
      */
-    private void updateDynamicRows(){
+    private void updateDynamicRows() {
         generalRows = new ArrayList<>();
         restrictedRows = new ArrayList<>();
 
-        for(TableRow t: allRows){
-            if(t instanceof BoundRows){
-                if(t.isRestricted){
+        for (TableRow t : allRows) {
+            if (t instanceof BoundRows) {
+                if (t.isRestricted) {
                     restrictedRows.add(t);
-                } else{
+                } else {
                     generalRows.add(t);
                 }
-            } else{
-                if(t.isRestricted){
+            } else {
+                if (t.isRestricted) {
                     restrictedRows.add(t);
-                }else {
+                } else {
                     if (((PanelRows) t).panel.hasPrivate()) {
                         restrictedRows.add(t);
                     }
@@ -181,11 +185,12 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
     /**
      * Are there any restricted rows?
+     *
      * @return
      */
-    private boolean hasPrivate(){
+    private boolean hasPrivate() {
         updateDynamicRows();
-        if(restrictedRows.size()==0){
+        if (restrictedRows.size() == 0) {
             return false;
         }
         return true;
@@ -193,11 +198,12 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
 
     /**
      * Are there any public rows?
+     *
      * @return
      */
-    private boolean hadPublic(){
+    private boolean hadPublic() {
         updateDynamicRows();
-        if(generalRows.size()==0){
+        if (generalRows.size() == 0) {
             return false;
         }
         return true;
@@ -213,7 +219,7 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      */
     @Override
     public void load() {
-        for(Bound_JComponent component : boundObjects){
+        for (Bound_JComponent component : boundObjects) {
             component.load();
         }
     }
@@ -223,7 +229,7 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
      */
     @Override
     public void save() {
-        for(Bound_JComponent component : boundObjects){
+        for (Bound_JComponent component : boundObjects) {
             component.save();
         }
     }
@@ -234,8 +240,8 @@ public class BoundComposite_JPanel extends JPanel implements Bound_JComponent {
     @Override
     public boolean validateState() {
         boolean state = true;
-        for(Bound_JComponent component : boundObjects){
-            if(!component.validateState()){
+        for (Bound_JComponent component : boundObjects) {
+            if (!component.validateState()) {
                 state = false;
             }
         }

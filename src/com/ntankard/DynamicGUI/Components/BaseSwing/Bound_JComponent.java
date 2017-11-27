@@ -19,6 +19,7 @@ public interface Bound_JComponent {
 
     /**
      * Is the value of the field valid (should set a warning on the field)
+     *
      * @return
      */
     boolean validateState();
@@ -29,6 +30,7 @@ public interface Bound_JComponent {
 
     /**
      * Get the GUI Component (this)
+     *
      * @return
      */
     JComponent getComponent();

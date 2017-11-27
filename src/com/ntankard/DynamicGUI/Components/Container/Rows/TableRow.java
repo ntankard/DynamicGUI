@@ -19,6 +19,7 @@ public abstract class TableRow {
 
     /**
      * Add this row to a standard Grid panel
+     *
      * @param toAddTo
      * @param index
      * @param isRestricted
@@ -27,6 +28,7 @@ public abstract class TableRow {
 
     /**
      * Default constructor
+     *
      * @param name
      * @param isPrivate
      */

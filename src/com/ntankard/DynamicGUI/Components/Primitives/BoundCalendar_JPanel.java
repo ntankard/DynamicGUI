@@ -2,8 +2,8 @@ package com.ntankard.DynamicGUI.Components.Primitives;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JPanel;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +27,7 @@ public class BoundCalendar_JPanel extends Bound_JPanel {
         year_comboBox.setSelectedIndex(data.get().get(Calendar.YEAR) - STARTING_YEAR);
         month_comboBox.setSelectedIndex(data.get().get(Calendar.MONTH));
         generateDay();
-        day_comboBox.setSelectedIndex(data.get().get(Calendar.DAY_OF_MONTH)-1);
+        day_comboBox.setSelectedIndex(data.get().get(Calendar.DAY_OF_MONTH) - 1);
     }
 
     /**
@@ -35,16 +35,16 @@ public class BoundCalendar_JPanel extends Bound_JPanel {
      */
     @Override
     public void save() {
-        data.get().set(Calendar.YEAR,year_comboBox.getSelectedIndex() + STARTING_YEAR);
-        data.get().set(Calendar.MONTH,month_comboBox.getSelectedIndex());
-        data.get().set(Calendar.DAY_OF_MONTH,day_comboBox.getSelectedIndex()+1);
+        data.get().set(Calendar.YEAR, year_comboBox.getSelectedIndex() + STARTING_YEAR);
+        data.get().set(Calendar.MONTH, month_comboBox.getSelectedIndex());
+        data.get().set(Calendar.DAY_OF_MONTH, day_comboBox.getSelectedIndex() + 1);
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public boolean validateState(){
+    public boolean validateState() {
         return true;
     }
 
@@ -62,15 +62,15 @@ public class BoundCalendar_JPanel extends Bound_JPanel {
      */
     private void generateDay() {
         int selected = day_comboBox.getSelectedIndex();
-        Calendar ref = new GregorianCalendar(year_comboBox.getSelectedIndex()+ STARTING_YEAR, month_comboBox.getSelectedIndex(), 1);
+        Calendar ref = new GregorianCalendar(year_comboBox.getSelectedIndex() + STARTING_YEAR, month_comboBox.getSelectedIndex(), 1);
         int days = ref.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         day_comboBox.removeAllItems();
-        for(int i=0;i<days;i++) {
-            day_comboBox.addItem(i+1);
+        for (int i = 0; i < days; i++) {
+            day_comboBox.addItem(i + 1);
         }
 
-        if(selected < days) {
+        if (selected < days) {
             day_comboBox.setSelectedIndex(selected);
         }
     }
@@ -91,10 +91,10 @@ public class BoundCalendar_JPanel extends Bound_JPanel {
      */
     private void createUIComponents() {
         year_comboBox = new JComboBox();
-        for(int i=0;i<30;i++) {
+        for (int i = 0; i < 30; i++) {
             year_comboBox.addItem((STARTING_YEAR + i));
         }
-        year_comboBox.addActionListener (e -> generateDay());
+        year_comboBox.addActionListener(e -> generateDay());
         GridConstraints year_comboBox_C = new GridConstraints(0, 2, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -115,7 +115,7 @@ public class BoundCalendar_JPanel extends Bound_JPanel {
         month_comboBox.addItem("NOV");
         month_comboBox.addItem("DEC");
         month_comboBox.setSelectedIndex(0);
-        month_comboBox.addActionListener (e -> generateDay());
+        month_comboBox.addActionListener(e -> generateDay());
         GridConstraints month_comboBox_C = new GridConstraints(
                 0, 1, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,

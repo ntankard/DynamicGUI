@@ -21,6 +21,7 @@ public class BoundRows extends TableRow {
 
     /**
      * Default constructor
+     *
      * @param name
      * @param isPrivate
      * @param data
@@ -34,7 +35,7 @@ public class BoundRows extends TableRow {
      * @inheritDoc
      */
     @Override
-    public void addToPanel(JPanel toAddTo, int index, boolean isRestricted){
+    public void addToPanel(JPanel toAddTo, int index, boolean isRestricted) {
         lbl_C.setRow(index);
         data_C.setRow(index);
         toAddTo.add(new JLabel(name), lbl_C);
@@ -54,7 +55,7 @@ public class BoundRows extends TableRow {
     /**
      * The constraint for a data element in the right column
      */
-    public static final GridConstraints data_C =  new GridConstraints(
+    public static final GridConstraints data_C = new GridConstraints(
             0, 1, 1, 1,
             GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
             GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,

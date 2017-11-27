@@ -22,6 +22,7 @@ public class PanelRows extends TableRow {
 
     /**
      * Default constructor
+     *
      * @param name
      * @param isPrivate
      * @param panel
@@ -35,12 +36,12 @@ public class PanelRows extends TableRow {
      * @inheritDoc
      */
     @Override
-    public void addToPanel(JPanel toAddTo, int index, boolean isRestricted){
+    public void addToPanel(JPanel toAddTo, int index, boolean isRestricted) {
         panel_C.setRow(index);
         JPanel toAddP;
-        if(isRestricted) {
+        if (isRestricted) {
             toAddP = panel.getRestrictedPanel();
-        }else{
+        } else {
             toAddP = panel.getGeneralPanel();
         }
         toAddP.setBorder(new TitledBorder(name));

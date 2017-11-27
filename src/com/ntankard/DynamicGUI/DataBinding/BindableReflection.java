@@ -7,26 +7,35 @@ import java.lang.reflect.Method;
  */
 public class BindableReflection<T> implements Bindable<T> {
 
-    /** The object to invoke */
+    /**
+     * The object to invoke
+     */
     public Object o;
 
-    /** The getter method */
+    /**
+     * The getter method
+     */
     public Method getter;
 
-    /** The setter method */
+    /**
+     * The setter method
+     */
     public Method setter;
 
-    /** Should the setter method be called */
+    /**
+     * Should the setter method be called
+     */
     private boolean canEdit;
 
     /**
      * Default constructor
-     * @param o The object to invoke
-     * @param getter The getter method
-     * @param setter The setter method
+     *
+     * @param o       The object to invoke
+     * @param getter  The getter method
+     * @param setter  The setter method
      * @param canEdit Should the setter method be called
      */
-    public BindableReflection(Object o, Method getter, Method setter, boolean canEdit){
+    public BindableReflection(Object o, Method getter, Method setter, boolean canEdit) {
         this.o = o;
         this.getter = getter;
         this.setter = setter;
@@ -39,7 +48,7 @@ public class BindableReflection<T> implements Bindable<T> {
     @Override
     public T get() {
         try {
-            return (T)getter.invoke(o,null);
+            return (T) getter.invoke(o, null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +60,7 @@ public class BindableReflection<T> implements Bindable<T> {
     @Override
     public void set(Object value) {
         try {
-            setter.invoke(o,(T)value);
+            setter.invoke(o, (T) value);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

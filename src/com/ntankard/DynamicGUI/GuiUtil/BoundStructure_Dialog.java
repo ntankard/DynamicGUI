@@ -4,9 +4,6 @@ import com.ntankard.DynamicGUI.Components.Container.BoundComposite_JPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -15,7 +12,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by Nicholas on 8/05/2016.
  */
-public class BoundStructure_Dialog extends JDialog  {
+public class BoundStructure_Dialog extends JDialog {
 
     /**
      * Change if cant be loaded from old version
@@ -28,8 +25,8 @@ public class BoundStructure_Dialog extends JDialog  {
     private JPanel dialogPanel;
     private BoundComposite_JPanel structurePanel;
     private JPanel buttonPanel;
-        private JButton buttonOK;
-        private JButton buttonCancel;
+    private JButton buttonOK;
+    private JButton buttonCancel;
 
     /**
      * Was the object changed
@@ -37,7 +34,6 @@ public class BoundStructure_Dialog extends JDialog  {
     private boolean change;
 
     /**
-     *
      * @param p
      * @return
      */
@@ -50,6 +46,7 @@ public class BoundStructure_Dialog extends JDialog  {
 
     /**
      * Was the OK button pressed
+     *
      * @return
      */
     public boolean didChange() {
@@ -58,6 +55,7 @@ public class BoundStructure_Dialog extends JDialog  {
 
     /**
      * Default constructor
+     *
      * @param structure
      */
     public BoundStructure_Dialog(BoundComposite_JPanel structure) {
@@ -100,8 +98,8 @@ public class BoundStructure_Dialog extends JDialog  {
         buttonPanel = new JPanel();
         buttonPanel.setBorder(new EmptyBorder(12, 0, 0, 0));
         GridBagLayout GBL = new GridBagLayout();
-        GBL.columnWidths = new int[] {0, 85, 80};
-        GBL.columnWeights = new double[] {1.0, 0.0, 0.0};
+        GBL.columnWidths = new int[]{0, 85, 80};
+        GBL.columnWeights = new double[]{1.0, 0.0, 0.0};
         buttonPanel.setLayout(GBL);
         buttonPanel.add(buttonOK, buttonOK_C);
         buttonPanel.add(buttonCancel, buttonCancel_C);
@@ -120,7 +118,7 @@ public class BoundStructure_Dialog extends JDialog  {
      * Load the panels content into the object
      */
     private void onOK() {
-        if(!structurePanel.validateState()){
+        if (!structurePanel.validateState()) {
             JOptionPane.showMessageDialog(this, "Invalid");
             return;
         }

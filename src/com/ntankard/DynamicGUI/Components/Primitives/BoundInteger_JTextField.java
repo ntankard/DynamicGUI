@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Primitives;
 
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JTextField;
+import com.ntankard.DynamicGUI.DataBinding.Bindable;
 
 /**
  * Created by Nicholas on 8/06/2016.
@@ -15,6 +15,7 @@ public class BoundInteger_JTextField extends Bound_JTextField {
 
     /**
      * Default constructor
+     *
      * @param data
      */
     public BoundInteger_JTextField(Bindable<Integer> data) {
@@ -47,11 +48,11 @@ public class BoundInteger_JTextField extends Bound_JTextField {
      * @inheritDoc
      */
     @Override
-    public boolean validateState(){
-        try{
+    public boolean validateState() {
+        try {
             Integer.parseInt(getText());
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
