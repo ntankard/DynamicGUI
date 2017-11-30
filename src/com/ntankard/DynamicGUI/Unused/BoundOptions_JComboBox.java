@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.Components.BaseSwing.Bound_JComboBox;
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BaseSwing.Bound_JComboBox;
+import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
 
 import java.util.ArrayList;
 

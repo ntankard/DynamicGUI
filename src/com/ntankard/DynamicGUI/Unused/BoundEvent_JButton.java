@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Unused;
 
-import com.ntankard.DynamicGUI.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Unused.Event.Event;
 
 /**
