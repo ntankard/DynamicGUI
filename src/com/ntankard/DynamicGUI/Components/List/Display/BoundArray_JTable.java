@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List.Display;
 
-import com.ntankard.DynamicGUI.Components.List.BoundArray_FieldProperties;
+import com.ntankard.DynamicGUI.Components.List.BoundArray_Properties;
 import com.ntankard.DynamicGUI.Generator.ObjectField;
 import com.ntankard.DynamicGUI.Generator.ObjectReflector;
 import com.ntankard.DynamicGUI.Util.Updatable;
@@ -31,7 +31,7 @@ public class BoundArray_JTable extends BoundArray {
     private DefaultTableModel model;
 
     /**
-     * What level of verbosity should be shown? (compared against BoundArray_FieldProperties verbosity)
+     * What level of verbosity should be shown? (compared against BoundArray_Properties verbosity)
      */
     private int verbosity;
 
@@ -77,7 +77,7 @@ public class BoundArray_JTable extends BoundArray {
         ArrayList<ObjectField> fields = ObjectReflector.getFields(top);
 
         for (ObjectField f : fields) {
-            BoundArray_FieldProperties properties = f.getField().getAnnotation(BoundArray_FieldProperties.class);
+            BoundArray_Properties properties = f.getField().getAnnotation(BoundArray_Properties.class);
             if (properties != null) {
                 if (properties.verbosityLevel() > verbosity) {
                     continue;
@@ -95,7 +95,7 @@ public class BoundArray_JTable extends BoundArray {
 
         // add each cell
         for (ObjectField field : fields) {
-            BoundArray_FieldProperties properties = field.getField().getAnnotation(BoundArray_FieldProperties.class);
+            BoundArray_Properties properties = field.getField().getAnnotation(BoundArray_Properties.class);
             if (properties != null) {
 
                 // should we skip this cell? or dig deeper into it

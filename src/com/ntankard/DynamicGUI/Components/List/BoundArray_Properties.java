@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BoundArray_FieldProperties {
+public @interface BoundArray_Properties {
 
     /**
      * At what verbosity level should this field be displayed?
