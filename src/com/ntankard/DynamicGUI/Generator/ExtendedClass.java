@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
- * A replacement for Class that includes a few layers higher in the hierarchy (based on ClassGuiProperties)
+ * A replacement for Class that includes a few layers higher in the hierarchy (based on Generator_Properties)
  */
 public class ExtendedClass {
 
@@ -29,7 +29,7 @@ public class ExtendedClass {
 
         while (true) {
             Class child = inheritedClasses.get(inheritedClasses.size() - 1);
-            ClassGuiProperties properties = (ClassGuiProperties) child.getAnnotation(ClassGuiProperties.class);
+            Generator_Properties properties = (Generator_Properties) child.getAnnotation(Generator_Properties.class);
             if (properties != null && properties.includeParent()) {
                 Class<?> parent = child.getSuperclass();
                 if (parent != null) {

@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
  * Created by Nicholas on 15/07/2017.
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldGuiProperties {
+public @interface BoundStructure_Properties {
 
     /**
      * Should a component be generated for this field?

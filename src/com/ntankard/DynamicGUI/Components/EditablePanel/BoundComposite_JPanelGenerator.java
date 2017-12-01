@@ -34,7 +34,7 @@ public class BoundComposite_JPanelGenerator {
             boolean generate = true;
             boolean editable = true;
             if (field.getField() != null) {
-                FieldGuiProperties properties = field.getField().getAnnotation(FieldGuiProperties.class);
+                BoundStructure_Properties properties = field.getField().getAnnotation(BoundStructure_Properties.class);
                 if (properties != null) {
                     generate = properties.generate();
                     editable = properties.editable();

@@ -43,7 +43,15 @@ public class BoundArray_Interface extends JPanel implements Updatable {
 
     public static BoundArray_Interface newStandardDisplayTable(ArrayList objects,
                                                                Updatable master) {
-        BoundArray_Interface list = new BoundArray_Interface(master, new BoundArray_JTable(objects, master));
+        BoundArray_Interface list = new BoundArray_Interface(master, new BoundArray_JTable(objects, master,10));
+        list.addEditBtn();
+        return list;
+    }
+
+    public static BoundArray_Interface newStandardDisplayTable(ArrayList objects,
+                                                               Updatable master,
+                                                               int verbosity) {
+        BoundArray_Interface list = new BoundArray_Interface(master, new BoundArray_JTable(objects, master,verbosity));
         list.addEditBtn();
         return list;
     }
