@@ -37,8 +37,8 @@ public class ObjectReflector {
 
             // verify the getter and setter
             try {
-                if (getter.invoke(o) == null)
-                    continue;
+                /*if (getter.invoke(o) == null)
+                    continue;*/
                 if (setter != null)
                     if (setter.getParameterCount() != 1 || !getter.getReturnType().equals(setter.getParameterTypes()[0]))
                         continue;

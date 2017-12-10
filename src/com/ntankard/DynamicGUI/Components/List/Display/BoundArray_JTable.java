@@ -113,7 +113,11 @@ public class BoundArray_JTable extends BoundArray {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
                 toAdd = dateFormat.format(((Calendar) field.getGetter().invoke(field.getO())).getTime());
             } else {
-                toAdd = field.getGetter().invoke(field.getO()).toString();
+                try {
+                    toAdd = field.getGetter().invoke(field.getO()).toString();
+                }catch (NullPointerException e){
+                    toAdd = "";
+                }
             }
             rowString.add(toAdd);
         }
@@ -157,6 +161,8 @@ public class BoundArray_JTable extends BoundArray {
 
             // force update
             structure_table.setModel(model);
+        }else{
+            structure_table.setModel(new DefaultTableModel());
         }
     }
 
