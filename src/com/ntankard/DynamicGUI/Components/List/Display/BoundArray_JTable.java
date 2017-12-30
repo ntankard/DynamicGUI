@@ -77,7 +77,7 @@ public class BoundArray_JTable extends BoundArray {
         ArrayList<ObjectField> fields = ObjectReflector.getFields(top);
 
         for (ObjectField f : fields) {
-            BoundArray_Properties properties = f.getField().getAnnotation(BoundArray_Properties.class);
+            BoundArray_Properties properties = f.getGetter().getAnnotation(BoundArray_Properties.class);
             if (properties != null) {
                 if (properties.verbosityLevel() > verbosity) {
                     continue;
@@ -95,7 +95,7 @@ public class BoundArray_JTable extends BoundArray {
 
         // add each cell
         for (ObjectField field : fields) {
-            BoundArray_Properties properties = field.getField().getAnnotation(BoundArray_Properties.class);
+            BoundArray_Properties properties = field.getGetter().getAnnotation(BoundArray_Properties.class);
             if (properties != null) {
 
                 // should we skip this cell? or dig deeper into it
@@ -105,6 +105,7 @@ public class BoundArray_JTable extends BoundArray {
                     addRow(field.getGetter().invoke(field.getO()), rowString);
                     continue;
                 }
+
             }
 
             // get standard cell
@@ -115,7 +116,7 @@ public class BoundArray_JTable extends BoundArray {
             } else {
                 try {
                     toAdd = field.getGetter().invoke(field.getO()).toString();
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     toAdd = "";
                 }
             }
@@ -150,9 +151,10 @@ public class BoundArray_JTable extends BoundArray {
                         addRow(rowObject, rowString);
                         model.addRow(rowString.toArray());
                     } catch (InvocationTargetException | IllegalAccessException e) {
-                        rowString = new ArrayList<>();
-                        rowString.add("Failed Object");
-                        model.addRow(rowString.toArray()); // couldn't parse the full row TODO this can happen if a partComposite field is null ,fix this
+                        throw new RuntimeException(e);
+                        //rowString = new ArrayList<>();
+                        //rowString.add("Failed Object");
+                        // model.addRow(rowString.toArray()); // couldn't parse the full row TODO this can happen if a partComposite field is null ,fix this
                     }
                 } else {
                     model.addRow(new String[1]); // no object to write, so write blank
@@ -161,7 +163,7 @@ public class BoundArray_JTable extends BoundArray {
 
             // force update
             structure_table.setModel(model);
-        }else{
+        } else {
             structure_table.setModel(new DefaultTableModel());
         }
     }

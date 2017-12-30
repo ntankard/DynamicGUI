@@ -32,7 +32,7 @@ public class ObjectReflector {
             // pull out any provided properties
             Field field = context.getDeclaredField(fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1));
             if (field == null) {
-                continue;
+                //continue; TODO this may not work properly, reasses
             }
 
             // verify the getter and setter
