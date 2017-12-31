@@ -65,6 +65,7 @@ public class BoundArray_JTable extends BoundArray {
             }
         };
         structure_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        structure_table.setAutoCreateRowSorter(true);
 
         this.setViewportView(structure_table);
     }
