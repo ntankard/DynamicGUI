@@ -7,12 +7,12 @@ import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BoundInteger_
 import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BoundString_JTextField;
 import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
 import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.BindableReflection;
-import com.ntankard.DynamicGUI.Generator.ObjectField;
-import com.ntankard.DynamicGUI.Generator.ObjectReflector;
+import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.ClassExtension.Member;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * Created by Nicholas on 14/07/2017.
@@ -27,8 +27,8 @@ public class BoundComposite_JPanelGenerator {
      */
     public static BoundComposite_JPanel generate(Object o) {
         BoundComposite_JPanel panel = new BoundComposite_JPanel();
-        ArrayList<ObjectField> fields = ObjectReflector.getFields(o);
-        for (ObjectField field : fields) {
+        List<Member> fields = new MemberClass(o).getMembers();// ReflectionGeneratorUtil.getFields(o);
+        for (Member field : fields) {
 
             // pull out any provided properties
             boolean generate = true;
@@ -45,7 +45,7 @@ public class BoundComposite_JPanelGenerator {
 
             // generate the component
             if (generate) {
-                add(panel, field.getFieldName(), field.getO(), field.getGetter(), field.getSetter(), editable);
+                add(panel, field.getName(), o, field.getGetter(), field.getSetter(), editable);
             }
         }
 

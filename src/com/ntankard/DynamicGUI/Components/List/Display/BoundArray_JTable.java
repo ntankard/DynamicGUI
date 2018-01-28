@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Components.List.Display;
 
 import com.ntankard.DynamicGUI.Components.List.BoundArray_Properties;
-import com.ntankard.DynamicGUI.Generator.ObjectField;
-import com.ntankard.DynamicGUI.Generator.ObjectReflector;
+import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Nicholas on 26/06/2016.
@@ -75,27 +76,27 @@ public class BoundArray_JTable extends BoundArray {
     //------------------------------------------------------------------------------------------------------------------
 
     private void addHeaders(Object top, DefaultTableModel model, String pre) throws InvocationTargetException, IllegalAccessException {
-        ArrayList<ObjectField> fields = ObjectReflector.getFields(top);
+        List<Member> fields = new MemberClass(top).getMembers();// ReflectionGeneratorUtil.getFields(top);
 
-        for (ObjectField f : fields) {
+        for (Member f : fields) {
             BoundArray_Properties properties = f.getGetter().getAnnotation(BoundArray_Properties.class);
             if (properties != null) {
                 if (properties.verbosityLevel() > verbosity) {
                     continue;
                 } else if (properties.partComposite()) {
-                    addHeaders(f.getGetter().invoke(f.getO()), model, f.getFieldName() + "_");
+                    addHeaders(f.getGetter().invoke(top), model, f.getName() + "_");
                     continue;
                 }
             }
-            model.addColumn(pre + f.getFieldName());
+            model.addColumn(pre + f.getName());
         }
     }
 
     private void addRow(Object rowObject, ArrayList<String> rowString) throws InvocationTargetException, IllegalAccessException {
-        ArrayList<ObjectField> fields = ObjectReflector.getFields(rowObject);
+        List<Member> fields = new MemberClass(rowObject).getMembers();//ReflectionGeneratorUtil.getFields(rowObject);
 
         // add each cell
-        for (ObjectField field : fields) {
+        for (Member field : fields) {
             BoundArray_Properties properties = field.getGetter().getAnnotation(BoundArray_Properties.class);
             if (properties != null) {
 
@@ -103,7 +104,7 @@ public class BoundArray_JTable extends BoundArray {
                 if (properties.verbosityLevel() > verbosity) {
                     continue;
                 } else if (properties.partComposite()) {
-                    addRow(field.getGetter().invoke(field.getO()), rowString);
+                    addRow(field.getGetter().invoke(rowObject), rowString);
                     continue;
                 }
 
@@ -111,12 +112,12 @@ public class BoundArray_JTable extends BoundArray {
 
             // get standard cell
             String toAdd;
-            if (field.getGetter().invoke(field.getO()) instanceof Calendar) {
+            if (field.getGetter().invoke(rowObject) instanceof Calendar) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
-                toAdd = dateFormat.format(((Calendar) field.getGetter().invoke(field.getO())).getTime());
+                toAdd = dateFormat.format(((Calendar) field.getGetter().invoke(rowObject)).getTime());
             } else {
                 try {
-                    toAdd = field.getGetter().invoke(field.getO()).toString();
+                    toAdd = field.getGetter().invoke(rowObject).toString();
                 } catch (NullPointerException e) {
                     toAdd = "";
                 }
