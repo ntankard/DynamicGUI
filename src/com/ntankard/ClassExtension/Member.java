@@ -68,4 +68,7 @@ public class Member {
     public Method getSetter() {
         return setter;
     }
+    public Class<?> getType(){
+        return getGetter().getReturnType();
+    }
 }
