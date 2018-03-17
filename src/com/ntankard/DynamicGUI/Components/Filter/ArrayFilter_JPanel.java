@@ -2,9 +2,7 @@ package com.ntankard.DynamicGUI.Components.Filter;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.Filter.Component.Double_MemberFilter;
-import com.ntankard.DynamicGUI.Components.Filter.Component.MemberFilter_JPanel;
-import com.ntankard.DynamicGUI.Components.Filter.Component.String_MemberFilter;
+import com.ntankard.DynamicGUI.Components.Filter.Component.*;
 import com.ntankard.DynamicGUI.Components.List.BoundArray_Properties;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -83,15 +81,17 @@ public class ArrayFilter_JPanel<T> extends JScrollPane implements Updatable {
                 }
             }
 
-
             // find a compatible filter type
             MemberFilter_JPanel filterable;
-            if(member.getType().equals(String.class)){
+            Class<?> theClass = member.getType();
+            if(theClass.equals(String.class)){
                 filterable = new String_MemberFilter(member,this);
-            }else if(member.getType().equals(double.class) || member.getType().equals(Double.class)){
+            }else if(theClass.equals(double.class) || member.getType().equals(Double.class)){
                 filterable = new Double_MemberFilter(member,this);
+            }else if(theClass.isEnum()){
+                filterable = new Enum_MemberFilter(member,this);
             }else{
-                continue;
+                filterable = new ToString_MemberFilter(member,this);
             }
 
             // add the new filter component

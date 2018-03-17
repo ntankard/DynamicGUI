@@ -94,6 +94,10 @@ public class String_MemberFilter extends MemberFilter_JPanel {
         this.add(exactMatch_chb, c);
     }
 
+    protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
+        return (String) baseMember.getGetter().invoke(o);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -104,7 +108,7 @@ public class String_MemberFilter extends MemberFilter_JPanel {
                 return true;
             }
             try {
-                String readValue = (String) baseMember.getGetter().invoke(o);
+                String readValue = getInstanceValue(o);
                 if (readValue == null) {
                     return value.isEmpty();
                 }
