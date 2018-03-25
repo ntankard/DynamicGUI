@@ -1,8 +1,6 @@
 package com.ntankard.ClassExtension;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,7 +88,7 @@ public class MemberClass {
      *
      * @return All methods that represent standard public accessors for all included layers(get, is, has)
      */
-    public Method[] getAccessors() {
+    private Method[] getAccessors() {
         List<Method> methods = new ArrayList<>();
         for (Method m : getDeclaredMethods()) {
             if (Modifier.isPublic(m.getModifiers()) && (m.getName().contains("get") || m.getName().contains("is") || m.getName().contains("has"))) {
@@ -106,7 +104,7 @@ public class MemberClass {
      * @return All members for this class and its included layers
      */
     public List<Member> getMembers() {
-        ArrayList<Member> fields = new ArrayList<>();
+        List<Member> fields = new ArrayList<>();
 
         for (Method getter : getAccessors()) {
             fields.add(new Member(this, getter));

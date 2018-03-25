@@ -6,7 +6,7 @@ package com.ntankard.DynamicGUI.Util;
 public interface Updatable {
 
     /**
-     * Called whe the model is changes, should be forwarded to children (must not tribute notifyUpdate)
+     * Called whe the model is changes, should be forwarded to children (must not trigger notifyUpdate)
      */
     void update();
 

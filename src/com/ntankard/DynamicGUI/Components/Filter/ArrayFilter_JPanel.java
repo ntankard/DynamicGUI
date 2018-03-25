@@ -3,7 +3,7 @@ package com.ntankard.DynamicGUI.Components.Filter;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.Component.*;
-import com.ntankard.DynamicGUI.Components.List.BoundArray_Properties;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_List_Properties;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -41,7 +41,7 @@ public class ArrayFilter_JPanel<T> extends JScrollPane implements Updatable {
     private ArrayList<Predicate> predicates = new ArrayList<>();
 
     /**
-     * What level of verbosity should be shown? (compared against BoundArray_Properties verbosity)
+     * What level of verbosity should be shown? (compared against DynamicGUI_List_Properties verbosity)
      */
     private int verbosity;
 
@@ -73,7 +73,7 @@ public class ArrayFilter_JPanel<T> extends JScrollPane implements Updatable {
 
         int index = 0;
         for(Member member : mClass.getMembers()){
-            BoundArray_Properties properties = member.getGetter().getAnnotation(BoundArray_Properties.class);
+            DynamicGUI_List_Properties properties = member.getGetter().getAnnotation(DynamicGUI_List_Properties.class);
             if (properties != null) {
                 // should we skip this cell? or dig deeper into it
                 if (properties.verbosityLevel() > verbosity) {

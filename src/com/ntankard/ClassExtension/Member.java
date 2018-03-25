@@ -9,12 +9,17 @@ import java.lang.reflect.Method;
 public class Member {
 
     /**
+     * The type of the field (type of the getter returns and setter set)
+     */
+    private Class<?> type;
+
+    /**
      * The suspected member name
      */
     private String name;
 
     /**
-     * The member itself if its not virtual
+     * The member itself if its not virtual (can be null)
      */
     private Field field;
 
@@ -37,9 +42,10 @@ public class Member {
     public Member(MemberClass context, Method getter) {
         this.getter = getter;
         this.name = getter.getName().replace("get", "").replace("is", "").replace("has", "");
+        this.type = getGetter().getReturnType();
 
         try {
-            this.setter = context.getMethod("set" + name, getter.getReturnType());
+            this.setter = context.getMethod("set" + name, type);
         } catch (NoSuchMethodException ignored) {
         }
 
@@ -50,7 +56,7 @@ public class Member {
 
         // verify the getter and setter
         if (setter != null) {
-            if (setter.getParameterCount() != 1 || !getter.getReturnType().equals(setter.getParameterTypes()[0])) {
+            if (setter.getParameterCount() != 1 || !type.equals(setter.getParameterTypes()[0])) {
                 throw new RuntimeException("Types don't match");
             }
         }
@@ -69,6 +75,6 @@ public class Member {
         return setter;
     }
     public Class<?> getType(){
-        return getGetter().getReturnType();
+        return type;
     }
 }

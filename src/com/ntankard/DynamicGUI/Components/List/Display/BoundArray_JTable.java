@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Components.List.Display;
 
-import com.ntankard.DynamicGUI.Components.List.BoundArray_Properties;
-import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.ClassExtension.Member;
+import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_List_Properties;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class BoundArray_JTable extends BoundArray {
+public class BoundArray_JTable<T> extends BoundArray<T> {
 
     /**
      * GUI Objects
@@ -32,7 +32,12 @@ public class BoundArray_JTable extends BoundArray {
     private DefaultTableModel model;
 
     /**
-     * What level of verbosity should be shown? (compared against BoundArray_Properties verbosity)
+     * The members used in the list (one field, one column)
+     */
+    private List<Member> members;
+
+    /**
+     * What level of verbosity should be shown? (compared against DynamicGUI_List_Properties verbosity)
      */
     private int verbosity;
 
@@ -43,7 +48,7 @@ public class BoundArray_JTable extends BoundArray {
     /**
      * @param objects
      */
-    public BoundArray_JTable(ArrayList objects, Updatable master, int verbosity) {
+    public BoundArray_JTable(List<T> objects, Updatable master, int verbosity) {
         super(objects, master);
         this.verbosity = verbosity;
         createUIComponents();
@@ -75,106 +80,100 @@ public class BoundArray_JTable extends BoundArray {
     //################################################# Utility ########################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    private void addHeaders(Object top, DefaultTableModel model, String pre) throws InvocationTargetException, IllegalAccessException {
-        List<Member> fields = new MemberClass(top).getMembers();// ReflectionGeneratorUtil.getFields(top);
-
-        for (Member f : fields) {
-            BoundArray_Properties properties = f.getGetter().getAnnotation(BoundArray_Properties.class);
-            if (properties != null) {
-                if (properties.verbosityLevel() > verbosity) {
-                    continue;
-                } else if (properties.partComposite()) {
-                    addHeaders(f.getGetter().invoke(top), model, f.getName() + "_");
-                    continue;
-                }
-            }
-            model.addColumn(pre + f.getName());
-        }
-    }
-
-    private void addRow(Object rowObject, ArrayList<String> rowString) throws InvocationTargetException, IllegalAccessException {
-        List<Member> fields = new MemberClass(rowObject).getMembers();//ReflectionGeneratorUtil.getFields(rowObject);
-
-        // add each cell
-        for (Member field : fields) {
-            BoundArray_Properties properties = field.getGetter().getAnnotation(BoundArray_Properties.class);
-            if (properties != null) {
-
-                // should we skip this cell? or dig deeper into it
-                if (properties.verbosityLevel() > verbosity) {
-                    continue;
-                } else if (properties.partComposite()) {
-                    addRow(field.getGetter().invoke(rowObject), rowString);
-                    continue;
-                }
-
-            }
-
-            // get standard cell
-            String toAdd;
-            if (field.getGetter().invoke(rowObject) instanceof Calendar) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
-                toAdd = dateFormat.format(((Calendar) field.getGetter().invoke(rowObject)).getTime());
-            } else {
-                try {
-                    toAdd = field.getGetter().invoke(rowObject).toString();
-                } catch (NullPointerException e) {
-                    toAdd = "";
-                }
-            }
-            rowString.add(toAdd);
-        }
-    }
-
     /**
      * @inheritDoc Bottom of the tree
      */
     public void update() {
-        if (objects != null && objects.size() != 0) {
+        try {
+            model = new DefaultTableModel();
+            members = new ArrayList<>();
 
-            // try all objects to find one with enough data to generate the header TODO can expand this by building the header in parts
-            for (int i = 0; i < objects.size(); i++) {
-                model = new DefaultTableModel();
-                try {
-                    addHeaders(objects.get(i), model, "");
-                    break;
-                } catch (Exception e) {
-                    if (i + 1 == objects.size()) {
-                        throw new RuntimeException(e);
+            if (getObjects() != null && getObjects().size() != 0) {
+                for (T o : getObjects()) {
+                    if (o != null) {
+                        // One time extract the members
+                        if (model.getColumnCount() == 0) {
+                            extractMembers(o);
+                            members.forEach(member -> model.addColumn(member.getName()));
+                        }
+
+                        // Add the row data
+                        addRow(o);
+                    } else {
+                        model.addRow(new String[1]);
                     }
                 }
             }
 
-            // add each row
-            for (Object rowObject : objects) {
-                if (rowObject != null) {
-                    ArrayList<String> rowString = new ArrayList<>();
-                    try {
-                        addRow(rowObject, rowString);
-                        model.addRow(rowString.toArray());
-                    } catch (InvocationTargetException | IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                        //rowString = new ArrayList<>();
-                        //rowString.add("Failed Object");
-                        // model.addRow(rowString.toArray()); // couldn't parse the full row TODO this can happen if a partComposite field is null ,fix this
-                    }
-                } else {
-                    model.addRow(new String[1]); // no object to write, so write blank
-                }
-            }
-
-            // force update
             structure_table.setModel(model);
-        } else {
-            structure_table.setModel(new DefaultTableModel());
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public Object getSelectedItem() {
-        if (structure_table.getSelectedRow() != -1) {
-            return objects.get(structure_table.getSelectedRow());
+    /**
+     * Get all the members to use in the table
+     *
+     * @param top A non null element to extract the members from
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    private void extractMembers(Object top) throws InvocationTargetException, IllegalAccessException {
+        for (Member f : new MemberClass(top).getMembers()) {
+            DynamicGUI_List_Properties properties = f.getGetter().getAnnotation(DynamicGUI_List_Properties.class);
+            if (properties != null) {
+                if (properties.verbosityLevel() > verbosity) {
+                    continue;
+                }
+            }
+            this.members.add(f);
         }
-        return null;
+    }
+
+    /**
+     * Add an individual row of data
+     *
+     * @param rowObject The object containing the data to add
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    private void addRow(Object rowObject) throws InvocationTargetException, IllegalAccessException {
+        ArrayList<String> rowString = new ArrayList<>();
+
+        // Add each column
+        for (Member member : members) {
+            String toAdd;
+            Object data = member.getGetter().invoke(rowObject);
+
+            // Parse the data based on its type
+            if (data == null) {
+                toAdd = "";
+            } else if (data instanceof Calendar) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
+                toAdd = dateFormat.format(((Calendar) member.getGetter().invoke(rowObject)).getTime());
+            } else {
+                toAdd = data.toString();
+            }
+            
+            rowString.add(toAdd);
+        }
+
+        model.addRow(rowString.toArray());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    protected ListSelectionModel getListSelectionModel() {
+        return structure_table.getSelectionModel();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    protected T getItemFromSelectIndex(int i) {
+        return getObjects().get(structure_table.convertRowIndexToModel(i));
     }
 }
