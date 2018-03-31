@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.List.Display;
+package com.ntankard.DynamicGUI.Components.Base.List;
 
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -6,7 +6,29 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BoundArray<T> extends JScrollPane implements Updatable {
+import static com.ntankard.DynamicGUI.Components.Base.List.DynamicGUI_List_Properties.TRACE_DISPLAY;
+
+public abstract class DynamicGUI_List<T> extends Updatable.UpdatableJScrollPane {
+
+    //------------------------------------------------------------------------------------------------------------------
+    //################################################ Factories #######################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    public static <T> DynamicGUI_List newStandardDisplayList(List<T> objects, Updatable master) {
+        return new DynamicGUI_List_JList<>(objects, master);
+    }
+
+    public static <T> DynamicGUI_List newStandardDisplayTable(List<T> objects, Updatable master) {
+        return newStandardDisplayTable(objects, TRACE_DISPLAY, master);
+    }
+
+    public static <T> DynamicGUI_List newStandardDisplayTable(List<T> objects, int verbosity, Updatable master) {
+        return new DynamicGUI_List_JTable<>(objects, verbosity, master);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //################################################## Core ##########################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * The master content of the list
@@ -22,7 +44,7 @@ public abstract class BoundArray<T> extends JScrollPane implements Updatable {
      * @param objects
      * @param master
      */
-    public BoundArray(List<T> objects, Updatable master) {
+    protected DynamicGUI_List(List<T> objects, Updatable master) {
         super();
         this.objects = objects;
         this.master = master;
@@ -68,6 +90,7 @@ public abstract class BoundArray<T> extends JScrollPane implements Updatable {
 
     /**
      * Get the element tired to a index in the list (usual the same but can be different if the display is sorted
+     *
      * @param i The index to get
      * @return The element at that index
      */

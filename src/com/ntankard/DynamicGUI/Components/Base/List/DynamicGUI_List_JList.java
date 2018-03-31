@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.List.Display;
+package com.ntankard.DynamicGUI.Components.Base.List;
 
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class BoundArray_JList extends BoundArray {
+public class DynamicGUI_List_JList<T> extends DynamicGUI_List<T> {
 
     /**
      * GUI Objects
@@ -27,7 +27,7 @@ public class BoundArray_JList extends BoundArray {
     /**
      * @param objects
      */
-    public BoundArray_JList(List objects, Updatable master) {
+    protected DynamicGUI_List_JList(List<T> objects, Updatable master) {
         super(objects, master);
         createUIComponents();
         update();
@@ -53,7 +53,7 @@ public class BoundArray_JList extends BoundArray {
         model.clear();
 
         if (getObjects() != null) {
-            for (Object o : getObjects()) {
+            for (T o : getObjects()) {
                 model.addElement(o.toString());
             }
         }
@@ -74,7 +74,7 @@ public class BoundArray_JList extends BoundArray {
      * @inheritDoc
      */
     @Override
-    protected Object getItemFromSelectIndex(int i) {
+    protected T getItemFromSelectIndex(int i) {
         return getObjects().get(i);
     }
 }

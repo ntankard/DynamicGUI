@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.List;
+package com.ntankard.DynamicGUI.Components.Base.List;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

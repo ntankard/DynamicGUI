@@ -1,8 +1,7 @@
-package com.ntankard.DynamicGUI.Components.List.Display;
+package com.ntankard.DynamicGUI.Components.Base.List;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.List.DynamicGUI_List_Properties;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -19,7 +18,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class BoundArray_JTable<T> extends BoundArray<T> {
+public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
 
     /**
      * GUI Objects
@@ -48,7 +47,7 @@ public class BoundArray_JTable<T> extends BoundArray<T> {
     /**
      * @param objects
      */
-    public BoundArray_JTable(List<T> objects, Updatable master, int verbosity) {
+    protected DynamicGUI_List_JTable(List<T> objects, int verbosity, Updatable master) {
         super(objects, master);
         this.verbosity = verbosity;
         createUIComponents();
