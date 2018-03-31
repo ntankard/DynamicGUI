@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
+public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
 
     /**
      * GUI Objects
@@ -36,7 +36,7 @@ public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
     private List<Member> members;
 
     /**
-     * What level of verbosity should be shown? (compared against DynamicGUI_List_Properties verbosity)
+     * What level of verbosity should be shown? (compared against DynamicGUI_DisplayList_Properties verbosity)
      */
     private int verbosity;
 
@@ -47,7 +47,7 @@ public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
     /**
      * @param objects
      */
-    protected DynamicGUI_List_JTable(List<T> objects, int verbosity, Updatable master) {
+    protected DisplayList_JTable(List<T> objects, int verbosity, Updatable master) {
         super(objects, master);
         this.verbosity = verbosity;
         createUIComponents();
@@ -80,37 +80,6 @@ public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * @inheritDoc Bottom of the tree
-     */
-    public void update() {
-        try {
-            model = new DefaultTableModel();
-            members = new ArrayList<>();
-
-            if (getObjects() != null && getObjects().size() != 0) {
-                for (T o : getObjects()) {
-                    if (o != null) {
-                        // One time extract the members
-                        if (model.getColumnCount() == 0) {
-                            extractMembers(o);
-                            members.forEach(member -> model.addColumn(member.getName()));
-                        }
-
-                        // Add the row data
-                        addRow(o);
-                    } else {
-                        model.addRow(new String[1]);
-                    }
-                }
-            }
-
-            structure_table.setModel(model);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Get all the members to use in the table
      *
      * @param top A non null element to extract the members from
@@ -119,7 +88,7 @@ public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
      */
     private void extractMembers(Object top) throws InvocationTargetException, IllegalAccessException {
         for (Member f : new MemberClass(top).getMembers()) {
-            DynamicGUI_List_Properties properties = f.getGetter().getAnnotation(DynamicGUI_List_Properties.class);
+            DynamicGUI_DisplayList_Properties properties = f.getGetter().getAnnotation(DynamicGUI_DisplayList_Properties.class);
             if (properties != null) {
                 if (properties.verbosityLevel() > verbosity) {
                     continue;
@@ -158,6 +127,41 @@ public class DynamicGUI_List_JTable<T> extends DynamicGUI_List<T> {
         }
 
         model.addRow(rowString.toArray());
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc Bottom of the tree
+     */
+    public void update() {
+        try {
+            model = new DefaultTableModel();
+            members = new ArrayList<>();
+
+            if (getObjects() != null && getObjects().size() != 0) {
+                for (T o : getObjects()) {
+                    if (o != null) {
+                        // One time extract the members
+                        if (model.getColumnCount() == 0) {
+                            extractMembers(o);
+                            members.forEach(member -> model.addColumn(member.getName()));
+                        }
+
+                        // Add the row data
+                        addRow(o);
+                    } else {
+                        model.addRow(new String[1]);
+                    }
+                }
+            }
+
+            structure_table.setModel(model);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class DynamicGUI_List_JList<T> extends DynamicGUI_List<T> {
+public class DisplayList_JList<T> extends DynamicGUI_DisplayList<T> {
 
     /**
      * GUI Objects
@@ -27,7 +27,7 @@ public class DynamicGUI_List_JList<T> extends DynamicGUI_List<T> {
     /**
      * @param objects
      */
-    protected DynamicGUI_List_JList(List<T> objects, Updatable master) {
+    protected DisplayList_JList(List<T> objects, Updatable master) {
         super(objects, master);
         createUIComponents();
         update();
@@ -43,7 +43,7 @@ public class DynamicGUI_List_JList<T> extends DynamicGUI_List<T> {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //################################################# Utility ########################################################
+    //############################################# Extended methods ###################################################
     //------------------------------------------------------------------------------------------------------------------
 
     /**

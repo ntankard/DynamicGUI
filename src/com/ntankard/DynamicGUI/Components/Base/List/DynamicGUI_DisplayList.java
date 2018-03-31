@@ -6,24 +6,24 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ntankard.DynamicGUI.Components.Base.List.DynamicGUI_List_Properties.TRACE_DISPLAY;
+import static com.ntankard.DynamicGUI.Components.Base.List.DynamicGUI_DisplayList_Properties.TRACE_DISPLAY;
 
-public abstract class DynamicGUI_List<T> extends Updatable.UpdatableJScrollPane {
+public abstract class DynamicGUI_DisplayList<T> extends Updatable.UpdatableJScrollPane {
 
     //------------------------------------------------------------------------------------------------------------------
     //################################################ Factories #######################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public static <T> DynamicGUI_List newStandardDisplayList(List<T> objects, Updatable master) {
-        return new DynamicGUI_List_JList<>(objects, master);
+    public static <T> DynamicGUI_DisplayList newStandardDisplayList(List<T> objects, Updatable master) {
+        return new DisplayList_JList<>(objects, master);
     }
 
-    public static <T> DynamicGUI_List newStandardDisplayTable(List<T> objects, Updatable master) {
+    public static <T> DynamicGUI_DisplayList newStandardDisplayTable(List<T> objects, Updatable master) {
         return newStandardDisplayTable(objects, TRACE_DISPLAY, master);
     }
 
-    public static <T> DynamicGUI_List newStandardDisplayTable(List<T> objects, int verbosity, Updatable master) {
-        return new DynamicGUI_List_JTable<>(objects, verbosity, master);
+    public static <T> DynamicGUI_DisplayList newStandardDisplayTable(List<T> objects, int verbosity, Updatable master) {
+        return new DisplayList_JTable<>(objects, verbosity, master);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -44,18 +44,10 @@ public abstract class DynamicGUI_List<T> extends Updatable.UpdatableJScrollPane 
      * @param objects
      * @param master
      */
-    protected DynamicGUI_List(List<T> objects, Updatable master) {
+    protected DynamicGUI_DisplayList(List<T> objects, Updatable master) {
         super();
         this.objects = objects;
         this.master = master;
-    }
-
-    /**
-     * @inheritDoc Bottom of the tree
-     */
-    @Override
-    public void notifyUpdate() {
-        master.notifyUpdate();
     }
 
     /**
@@ -80,6 +72,22 @@ public abstract class DynamicGUI_List<T> extends Updatable.UpdatableJScrollPane 
 
         return toReturn;
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @inheritDoc Bottom of the tree
+     */
+    @Override
+    public void notifyUpdate() {
+        master.notifyUpdate();
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //################################################ To Extended #####################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * Get the ListSelectionModel used by the child

@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DynamicGUI_List_Properties {
+public @interface DynamicGUI_DisplayList_Properties {
 
     int ALWAYS_DISPLAY = 0;
     int INFO_DISPLAY = 1;
