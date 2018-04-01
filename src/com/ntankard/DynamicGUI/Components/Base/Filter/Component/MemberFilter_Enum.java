@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.Filter.Component;
+package com.ntankard.DynamicGUI.Components.Base.Filter.Component;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Util.Updatable;
@@ -10,22 +10,19 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 /**
- * A MemberFilter_JPanel used to filter double with either an exact match
+ * A MemberFilter used to filter double with either an exact match
  */
-public class Enum_MemberFilter extends MemberFilter_JPanel {
+public class MemberFilter_Enum extends MemberFilter {
 
     /**
      * The values to match
      */
     private ArrayList<Object> selected = new ArrayList<>();
 
-    private JList list;
-    private ListSelectionModel listSelectionModel;
-
     /**
      * {@inheritDoc}
      */
-    public Enum_MemberFilter(Member baseMember, Updatable master) {
+    public MemberFilter_Enum(Member baseMember, Updatable master) {
         super(baseMember,master);
         createUIComponents();
         update();
@@ -36,13 +33,13 @@ public class Enum_MemberFilter extends MemberFilter_JPanel {
      */
     private void createUIComponents() {
         this.setLayout(new BorderLayout());
-        this.setBorder(BorderFactory.createTitledBorder(baseMember.getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
 
-        Object[] possibleValues = baseMember.getType().getEnumConstants();
+        Object[] possibleValues = getBaseMember().getType().getEnumConstants();
 
-        list = new JList(possibleValues);
+        JList<Object> list = new JList<>(possibleValues);
 
-        listSelectionModel = list.getSelectionModel();
+        ListSelectionModel listSelectionModel = list.getSelectionModel();
         listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(e -> {
             ListSelectionModel lsm = (ListSelectionModel)e.getSource();
@@ -53,7 +50,7 @@ public class Enum_MemberFilter extends MemberFilter_JPanel {
                 int maxIndex = lsm.getMaxSelectionIndex();
                 for (int i = minIndex; i <= maxIndex; i++) {
                     if (lsm.isSelectedIndex(i)) {
-                        selected.add(baseMember.getType().getEnumConstants()[i]);
+                        selected.add(possibleValues[i]);
                     }
                 }
             }
@@ -74,7 +71,7 @@ public class Enum_MemberFilter extends MemberFilter_JPanel {
                 return true;
             }
             try {
-                return selected.contains(baseMember.getGetter().invoke(o));
+                return selected.contains(getBaseMember().getGetter().invoke(o));
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }

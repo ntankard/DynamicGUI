@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ntankard.DynamicGUI.Components.Base.List.DynamicGUI_DisplayList_Properties.TRACE_DISPLAY;
+import static com.ntankard.ClassExtension.MemberProperties.TRACE_DISPLAY;
 
 public abstract class DynamicGUI_DisplayList<T> extends Updatable.UpdatableJScrollPane {
 
@@ -36,18 +36,12 @@ public abstract class DynamicGUI_DisplayList<T> extends Updatable.UpdatableJScro
     private List<T> objects;
 
     /**
-     * The top level GUI
-     */
-    private Updatable master;
-
-    /**
      * @param objects
      * @param master
      */
     protected DynamicGUI_DisplayList(List<T> objects, Updatable master) {
-        super();
+        super(master);
         this.objects = objects;
-        this.master = master;
     }
 
     /**
@@ -71,18 +65,6 @@ public abstract class DynamicGUI_DisplayList<T> extends Updatable.UpdatableJScro
         }
 
         return toReturn;
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################# Extended methods ###################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @inheritDoc Bottom of the tree
-     */
-    @Override
-    public void notifyUpdate() {
-        master.notifyUpdate();
     }
 
     //------------------------------------------------------------------------------------------------------------------

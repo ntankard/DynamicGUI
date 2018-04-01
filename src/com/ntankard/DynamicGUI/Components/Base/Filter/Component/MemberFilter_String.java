@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.Filter.Component;
+package com.ntankard.DynamicGUI.Components.Base.Filter.Component;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Util.Updatable;
@@ -11,9 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 /**
- * A MemberFilter_JPanel used to filter strings with either an exact, partial, or case sensitive match
+ * A MemberFilter used to filter strings with either an exact, partial, or case sensitive match
  */
-public class String_MemberFilter extends MemberFilter_JPanel {
+public class MemberFilter_String extends MemberFilter {
 
     /**
      * The value to match
@@ -30,15 +30,10 @@ public class String_MemberFilter extends MemberFilter_JPanel {
      */
     private boolean caseSensitive = false;
 
-    // All components
-    private JTextField value_txt;
-    private JCheckBox caseSensitive_chb;
-    private JCheckBox exactMatch_chb;
-
     /**
      * {@inheritDoc}
      */
-    public String_MemberFilter(Member baseMember, Updatable master) {
+    public MemberFilter_String(Member baseMember, Updatable master) {
         super(baseMember,master);
         createUIComponents();
         update();
@@ -49,12 +44,12 @@ public class String_MemberFilter extends MemberFilter_JPanel {
      */
     private void createUIComponents() {
         this.setLayout(new GridBagLayout());
-        this.setBorder(BorderFactory.createTitledBorder(baseMember.getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.BOTH;
 
-        value_txt = new JTextField();
+        JTextField value_txt = new JTextField();
         value_txt.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
                 String newValue = value_txt.getText();
@@ -67,7 +62,7 @@ public class String_MemberFilter extends MemberFilter_JPanel {
         c.gridwidth = 2;
         this.add(value_txt, c);
 
-        caseSensitive_chb = new JCheckBox("Case?", caseSensitive);
+        JCheckBox caseSensitive_chb = new JCheckBox("Case?", caseSensitive);
         caseSensitive_chb.addActionListener(e -> {
             boolean newCaseSensitive = caseSensitive_chb.isSelected();
             if (caseSensitive != newCaseSensitive) {
@@ -81,7 +76,7 @@ public class String_MemberFilter extends MemberFilter_JPanel {
         c.gridwidth = 1;
         this.add(caseSensitive_chb, c);
 
-        exactMatch_chb = new JCheckBox("Exact?", exactMatch);
+        JCheckBox exactMatch_chb = new JCheckBox("Exact?", exactMatch);
         exactMatch_chb.addActionListener(e -> {
             boolean newExactMatch = exactMatch_chb.isSelected();
             if (exactMatch != newExactMatch) {
@@ -92,10 +87,6 @@ public class String_MemberFilter extends MemberFilter_JPanel {
             }
         });
         this.add(exactMatch_chb, c);
-    }
-
-    protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
-        return (String) baseMember.getGetter().invoke(o);
     }
 
     /**
@@ -128,5 +119,16 @@ public class String_MemberFilter extends MemberFilter_JPanel {
                 throw new RuntimeException(e);
             }
         };
+    }
+
+    /**
+     * Get the value of the object to compare to
+     * @param o The object to test
+     * @return The invoked value
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
+        return (String) getBaseMember().getGetter().invoke(o);
     }
 }

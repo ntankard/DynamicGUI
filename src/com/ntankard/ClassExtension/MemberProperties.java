@@ -1,10 +1,10 @@
-package com.ntankard.DynamicGUI.Components.Base.List;
+package com.ntankard.ClassExtension;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DynamicGUI_DisplayList_Properties {
+public @interface MemberProperties {
 
     int ALWAYS_DISPLAY = 0;
     int INFO_DISPLAY = 1;

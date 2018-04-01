@@ -1,5 +1,6 @@
 package com.ntankard.DynamicGUI.Components.Base.List;
 
+import com.ntankard.ClassExtension.MemberProperties;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Util.Updatable;
@@ -36,7 +37,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
     private List<Member> members;
 
     /**
-     * What level of verbosity should be shown? (compared against DynamicGUI_DisplayList_Properties verbosity)
+     * What level of verbosity should be shown? (compared against MemberProperties verbosity)
      */
     private int verbosity;
 
@@ -78,25 +79,6 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
     //------------------------------------------------------------------------------------------------------------------
     //################################################# Utility ########################################################
     //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Get all the members to use in the table
-     *
-     * @param top A non null element to extract the members from
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     */
-    private void extractMembers(Object top) throws InvocationTargetException, IllegalAccessException {
-        for (Member f : new MemberClass(top).getMembers()) {
-            DynamicGUI_DisplayList_Properties properties = f.getGetter().getAnnotation(DynamicGUI_DisplayList_Properties.class);
-            if (properties != null) {
-                if (properties.verbosityLevel() > verbosity) {
-                    continue;
-                }
-            }
-            this.members.add(f);
-        }
-    }
 
     /**
      * Add an individual row of data
@@ -146,7 +128,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
                     if (o != null) {
                         // One time extract the members
                         if (model.getColumnCount() == 0) {
-                            extractMembers(o);
+                            members = new MemberClass(o).getVerbosityMembers(verbosity);
                             members.forEach(member -> model.addColumn(member.getName()));
                         }
 

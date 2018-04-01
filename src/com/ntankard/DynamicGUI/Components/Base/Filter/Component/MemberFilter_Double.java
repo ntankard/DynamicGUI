@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.Filter.Component;
+package com.ntankard.DynamicGUI.Components.Base.Filter.Component;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Util.Updatable;
@@ -11,23 +11,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 /**
- * A MemberFilter_JPanel used to filter double with either an exact match
+ * A MemberFilter used to filter double with either an exact match
  */
-public class Double_MemberFilter extends MemberFilter_JPanel {
+public class MemberFilter_Double extends MemberFilter {
 
     /**
      * The value to match
      */
     private Double value = null;
 
-    // All components
-    private JTextField value_txt;
-
     /**
      * {@inheritDoc}
      */
-    public Double_MemberFilter(Member baseMember, Updatable master) {
-        super(baseMember,master);
+    public MemberFilter_Double(Member baseMember, Updatable master) {
+        super(baseMember, master);
         createUIComponents();
         update();
     }
@@ -37,27 +34,21 @@ public class Double_MemberFilter extends MemberFilter_JPanel {
      */
     private void createUIComponents() {
         this.setLayout(new BorderLayout());
-        this.setBorder(BorderFactory.createTitledBorder(baseMember.getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
 
-        value_txt = new JTextField();
+        JTextField value_txt = new JTextField();
         value_txt.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                Double attempt = null;
+                Double old = value;
 
                 try {
-                    attempt = Double.parseDouble(value_txt.getText());
-                } catch (Exception ignored) {}
+                    value = Double.parseDouble(value_txt.getText());
+                } catch (Exception ignored) {
+                    value = null;
+                }
 
-                if(attempt == null){
-                    if(value != null){
-                        value = attempt;
-                        notifyUpdate();
-                    }
-                }else{
-                    if(value == null || !attempt.equals(value)){
-                        value = attempt;
-                        notifyUpdate();
-                    }
+                if (old != value) {
+                    notifyUpdate();
                 }
             }
         });
@@ -74,7 +65,7 @@ public class Double_MemberFilter extends MemberFilter_JPanel {
                 return true;
             }
             try {
-                return baseMember.getGetter().invoke(o).equals(value);
+                return getBaseMember().getGetter().invoke(o).equals(value);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
