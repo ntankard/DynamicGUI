@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.Base.List;
+package com.ntankard.DynamicGUI.Components.List;
 
 import com.ntankard.DynamicGUI.Util.Updatable;
 

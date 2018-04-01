@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.Base.Filter.Component;
+package com.ntankard.DynamicGUI.Components.Filter.Component;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Util.Updatable;

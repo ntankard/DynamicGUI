@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Composite;
 
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.Base.Filter.DynamicGUI_Filter;
-import com.ntankard.DynamicGUI.Components.Base.List.DynamicGUI_DisplayList;
+import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList;
 import com.ntankard.DynamicGUI.Util.ButtonPanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
 

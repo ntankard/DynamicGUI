@@ -1,8 +1,9 @@
-package com.ntankard.DynamicGUI.Components.Base.Filter;
+package com.ntankard.DynamicGUI.Components.Filter;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Base.Filter.Component.*;
+import com.ntankard.DynamicGUI.Components.Filter.Component.*;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;

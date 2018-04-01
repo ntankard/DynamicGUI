@@ -1,6 +1,5 @@
-package com.ntankard.DynamicGUI.Components.Base.List;
+package com.ntankard.DynamicGUI.Components.List;
 
-import com.ntankard.ClassExtension.MemberProperties;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Util.Updatable;
