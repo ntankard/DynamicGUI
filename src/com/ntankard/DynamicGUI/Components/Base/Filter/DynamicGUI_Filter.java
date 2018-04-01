@@ -7,7 +7,7 @@ import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class DynamicGUI_Filter extends Updatable.UpdatableJScrollPane {
@@ -20,7 +20,7 @@ public class DynamicGUI_Filter extends Updatable.UpdatableJScrollPane {
     /**
      * All the predicates for each of the individual controls
      */
-    private ArrayList<Predicate> predicates;
+    private List<Predicate> predicates;
 
     /**
      * What level of verbosity should be shown? (compared against MemberProperties verbosity)
@@ -34,7 +34,7 @@ public class DynamicGUI_Filter extends Updatable.UpdatableJScrollPane {
      * @param verbosity
      * @param master
      */
-    public DynamicGUI_Filter(MemberClass mClass, ArrayList<Predicate> predicates, int verbosity,Updatable master) {
+    public DynamicGUI_Filter(MemberClass mClass, List<Predicate> predicates, int verbosity,Updatable master) {
         super(master);
         this.mClass = mClass;
         this.predicates = predicates;

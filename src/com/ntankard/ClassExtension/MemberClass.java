@@ -103,11 +103,30 @@ public class MemberClass {
      *
      * @return All members for this class and its included layers
      */
-    public List<Member> getMembers() {
+    public List<Member> getAllMembers() {
         List<Member> fields = new ArrayList<>();
 
         for (Method getter : getAccessors()) {
             fields.add(new Member(this, getter));
+        }
+        return fields;
+    }
+
+    /**
+     * Get all members for this class and its included layers at the listed verbosity level
+     * @param verbosity The verbosity level to filter on
+     * @return A list of all members for this class and its included layers at the listed verbosity level
+     */
+    public List<Member> getVerbosityMembers(int verbosity) {
+        List<Member> fields = new ArrayList<>();
+        for (Member f : getAllMembers()) {
+            MemberProperties properties = f.getGetter().getAnnotation(MemberProperties.class);
+            if (properties != null) {
+                if (properties.verbosityLevel() > verbosity) {
+                    continue;
+                }
+            }
+            fields.add(f);
         }
         return fields;
     }
