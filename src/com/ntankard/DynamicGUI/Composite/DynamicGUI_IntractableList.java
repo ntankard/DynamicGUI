@@ -6,6 +6,7 @@ import com.ntankard.DynamicGUI.Components.Base.List.DynamicGUI_DisplayList;
 import com.ntankard.DynamicGUI.Util.ButtonPanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
@@ -93,9 +94,14 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
     private List<Predicate> predicates;
 
     /**
+     * The buttons to add
+     */
+    private List<ListControl_Button> buttons = new ArrayList<>();
+
+    /**
      * GUI Objects
      */
-    private ButtonPanel buttons;
+    private ButtonPanel buttonPanel;
     private DynamicGUI_Filter filterPanel;
     private DynamicGUI_DisplayList display;
 
@@ -119,7 +125,7 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
 
         this.filtered = new ArrayList<>();
         this.predicates = new ArrayList<>();
-        this.buttons = new ButtonPanel();
+        this.buttonPanel = new ButtonPanel();
 
         createUIComponents();
         update();
@@ -139,8 +145,12 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
         }
         this.add(display, BorderLayout.CENTER);
 
-        this.buttons = new ButtonPanel();
-        this.add(buttons, BorderLayout.SOUTH);
+        buttonPanel = new ButtonPanel();
+        buttons.forEach(listControl_button -> {
+            buttonPanel.addButton(listControl_button);
+            listControl_button.setControllableList(display);
+        });
+        this.add(buttonPanel, BorderLayout.SOUTH);
 
         if (addFilter) {
             filterPanel = new DynamicGUI_Filter(mClass, predicates, verbosity, this);
@@ -151,6 +161,15 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
     //------------------------------------------------------------------------------------------------------------------
     //################################################# Utility ########################################################
     //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Add a button to the panel
+     * @param button The button to add
+     */
+    public void addButton(ListControl_Button button) {
+        buttons.add(button);
+        createUIComponents();
+    }
 
     /**
      * @inheritDoc Bottom of the tree
@@ -175,6 +194,41 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
         display.update();
         if (filterPanel != null) {
             filterPanel.update();
+        }
+    }
+
+    public static class ListControl_Button extends JButton {
+
+        /**
+         * The list containing this button
+         */
+        private DynamicGUI_DisplayList coreList;
+
+        /**
+         * Default constructor
+         *
+         * @param name The name to put on the button
+         */
+        public ListControl_Button(String name) {
+            super(name);
+        }
+
+        /**
+         * Called when the button is added to a DynamicGUI_DisplayList to register the parent
+         *
+         * @param coreList The list to link to
+         */
+        public void setControllableList(DynamicGUI_DisplayList coreList) {
+            this.coreList = coreList;
+        }
+
+        /**
+         * Accessor to allow the button (and its action action) to get access to the list it is to act on
+         *
+         * @return The list containing this button
+         */
+        public DynamicGUI_DisplayList getCoreList() {
+            return coreList;
         }
     }
 }
