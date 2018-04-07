@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BaseSwing;
+package com.ntankard.DynamicGUI.Components.Object.Primitives.BaseSwing;
 
 import javax.swing.*;
 

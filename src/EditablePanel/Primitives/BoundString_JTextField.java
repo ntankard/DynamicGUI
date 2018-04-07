@@ -1,7 +1,7 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel.Primitives;
+package com.ntankard.DynamicGUI.Components.Object.Primitives;
 
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BaseSwing.Bound_JTextField;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BaseSwing.Bound_JTextField;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding.Bindable;
 
 /**
  * Created by Nicholas on 8/06/2016.

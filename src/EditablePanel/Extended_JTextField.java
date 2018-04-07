@@ -1,14 +1,11 @@
-package com.ntankard.DynamicGUI.Components.Object.Primitives.BaseSwing;
+package com.ntankard.DynamicGUI.Util.ExtendedSwing;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-/**
- * Created by Nicholas on 8/06/2016.
- */
-public abstract class Bound_JTextField extends JTextField implements Bound_JComponent, FocusListener {
+public class Extended_JTextField extends JTextField implements FocusListener {
 
     /**
      * The default color of the field
@@ -23,7 +20,7 @@ public abstract class Bound_JTextField extends JTextField implements Bound_JComp
     /**
      * Default constructor
      */
-    public Bound_JTextField() {
+    public Extended_JTextField() {
         this.addFocusListener(this);
         this.validColor = getBackground();
         this.invalidColor = Color.red;
@@ -41,11 +38,11 @@ public abstract class Bound_JTextField extends JTextField implements Bound_JComp
      */
     @Override
     public void focusLost(FocusEvent e) {
-        if (validateState()) {
+       /* if (validateState()) {
             setValid();
         } else {
             setInvalid();
-        }
+        }*/
     }
 
     /**
@@ -61,16 +58,6 @@ public abstract class Bound_JTextField extends JTextField implements Bound_JComp
     public void setInvalid() {
         setBackground(invalidColor);
     }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //################################# Util Bound_JComponent Implementation ########################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public JComponent getComponent() {
-        return this;
-    }
 }
+
+

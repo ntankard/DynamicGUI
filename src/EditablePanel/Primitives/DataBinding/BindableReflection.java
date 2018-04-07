@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding;
+package com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding;
 
 import java.lang.reflect.Method;
 

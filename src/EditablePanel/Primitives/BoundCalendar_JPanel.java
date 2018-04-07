@@ -1,9 +1,9 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel.Primitives;
+package com.ntankard.DynamicGUI.Components.Object.Primitives;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BaseSwing.Bound_JPanel;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BaseSwing.Bound_JPanel;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding.Bindable;
 
 import javax.swing.*;
 import java.awt.*;

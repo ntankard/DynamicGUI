@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel;
+package com.ntankard.DynamicGUI.Components.Object;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;

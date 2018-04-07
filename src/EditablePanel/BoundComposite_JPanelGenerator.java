@@ -1,14 +1,14 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel;
+package com.ntankard.DynamicGUI.Components.Object;
 
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BaseSwing.Bound_JComponent;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BoundCalendar_JPanel;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BoundDouble_JTextField;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BoundInteger_JTextField;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BoundString_JTextField;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.BindableReflection;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.ClassExtension.Member;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BaseSwing.Bound_JComponent;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BoundCalendar_JPanel;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BoundDouble_JTextField;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BoundInteger_JTextField;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BoundString_JTextField;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding.BindableReflection;
 
 import java.lang.reflect.Method;
 import java.util.GregorianCalendar;

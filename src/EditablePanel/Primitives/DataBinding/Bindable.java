@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding;
+package com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding;
 
 /**
  * A wrapper for an object to allow it to be maintained even if it is overridden

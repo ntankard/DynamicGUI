@@ -1,7 +1,7 @@
-package com.ntankard.DynamicGUI.Components.EditablePanel.Primitives;
+package com.ntankard.DynamicGUI.Components.Object.Primitives;
 
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.BaseSwing.Bound_JTextField;
-import com.ntankard.DynamicGUI.Components.EditablePanel.Primitives.DataBinding.Bindable;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.BaseSwing.Bound_JTextField;
+import com.ntankard.DynamicGUI.Components.Object.Primitives.DataBinding.Bindable;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
