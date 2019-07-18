@@ -66,7 +66,7 @@ public class DisplayList_JList<T> extends DynamicGUI_DisplayList<T> {
      * @inheritDoc
      */
     @Override
-    protected ListSelectionModel getListSelectionModel() {
+    public ListSelectionModel getListSelectionModel() {
         return structure_list.getSelectionModel();
     }
 

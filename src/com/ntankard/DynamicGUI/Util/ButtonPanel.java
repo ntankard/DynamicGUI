@@ -45,4 +45,9 @@ public class ButtonPanel extends JPanel {
             }
         }
     }
+
+    // @TODO replace this with a lambda
+    public ArrayList<JButton> getButtons(){
+        return buttons;
+    }
 }

@@ -149,7 +149,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
      * @inheritDoc
      */
     @Override
-    protected ListSelectionModel getListSelectionModel() {
+    public ListSelectionModel getListSelectionModel() {
         return structure_table.getSelectionModel();
     }
 

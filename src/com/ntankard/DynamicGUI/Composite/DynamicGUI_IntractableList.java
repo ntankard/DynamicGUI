@@ -115,7 +115,7 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
      * @param verbosity
      * @param master
      */
-    private DynamicGUI_IntractableList(List<T> base, MemberClass mClass, boolean isTable, boolean addFilter, int verbosity, Updatable master) {
+    protected DynamicGUI_IntractableList(List<T> base, MemberClass mClass, boolean isTable, boolean addFilter, int verbosity, Updatable master) {
         super(master);
         this.base = base;
         this.mClass = mClass;
@@ -156,6 +156,17 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
             filterPanel = new DynamicGUI_Filter(mClass, predicates, verbosity, this);
             this.add(filterPanel, BorderLayout.EAST);
         }
+
+        display.getListSelectionModel().addListSelectionListener(e -> {
+            List selected = display.getSelectedItems();
+
+            for (JButton button : buttonPanel.getButtons()) {
+                if(button instanceof  ListControl_Button){
+                    ListControl_Button lButton = (ListControl_Button)button;
+                    lButton.notifySelected(selected == null ? 0 : selected.size());
+                }
+            }
+        });
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -200,17 +211,40 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
     public static class ListControl_Button extends JButton {
 
         /**
+         * How many elements need to be selected for the button to be enabled
+         */
+        public enum EnableCondition {ANY, NONE, SINGLE, MULTI}
+
+        /**
+         * In what situation should the button be enabled?
+         */
+        private EnableCondition enableCondition;
+
+        /**
          * The list containing this button
          */
         private DynamicGUI_DisplayList coreList;
 
         /**
-         * Default constructor
+         * Constructor
          *
          * @param name The name to put on the button
          */
         public ListControl_Button(String name) {
+            this(name,EnableCondition.ANY,true);
+        }
+
+        /**
+         * Constructor
+         *
+         * @param name The name to put on the button
+         * @param enableCondition In what situation should the button be enabled?
+         * @param enableNow What is the default enable state of the button
+         */
+        public ListControl_Button(String name, EnableCondition enableCondition, boolean enableNow) {
             super(name);
+            this.setEnabled(enableNow);
+            this.enableCondition  = enableCondition;
         }
 
         /**
@@ -229,6 +263,40 @@ public class DynamicGUI_IntractableList<T> extends Updatable.UpdatableJPanel {
          */
         public DynamicGUI_DisplayList getCoreList() {
             return coreList;
+        }
+
+        //@TODO It might make more sense for this to become a generic "changeable button". Can be useful for error checking in the future
+        /**
+         * Tell the button that the List it is attached to has had a selection. Update the button based on this
+         * @param selected The number of elements selected
+         */
+        public void notifySelected(int selected){
+            switch (enableCondition){
+                case ANY:
+                    this.setEnabled(true);
+                    break;
+                case NONE:
+                    if(selected == 0){
+                        this.setEnabled(true);
+                    }else{
+                        this.setEnabled(false);
+                    }
+                    break;
+                case SINGLE:
+                    if(selected == 1){
+                        this.setEnabled(true);
+                    }else{
+                        this.setEnabled(false);
+                    }
+                    break;
+                case MULTI:
+                    if(selected >= 1){
+                        this.setEnabled(true);
+                    }else{
+                        this.setEnabled(false);
+                    }
+                    break;
+            }
         }
     }
 }

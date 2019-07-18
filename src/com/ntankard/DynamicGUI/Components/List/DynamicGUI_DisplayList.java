@@ -76,7 +76,7 @@ public abstract class DynamicGUI_DisplayList<T> extends Updatable.UpdatableJScro
      *
      * @return The ListSelectionModel used by the child
      */
-    protected abstract ListSelectionModel getListSelectionModel();
+    public abstract ListSelectionModel getListSelectionModel();
 
     /**
      * Get the element tired to a index in the list (usual the same but can be different if the display is sorted
