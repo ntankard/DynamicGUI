@@ -1,5 +1,7 @@
 package com.ntankard.ClassExtension;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +64,7 @@ public class MemberClass {
     public Method[] getDeclaredMethods() {
         List<Method> methods = new ArrayList<>();
         inheritedClasses.forEach(aClass -> methods.addAll(Arrays.asList(aClass.getDeclaredMethods())));
-        return methods.toArray(new Method[methods.size()]);
+        return methods.toArray(new Method[0]);
     }
 
     /**
@@ -95,7 +97,7 @@ public class MemberClass {
                 methods.add(m);
             }
         }
-        return methods.toArray(new Method[methods.size()]);
+        return methods.toArray(new Method[0]);
     }
 
     /**
@@ -104,29 +106,71 @@ public class MemberClass {
      * @return All members for this class and its included layers
      */
     public List<Member> getAllMembers() {
-        List<Member> fields = new ArrayList<>();
+        return getAllMembers_impl(null);
+    }
 
-        for (Method getter : getAccessors()) {
-            fields.add(new Member(this, getter));
-        }
-        return fields;
+    /**
+     * Get all members for this class and its included layers in an executable form
+     *
+     * @param o The object to bind to all returns to make them executable
+     * @return All members for this class and its included layers in an executable form
+     */
+    public List<ExecutableMember> getAllMembers(Object o) {
+        return getAllMembers_impl(o);
     }
 
     /**
      * Get all members for this class and its included layers at the listed verbosity level
+     *
      * @param verbosity The verbosity level to filter on
      * @return A list of all members for this class and its included layers at the listed verbosity level
      */
     public List<Member> getVerbosityMembers(int verbosity) {
-        List<Member> fields = new ArrayList<>();
-        for (Member f : getAllMembers()) {
+        return getVerbosityMembers_impl(verbosity, null);
+    }
+
+    /**
+     * Get all members for this class and its included layers at the listed verbosity level in an executable form
+     *
+     * @param verbosity The verbosity level to filter on
+     * @param o         The object to bind to all returns to make them executable
+     * @return A list of all members for this class and its included layers at the listed verbosity level in an executable form
+     */
+    public List<ExecutableMember> getVerbosityMembers(int verbosity, Object o) {
+        return getVerbosityMembers_impl(verbosity, o);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //################################################## Impl ##########################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    @SuppressWarnings("unchecked")
+    private <T extends Member> List<T> getVerbosityMembers_impl(int verbosity, Object o) {
+        List<T> fields = new ArrayList<>();
+        for (Member f : getAllMembers_impl(o)) {
             MemberProperties properties = f.getGetter().getAnnotation(MemberProperties.class);
             if (properties != null) {
                 if (properties.verbosityLevel() > verbosity) {
                     continue;
                 }
             }
-            fields.add(f);
+            fields.add((T) f);
+        }
+        return fields;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Member> List<T> getAllMembers_impl(Object o) {
+        List<T> fields = new ArrayList<>();
+
+        for (Method getter : getAccessors()) {
+            if (o == null) {
+                Member member = new Member(this, getter);
+                fields.add((T) member);
+            } else {
+                ExecutableMember member = (new ExecutableMember(this, getter, o));
+                fields.add((T) member);
+            }
         }
         return fields;
     }
