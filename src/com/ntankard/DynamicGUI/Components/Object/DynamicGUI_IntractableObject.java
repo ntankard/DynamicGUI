@@ -6,6 +6,7 @@ import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_Enum;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_List;
+import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_String;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -80,6 +81,8 @@ public class DynamicGUI_IntractableObject<T> extends Updatable.UpdatableJPanel {
             Class<?> theClass = member.getType();
             if (theClass.isEnum()) {
                 intractableObject = new IntractableObject_Enum(member, this);
+            } else if (theClass.equals(String.class)) {
+                intractableObject = new IntractableObject_String(member, this);
             } else {
                 List options = getSetterSource(member);
                 if (options != null) {

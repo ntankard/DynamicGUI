@@ -1,6 +1,8 @@
 package com.ntankard.DynamicGUI.Composite;
 
 import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
+import com.ntankard.DynamicGUI.Util.FrameWrapper;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import java.util.List;
@@ -61,12 +63,13 @@ public class DynamicGUI_EditableList<T> extends DynamicGUI_IntractableList<T> {
         });
 
         DynamicGUI_IntractableList.ListControl_Button editBtn = new DynamicGUI_IntractableList.ListControl_Button("Edit", ListControl_Button.EnableCondition.SINGLE,false);
-        newBtn.addActionListener(e -> {
+        editBtn.addActionListener(e -> {
             List selected = editBtn.getCoreList().getSelectedItems();
+            FrameWrapper.open("", new DynamicGUI_IntractableObject<>(selected.get(0), 0, this, null));
         });
 
         DynamicGUI_IntractableList.ListControl_Button deleteBtn = new DynamicGUI_IntractableList.ListControl_Button("Delete", ListControl_Button.EnableCondition.MULTI,false);
-        newBtn.addActionListener(e -> {
+        deleteBtn.addActionListener(e -> {
             List selected = deleteBtn.getCoreList().getSelectedItems();
         });
 
