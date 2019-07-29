@@ -1,5 +1,6 @@
 package com.ntankard.DynamicGUI.Components.Object;
 
+import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject;
@@ -72,17 +73,17 @@ public class DynamicGUI_IntractableObject<T> extends Updatable.UpdatableJPanel {
         componentC.fill = GridBagConstraints.BOTH;
 
         int index = 0;
-        for (Member member : mClass.getVerbosityMembers(verbosity)) {
+        for (ExecutableMember member : mClass.getVerbosityMembers(verbosity, baseInstance)) {
 
             // find a compatible filter type
             IntractableObject intractableObject;
             Class<?> theClass = member.getType();
             if (theClass.isEnum()) {
-                intractableObject = new IntractableObject_Enum(member, baseInstance, this);
+                intractableObject = new IntractableObject_Enum(member, this);
             } else {
                 List options = getSetterSource(member);
                 if (options != null) {
-                    intractableObject = new IntractableObject_List(member, baseInstance, options, this);
+                    intractableObject = new IntractableObject_List(member, options, this);
                 } else {
                     continue; // No supported panel available
                 }

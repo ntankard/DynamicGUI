@@ -1,45 +1,42 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
-public abstract class IntractableObject extends Updatable.UpdatableJPanel {
+public abstract class IntractableObject<T> extends Updatable.UpdatableJPanel {
 
     /**
      * The member connected to this panel
      */
-    private Member baseMember;
-
-    /**
-     * The instance of the baseMember to interact with
-     */
-    private Object baseInstance;
+    private ExecutableMember<T> baseMember;
 
     /**
      * Constructor
-     * @param baseMember   The member connected to this panel
-     * @param baseInstance The instance of the baseMember to interact with
-     * @param master       The top level GUI
+     *
+     * @param baseMember The member connected to this panel
+     * @param master     The top level GUI
      */
-    protected IntractableObject(Member baseMember, Object baseInstance, Updatable master) {
+    protected IntractableObject(ExecutableMember<T> baseMember, Updatable master) {
         super(master);
         this.baseMember = baseMember;
-        this.baseInstance = baseInstance;
     }
 
     /**
      * Get the member connected to this panel
+     *
      * @return The member connected to this panel
      */
-    public Member getBaseMember() {
+    public ExecutableMember<T> getBaseMember() {
         return baseMember;
     }
 
     /**
-     * Gets the instance of the baseMember to interact with
-     * @return The instance of the baseMember to interact with
+     * Update the GUI component from the bound data
      */
-    public Object getBaseInstance() {
-        return baseInstance;
-    }
+    abstract void load();
+
+    /**
+     * Transcribe the value of the GUI object to the bound data
+     */
+    abstract void save();
 }

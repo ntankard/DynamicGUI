@@ -1,16 +1,15 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class IntractableObject_List extends IntractableObject implements ItemListener {
+public class IntractableObject_List extends IntractableObject<Object> implements ItemListener {
 
     /**
      * The main combo box
@@ -25,8 +24,8 @@ public class IntractableObject_List extends IntractableObject implements ItemLis
     /**
      * {@inheritDoc}
      */
-    public IntractableObject_List(Member member, Object toExecute, List options, Updatable master) {
-        super(member, toExecute, master);
+    public IntractableObject_List(ExecutableMember<Object> member, List options, Updatable master) {
+        super(member, master);
         this.options = options;
         createUIComponents();
         update();
@@ -50,24 +49,39 @@ public class IntractableObject_List extends IntractableObject implements ItemLis
      * {@inheritDoc}
      */
     @Override
-    public void update() {
-        try {
-            Object current = getBaseMember().getGetter().invoke(getBaseInstance());
-            combo.removeItemListener(this);
-            combo.setSelectedItem(current);
-            combo.addItemListener(this);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+    public void itemStateChanged(ItemEvent e) {
+        save();
+        notifyUpdate();
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void itemStateChanged(ItemEvent e) {
-        try {
-            getBaseMember().getSetter().invoke(getBaseInstance(), combo.getSelectedItem());
-        } catch (IllegalAccessException | InvocationTargetException e1) {
-            throw new RuntimeException(e1);
-        }
-        notifyUpdate();
+    void load() {
+        Object current = getBaseMember().get();
+        combo.removeItemListener(this);
+        combo.setSelectedItem(current);
+        combo.addItemListener(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void save() {
+        getBaseMember().set(combo.getSelectedItem());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() {
+        load();
     }
 }

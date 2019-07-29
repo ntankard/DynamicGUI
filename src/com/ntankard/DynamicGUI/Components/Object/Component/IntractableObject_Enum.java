@@ -1,15 +1,14 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 
-public class IntractableObject_Enum extends IntractableObject implements ListSelectionListener {
+public class IntractableObject_Enum extends IntractableObject<Enum> implements ListSelectionListener {
 
     /**
      * The main list
@@ -19,8 +18,8 @@ public class IntractableObject_Enum extends IntractableObject implements ListSel
     /**
      * {@inheritDoc}
      */
-    public IntractableObject_Enum(Member member, Object toExecute, Updatable master) {
-        super(member, toExecute, master);
+    public IntractableObject_Enum(ExecutableMember<Enum> member, Updatable master) {
+        super(member, master);
         createUIComponents();
         update();
     }
@@ -49,27 +48,39 @@ public class IntractableObject_Enum extends IntractableObject implements ListSel
      * {@inheritDoc}
      */
     @Override
-    public void update() {
-        try {
-            Enum current = (Enum) getBaseMember().getGetter().invoke(getBaseInstance());
-            list.removeListSelectionListener(this);
-            list.setSelectedValue(current, true);
-            list.addListSelectionListener(this);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+    public void valueChanged(ListSelectionEvent e) {
+        save();
+        notifyUpdate();
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void load() {
+        Enum current = getBaseMember().get();
+        list.removeListSelectionListener(this);
+        list.setSelectedValue(current, true);
+        list.addListSelectionListener(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void valueChanged(ListSelectionEvent e) {
-        try {
-            getBaseMember().getSetter().invoke(getBaseInstance(), list.getSelectedValue());
-        } catch (IllegalAccessException | InvocationTargetException e1) {
-            throw new RuntimeException(e1);
-        }
-        notifyUpdate();
+    void save() {
+        getBaseMember().set((Enum)list.getSelectedValue());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void update() {
+        load();
     }
 }
