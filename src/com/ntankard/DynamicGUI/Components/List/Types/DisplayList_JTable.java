@@ -1,7 +1,8 @@
-package com.ntankard.DynamicGUI.Components.List;
+package com.ntankard.DynamicGUI.Components.List.Types;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
+public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
 
     /**
      * GUI Objects
@@ -45,9 +46,13 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param objects
+     * Constructor
+     *
+     * @param objects   The list of objects to display
+     * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * @param master    The parent of this object to be notified if data changes
      */
-    protected DisplayList_JTable(List<T> objects, int verbosity, Updatable master) {
+    public DisplayList_JTable(List<T> objects, int verbosity, Updatable master) {
         super(objects, master);
         this.verbosity = verbosity;
         createUIComponents();
@@ -103,7 +108,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
             } else {
                 toAdd = data.toString();
             }
-            
+
             rowString.add(toAdd);
         }
 
@@ -117,6 +122,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList<T> {
     /**
      * @inheritDoc Bottom of the tree
      */
+    @Override
     public void update() {
         try {
             model = new DefaultTableModel();

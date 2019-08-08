@@ -5,15 +5,9 @@ import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class IntractableObject_String extends IntractableObject<String> {
-
-    /**
-     * The displayed value
-     */
-    private String value = "";
 
     /**
      * The main text box
@@ -21,10 +15,14 @@ public class IntractableObject_String extends IntractableObject<String> {
     private JTextField value_txt;
 
     /**
-     * {@inheritDoc}
+     * Constructor
+     *
+     * @param baseMember   The member that this panel is built around
+     * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
+     * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_String(ExecutableMember<String> member, Updatable master) {
-        super(member, master);
+    public IntractableObject_String(ExecutableMember<String> baseMember, boolean saveOnUpdate, Updatable master) {
+        super(baseMember, saveOnUpdate, master);
         createUIComponents();
         update();
     }
@@ -32,30 +30,20 @@ public class IntractableObject_String extends IntractableObject<String> {
     /**
      * Create the GUI components
      */
-    private void createUIComponents() {
-        this.setLayout(new GridBagLayout());
+    protected void createUIComponents() {
+        this.removeAll();
         this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 5, 5);
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 1;
+        this.setLayout(new BorderLayout());
 
         value_txt = new JTextField();
+        value_txt.setEditable(getBaseMember().canEdit());
         value_txt.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                String newValue = value_txt.getText();
-                if (!value.equals(newValue)) {
-                    value = newValue;
-                    notifyUpdate();
-                }
+                valueChanged(value_txt.getText());
             }
         });
-        c.gridwidth = 1;
-        this.add(value_txt, c);
 
-        value_txt.setEditable(getBaseMember().canEdit());
-        load();
+        this.add(value_txt, BorderLayout.CENTER);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -66,24 +54,7 @@ public class IntractableObject_String extends IntractableObject<String> {
      * {@inheritDoc}
      */
     @Override
-    void load() {
-        String value = getBaseMember().get();
-        value_txt.setText(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void save() {
-        getBaseMember().set(value_txt.getText());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void update() {
-        load();
+    protected void load() {
+        value_txt.setText(getBaseMember().get());
     }
 }

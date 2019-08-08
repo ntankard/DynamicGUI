@@ -20,20 +20,23 @@ public class MemberFilter_Enum extends MemberFilter {
     private ArrayList<Object> selected = new ArrayList<>();
 
     /**
-     * {@inheritDoc}
+     * Constructor
+     *
+     * @param baseMember The member connected to this panel
+     * @param master     The top level GUI
      */
     public MemberFilter_Enum(Member baseMember, Updatable master) {
-        super(baseMember,master);
+        super(baseMember, master);
         createUIComponents();
-        update();
     }
 
     /**
      * Create the GUI components
      */
     private void createUIComponents() {
-        this.setLayout(new BorderLayout());
+        this.removeAll();
         this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setLayout(new BorderLayout());
 
         Object[] possibleValues = getBaseMember().getType().getEnumConstants();
 
@@ -42,7 +45,7 @@ public class MemberFilter_Enum extends MemberFilter {
         ListSelectionModel listSelectionModel = list.getSelectionModel();
         listSelectionModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         listSelectionModel.addListSelectionListener(e -> {
-            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
             selected.clear();
             if (!lsm.isSelectionEmpty()) {
                 // Find out which indexes are selected.
@@ -56,10 +59,14 @@ public class MemberFilter_Enum extends MemberFilter {
             }
             notifyUpdate();
         });
-
         JScrollPane listPane = new JScrollPane(list);
+
         this.add(listPane, BorderLayout.CENTER);
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}

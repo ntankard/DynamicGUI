@@ -21,20 +21,23 @@ public class MemberFilter_Double extends MemberFilter {
     private Double value = null;
 
     /**
-     * {@inheritDoc}
+     * Constructor
+     *
+     * @param baseMember The member connected to this panel
+     * @param master     The top level GUI
      */
     public MemberFilter_Double(Member baseMember, Updatable master) {
         super(baseMember, master);
         createUIComponents();
-        update();
     }
 
     /**
      * Create the GUI components
      */
     private void createUIComponents() {
-        this.setLayout(new BorderLayout());
+        this.removeAll();
         this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setLayout(new BorderLayout());
 
         JTextField value_txt = new JTextField();
         value_txt.addKeyListener(new KeyAdapter() {
@@ -45,15 +48,21 @@ public class MemberFilter_Double extends MemberFilter {
                     value = Double.parseDouble(value_txt.getText());
                 } catch (Exception ignored) {
                     value = null;
+                    value_txt.setText("");
                 }
 
-                if (old != value) {
+                if ((old == null && value != null) || (old != null && !old.equals(value))) {
                     notifyUpdate();
                 }
             }
         });
+
         this.add(value_txt, BorderLayout.CENTER);
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}

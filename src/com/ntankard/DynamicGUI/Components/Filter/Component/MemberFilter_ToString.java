@@ -11,11 +11,18 @@ import java.lang.reflect.InvocationTargetException;
 public class MemberFilter_ToString extends MemberFilter_String {
 
     /**
-     * {@inheritDoc}
+     * Constructor
+     *
+     * @param baseMember The member connected to this panel
+     * @param master     The top level GUI
      */
     public MemberFilter_ToString(Member baseMember, Updatable master) {
         super(baseMember, master);
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -23,7 +30,7 @@ public class MemberFilter_ToString extends MemberFilter_String {
     @Override
     protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
         Object toRead = getBaseMember().getGetter().invoke(o);
-        if(toRead != null) {
+        if (toRead != null) {
             return getBaseMember().getGetter().invoke(o).toString();
         }
         return null;

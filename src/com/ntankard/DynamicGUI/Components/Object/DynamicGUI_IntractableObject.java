@@ -1,179 +1,77 @@
 package com.ntankard.DynamicGUI.Components.Object;
 
-import com.ntankard.ClassExtension.ExecutableMember;
-import com.ntankard.ClassExtension.Member;
-import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_Enum;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_List;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_String;
+import com.ntankard.DynamicGUI.Util.FrameWrapper;
+import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
-import java.awt.*;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-public class DynamicGUI_IntractableObject<T> extends Updatable.UpdatableJPanel {
+public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_IntractableObject_Impl, ControllablePanel> {
 
-    /**
-     * The instance to interact with
-     */
-    private T baseInstance;
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################ Master Factories ####################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * The kind of object used to generate this panel
+     * Create a new DynamicGUI_IntractableObject_Impl with controls if needed
+     *
+     * @param baseInstance The instance to interact with
+     * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * @param saveOnUpdate Should changes occurs straight away or after save is pressed?
+     * @param master       The top level GUI
+     * @param sources      Sources of data that can be set for various objects
+     * @param <T>          The type of the base instance
+     * @return A ControllablePanel containing a DynamicGUI_IntractableObject_Impl
      */
-    private MemberClass mClass;
+    public static <T> DynamicGUI_IntractableObject newIntractableObjectPanel(T baseInstance, int verbosity, boolean saveOnUpdate, Updatable master, Object... sources) {
+        DynamicGUI_IntractableObject container = new DynamicGUI_IntractableObject(master);
+
+        DynamicGUI_IntractableObject_Impl main = new DynamicGUI_IntractableObject_Impl<>(baseInstance, verbosity, saveOnUpdate, master, sources);
+        container.setMainPanel(main);
+
+        if (!saveOnUpdate) {
+            container.addControlButtons();
+        }
+
+        return container;
+    }
 
     /**
-     * What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * Open a frame containing a new DynamicGUI_IntractableObject_Impl with controls
+     *
+     * @param baseInstance The instance to interact with
+     * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * @param sources      Sources of data that can be set for various objects
+     * @param master       The top level GUI
+     * @param <T>          The type of the base instance
      */
-    private int verbosity;
+    public static <T> void openIntractableObjectFrame(T baseInstance, int verbosity, Updatable master, Object... sources) {
+        FrameWrapper.open(baseInstance.getClass().getSimpleName(), newIntractableObjectPanel(baseInstance, verbosity, false, master, sources));
+    }
 
-    /**
-     * Sources of data that can be set for various objects
-     */
-    private Object[] sources;
-
-    /**
-     * All the panels generated from the object
-     */
-    private List<IntractableObject> intractableObjects = new ArrayList<>();
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################### Core Object ######################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * Constructor
      *
-     * @param baseInstance The instance to interact with
-     * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param master       The top level GUI
-     * @param sources      Sources of data that can be set for various objects
+     * @param master The parent of this object to be notified if data changes
      */
-    public DynamicGUI_IntractableObject(T baseInstance, int verbosity, Updatable master, Object... sources) {
+    private DynamicGUI_IntractableObject(Updatable master) {
         super(master);
-        this.baseInstance = baseInstance;
-        this.verbosity = verbosity;
-        this.mClass = new MemberClass(baseInstance.getClass());
-        this.sources = sources;
-
-        createUIComponents();
-        update();
     }
 
     /**
-     * Create the GUI components
+     * Add a button panel with the save and cancel button
      */
-    private void createUIComponents() {
-        this.removeAll();
-        this.setLayout(new GridBagLayout());
+    private void addControlButtons() {
+        JButton saveBtn = new JButton("Save");
+        saveBtn.addActionListener(e -> getMainPanel().execute());
+        addButton(saveBtn);
 
-        GridBagConstraints componentC = new GridBagConstraints();
-        componentC.weightx = 1;
-        componentC.fill = GridBagConstraints.BOTH;
-
-        int index = 0;
-        for (ExecutableMember member : mClass.getVerbosityMembers(verbosity, baseInstance)) {
-
-            // find a compatible filter type
-            IntractableObject intractableObject;
-            Class<?> theClass = member.getType();
-            if (theClass.isEnum()) {
-                intractableObject = new IntractableObject_Enum(member, this);
-            } else if (theClass.equals(String.class)) {
-                intractableObject = new IntractableObject_String(member, this);
-            } else {
-                List options = getSetterSource(member);
-                if (options != null) {
-                    intractableObject = new IntractableObject_List(member, options, this);
-                } else {
-                    continue; // No supported panel available
-                }
-            }
-            intractableObjects.add(intractableObject);
-
-            // add the new filter component
-            componentC.gridy = index;
-            this.add(intractableObject, componentC);
-            index++;
-        }
-
-        // add final spacer to ensure the content stays at the top of the panel
-        GridBagConstraints spacerC = new GridBagConstraints();
-        spacerC.weighty = 1;
-        spacerC.gridy = index;
-        this.add(new JSeparator(), spacerC);
-    }
-
-    /**
-     * Try to find a source of data for this object
-     *
-     * @param member The member to attached the data to
-     * @return A source of data for the member
-     */
-    private List getSetterSource(Member member) {
-        // is there a setter?
-        Method setter = member.getSetter();
-        if (setter == null) {
-            return null;
-        }
-
-        // is a setter source available?
-        SetterProperties properties = member.getSetter().getAnnotation(SetterProperties.class);
-        String sourceMethod = properties != null ? properties.sourceMethod() : null;
-        if (sourceMethod == null || sourceMethod.isEmpty()) {
-            return null;
-        }
-
-        // search all possible sources of data for one that has the needed getter
-        for (Object source : sources)
-            try {
-                // get the source data (an exception will be thrown if not available)
-                Method sourceGetter = source.getClass().getDeclaredMethod(sourceMethod);
-                Object sourceData = sourceGetter.invoke(source);
-
-                // is it a <String,Object> map
-                if (sourceData instanceof Map) {
-
-                    // is any data available
-                    Map mapSourceData = (Map) sourceData;
-                    if (mapSourceData.isEmpty()) {
-                        continue;
-                    }
-
-                    // is the value the same as the value we are expecting to set
-                    if (!mapSourceData.values().toArray()[0].getClass().equals(member.getSetter().getParameterTypes()[0])) {
-                        continue;
-                    }
-
-                    return new ArrayList<>(mapSourceData.values());
-
-                } else if (sourceData instanceof List) {
-
-                    // is any data available
-                    List listSourceData = (List) sourceData;
-                    if (listSourceData.isEmpty()) {
-                        continue;
-                    }
-
-                    // is the value the same as the value we are expecting to set
-                    if (!listSourceData.get(0).getClass().equals(member.getSetter().getParameterTypes()[0])) {
-                        continue;
-                    }
-
-                    return listSourceData;
-                }
-            } catch (Exception ignored) {
-            }
-        return null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void update() {
-        intractableObjects.forEach(Updatable::update);
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.addActionListener(e -> getMainPanel().discard());
+        addButton(cancelBtn);
     }
 }

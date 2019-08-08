@@ -31,20 +31,37 @@ public class MemberFilter_String extends MemberFilter {
     private boolean caseSensitive = false;
 
     /**
-     * {@inheritDoc}
+     * Constructor
+     *
+     * @param baseMember The member connected to this panel
+     * @param master     The top level GUI
      */
     public MemberFilter_String(Member baseMember, Updatable master) {
-        super(baseMember,master);
+        super(baseMember, master);
         createUIComponents();
         update();
+    }
+
+    /**
+     * Get the value of the object to compare to
+     *
+     * @param o The object to test
+     * @return The invoked value
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
+        return (String) getBaseMember().getGetter().invoke(o);
     }
 
     /**
      * Create the GUI components
      */
     private void createUIComponents() {
-        this.setLayout(new GridBagLayout());
+        this.removeAll();
         this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setLayout(new GridBagLayout());
+
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.BOTH;
@@ -67,7 +84,7 @@ public class MemberFilter_String extends MemberFilter {
             boolean newCaseSensitive = caseSensitive_chb.isSelected();
             if (caseSensitive != newCaseSensitive) {
                 caseSensitive = newCaseSensitive;
-                if(!value.isEmpty()) {
+                if (!value.isEmpty()) {
                     notifyUpdate();
                 }
             }
@@ -81,13 +98,17 @@ public class MemberFilter_String extends MemberFilter {
             boolean newExactMatch = exactMatch_chb.isSelected();
             if (exactMatch != newExactMatch) {
                 exactMatch = newExactMatch;
-                if(!value.isEmpty()) {
+                if (!value.isEmpty()) {
                     notifyUpdate();
                 }
             }
         });
         this.add(exactMatch_chb, c);
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Extended methods ###################################################
+    //------------------------------------------------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -106,12 +127,12 @@ public class MemberFilter_String extends MemberFilter {
 
                 String expected = value;
                 String actual = readValue;
-                if(!caseSensitive){
+                if (!caseSensitive) {
                     expected = value.toUpperCase();
                     actual = readValue.toUpperCase();
                 }
 
-                if(!exactMatch) {
+                if (!exactMatch) {
                     return actual.contains(expected);
                 }
                 return actual.equals(expected);
@@ -119,16 +140,5 @@ public class MemberFilter_String extends MemberFilter {
                 throw new RuntimeException(e);
             }
         };
-    }
-
-    /**
-     * Get the value of the object to compare to
-     * @param o The object to test
-     * @return The invoked value
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     */
-    protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
-        return (String) getBaseMember().getGetter().invoke(o);
     }
 }

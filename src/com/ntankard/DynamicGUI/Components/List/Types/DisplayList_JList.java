@@ -1,5 +1,6 @@
-package com.ntankard.DynamicGUI.Components.List;
+package com.ntankard.DynamicGUI.Components.List.Types;
 
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by Nicholas on 26/06/2016.
  */
-public class DisplayList_JList<T> extends DynamicGUI_DisplayList<T> {
+public class DisplayList_JList<T> extends DynamicGUI_DisplayList_Impl<T> {
 
     /**
      * GUI Objects
@@ -25,9 +26,12 @@ public class DisplayList_JList<T> extends DynamicGUI_DisplayList<T> {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param objects
+     * Constructor
+     *
+     * @param objects The list of objects to display
+     * @param master  The parent of this object to be notified if data changes
      */
-    protected DisplayList_JList(List<T> objects, Updatable master) {
+    public DisplayList_JList(List<T> objects, Updatable master) {
         super(objects, master);
         createUIComponents();
         update();
@@ -49,6 +53,7 @@ public class DisplayList_JList<T> extends DynamicGUI_DisplayList<T> {
     /**
      * @inheritDoc Bottom of the tree
      */
+    @Override
     public void update() {
         model.clear();
 
