@@ -11,6 +11,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -93,6 +94,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      */
     private void addRow(Object rowObject) throws InvocationTargetException, IllegalAccessException {
         ArrayList<String> rowString = new ArrayList<>();
+        DecimalFormat df2 = new DecimalFormat("#.##");
 
         // Add each column
         for (Member member : members) {
@@ -105,6 +107,8 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
             } else if (data instanceof Calendar) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
                 toAdd = dateFormat.format(((Calendar) member.getGetter().invoke(rowObject)).getTime());
+            } else if (data instanceof Double){
+                toAdd = df2.format(data);
             } else {
                 toAdd = data.toString();
             }
