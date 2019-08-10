@@ -9,7 +9,7 @@ import com.ntankard.DynamicGUI.Util.Updatable;
 import java.util.List;
 import java.util.function.Predicate;
 
-class DynamicGUI_Filter_Impl extends PanelContainer {
+class DynamicGUI_Filter_Impl<T> extends PanelContainer {
 
     /**
      * The kind of object used to generate this panel
@@ -19,7 +19,7 @@ class DynamicGUI_Filter_Impl extends PanelContainer {
     /**
      * All the predicates for each of the individual controls
      */
-    private List<Predicate> predicates;
+    private List<Predicate<T>> predicates;
 
     /**
      * What level of verbosity should be shown? (compared against MemberProperties verbosity)
@@ -34,7 +34,7 @@ class DynamicGUI_Filter_Impl extends PanelContainer {
      * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master     The parent of this object to be notified if data changes
      */
-    DynamicGUI_Filter_Impl(MemberClass mClass, List<Predicate> predicates, int verbosity, Updatable master) {
+    DynamicGUI_Filter_Impl(MemberClass mClass, List<Predicate<T>> predicates, int verbosity, Updatable master) {
         super(master);
         this.mClass = mClass;
         this.predicates = predicates;

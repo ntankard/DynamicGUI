@@ -21,10 +21,10 @@ public class DynamicGUI_Filter extends ControllablePanel<DynamicGUI_Filter_Impl,
      * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master     The parent of this object to be notified if data changes
      */
-    public static DynamicGUI_Filter newFilterPanel(MemberClass mClass, List<Predicate> predicates, int verbosity, Updatable master) {
+    public static <T> DynamicGUI_Filter newFilterPanel(MemberClass mClass, List<Predicate<T>> predicates, int verbosity, Updatable master) {
         DynamicGUI_Filter container = new DynamicGUI_Filter(master);
 
-        DynamicGUI_Filter_Impl main = new DynamicGUI_Filter_Impl(mClass, predicates, verbosity, container);
+        DynamicGUI_Filter_Impl<T> main = new DynamicGUI_Filter_Impl<>(mClass, predicates, verbosity, container);
         container.setMainPanel(main);
 
         return container;

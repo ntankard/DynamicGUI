@@ -3,10 +3,7 @@ package com.ntankard.DynamicGUI.Components.Object;
 import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_Enum;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_List;
-import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_String;
+import com.ntankard.DynamicGUI.Components.Object.Component.*;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.PanelContainer;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -169,6 +166,8 @@ class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                 intractableObject = new IntractableObject_Enum(member, saveOnUpdate, this);
             } else if (theClass.equals(String.class)) {
                 intractableObject = new IntractableObject_String(member, saveOnUpdate, this);
+            }else if (theClass.equals(Double.class)){
+                intractableObject = new IntractableObject_Double(member, saveOnUpdate, this);
             } else {
                 List options = getSetterSource(member);
                 if (options != null) {

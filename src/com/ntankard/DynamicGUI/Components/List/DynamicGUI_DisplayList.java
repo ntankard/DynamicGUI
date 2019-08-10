@@ -19,50 +19,63 @@ import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayList_Impl, DynamicGUI_Filter> {
 
-    public static <T> DynamicGUI_DisplayList newIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableTable(objects, mClass, false, false, ALWAYS_DISPLAY, master);
+    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
+        return newIntractableTable(objects, mClass, false, false, ALWAYS_DISPLAY, null, master);
     }
 
-    public static <T> DynamicGUI_DisplayList newIntractableTable(List<T> objects, MemberClass mClass, int verbosity, Updatable master) {
-        return newIntractableTable(objects, mClass, false, false, verbosity, master);
+    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, int verbosity, Updatable master) {
+        return newIntractableTable(objects, mClass, false, false, verbosity, null, master);
     }
 
-    public static <T> DynamicGUI_DisplayList newIntractableTable(List<T> objects, MemberClass mClass, boolean addFilter, int verbosity, Updatable master) {
-        return newIntractableTable(objects, mClass, addFilter, false, verbosity, master);
+    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, boolean addFilter, int verbosity, Updatable master) {
+        return newIntractableTable(objects, mClass, addFilter, false, verbosity, null, master);
     }
 
-    public static <T> DynamicGUI_DisplayList newEditIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableTable(objects, mClass, false, true, ALWAYS_DISPLAY, master, null);
+    public static <T> DynamicGUI_DisplayList<T> newEditIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
+        return newIntractableTable(objects, mClass, false, true, ALWAYS_DISPLAY, null, master);
     }
 
-    public static <T> DynamicGUI_DisplayList newIntractableList(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableList(objects, mClass, false, ALWAYS_DISPLAY, master);
+    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> objects, MemberClass mClass, Updatable master) {
+        return newIntractableList(objects, mClass, false, ALWAYS_DISPLAY, null, master);
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //################################################ Factories #######################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public static <T> DynamicGUI_DisplayList newIntractableTable(List<T> objects, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, Updatable master, Object... sources) {
-        List predicates = new ArrayList<>();
-        List filtered = new ArrayList<>();
+    /**
+     * Create a new intractable table
+     *
+     * @param base       The master content of the list
+     * @param mClass     The kind of object used to generate this panel
+     * @param addFilter  Should a filler panel be added?
+     * @param addControl Should the New, Edit, Delete button be added?
+     * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * @param controller The object used to generate new objects and delete others
+     * @param master     The parent of this object to be notified if data changes
+     * @param sources    The object used to get values for a selectable list
+     * @param <T>        THe type of objects to display
+     * @return A new intractable table
+     */
+    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> base, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, ElementController<T> controller, Updatable master, Object... sources) {
+        List<Predicate<T>> predicates = new ArrayList<>();
+        List<T> filtered = new ArrayList<>();
 
-        DynamicGUI_DisplayList container = new DynamicGUI_DisplayList(objects, filtered, predicates, master);
+        DynamicGUI_DisplayList<T> container = new DynamicGUI_DisplayList<>(base, filtered, predicates, master);
 
         DynamicGUI_DisplayList_Impl main;
         if (addFilter) {
-            main = new DisplayList_JTable(filtered, verbosity, container);
+            main = new DisplayList_JTable<T>(filtered, verbosity, container);
             DynamicGUI_Filter control = DynamicGUI_Filter.newFilterPanel(mClass, predicates, verbosity, container);
             container.setMainPanel(main);
             container.setControlPanel(control);
         } else {
-            main = new DisplayList_JTable(objects, verbosity, container);
+            main = new DisplayList_JTable<>(base, verbosity, container);
             container.setMainPanel(main);
         }
-        // container.setMainPanel(main);
 
         if (addControl) {
-            container.addControlButtons(sources);
+            container.addControlButtons(sources, controller);
         }
 
         container.update();
@@ -70,17 +83,30 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         return container;
     }
 
-    public static <T> DynamicGUI_DisplayList newIntractableList(List<T> objects, MemberClass mClass, boolean addControl, int verbosity, Updatable master, Object... sources) {
-        List predicates = new ArrayList<>();
-        List filtered = new ArrayList<>();
+    /**
+     * Create a new intractable list
+     *
+     * @param base       The master content of the list
+     * @param mClass     The kind of object used to generate this panel
+     * @param addControl Should the New, Edit, Delete button be added?
+     * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * @param controller The object used to generate new objects and delete others
+     * @param master     The parent of this object to be notified if data changes
+     * @param sources    The object used to get values for a selectable list
+     * @param <T>        THe type of objects to display
+     * @return A new intractable table
+     */
+    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> base, MemberClass mClass, boolean addControl, int verbosity, ElementController<T> controller, Updatable master, Object... sources) {
+        List<Predicate<T>> predicates = new ArrayList<>();
+        List<T> filtered = new ArrayList<>();
 
-        DynamicGUI_DisplayList container = new DynamicGUI_DisplayList(objects, filtered, predicates, master);
+        DynamicGUI_DisplayList<T> container = new DynamicGUI_DisplayList<>(base, filtered, predicates, master);
 
-        DynamicGUI_DisplayList_Impl<T> main = new DisplayList_JTable<>(objects, verbosity, container);
+        DynamicGUI_DisplayList_Impl<T> main = new DisplayList_JTable<>(base, verbosity, container);
         container.setMainPanel(main);
 
         if (addControl) {
-            container.addControlButtons(sources);
+            container.addControlButtons(sources, controller);
         }
 
         container.update();
@@ -108,9 +134,10 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     private List<Predicate<T>> predicates;
 
     /**
-     * Constructor
-     *
-     * @param master The parent of this object to be notified if data changes
+     * @param base       The master content of the list
+     * @param filtered   The version of the list with the fillers applied
+     * @param predicates All the predicates for each of the individual controls
+     * @param master     The parent of this object to be notified if data changes
      */
     private DynamicGUI_DisplayList(List<T> base, List<T> filtered, List<Predicate<T>> predicates, Updatable master) {
         super(master);
@@ -124,25 +151,37 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      *
      * @param sources The source data needed for a child object
      */
-    private void addControlButtons(Object[] sources) {
-        ListControl_Button newBtn = new ListControl_Button<>("New", this);
-        newBtn.addActionListener(e -> {
-            List selected = getMainPanel().getSelectedItems();
-        });
-        addButton(newBtn);
+    private void addControlButtons(Object[] sources, ElementController<T> controller) {
+        if (controller != null) {
+            ListControl_Button newBtn = new ListControl_Button<>("New", this);
+            newBtn.addActionListener(e -> {
+                T newObj = controller.newElement();
+                if (DynamicGUI_IntractableObject.openIntractableObjectDialog(newObj, 0, this, sources)) {
+                    controller.addElement(newObj);
+                }
+                notifyUpdate();
+            });
+            addButton(newBtn);
+        }
 
         ListControl_Button editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
         editBtn.addActionListener(e -> {
             List selected = getMainPanel().getSelectedItems();
-            DynamicGUI_IntractableObject.openIntractableObjectFrame(selected.get(0), 0, this, sources);
+            DynamicGUI_IntractableObject.openIntractableObjectDialog(selected.get(0), 0, this, sources);
         });
         addButton(editBtn);
 
-        ListControl_Button deleteBtn = new ListControl_Button<>("Delete", this, ListControl_Button.EnableCondition.MULTI, false);
-        deleteBtn.addActionListener(e -> {
-            List selected = getMainPanel().getSelectedItems();
-        });
-        addButton(deleteBtn);
+        if (controller != null) {
+            ListControl_Button deleteBtn = new ListControl_Button<>("Delete", this, ListControl_Button.EnableCondition.MULTI, false);
+            deleteBtn.addActionListener(e -> {
+                List<T> selected = getMainPanel().getSelectedItems();
+                for (T del : selected) {
+                    controller.deleteElement(del);
+                }
+                notifyUpdate();
+            });
+            addButton(deleteBtn);
+        }
     }
 
     /**
@@ -174,6 +213,34 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     //------------------------------------------------------------------------------------------------------------------
     //############################################ Interface Objects ###################################################
     //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Interface to interface with objects in the database
+     *
+     * @param <T>
+     */
+    public interface ElementController<T> {
+        /**
+         * Remove this item from the database
+         *
+         * @param toDel The item to delete
+         */
+        void deleteElement(T toDel);
+
+        /**
+         * Get a valid new object of T type but don't add it to the database
+         *
+         * @return The new value
+         */
+        T newElement();
+
+        /**
+         * Add an element to the database. This will always be a modified version of the object received from newElement
+         *
+         * @param newObj The object to add
+         */
+        void addElement(T newObj);
+    }
 
     public static class ListControl_Button<T> extends JButton implements ListSelectionListener {
 
