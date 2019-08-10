@@ -46,8 +46,13 @@ public class IntractableObject_Double extends IntractableObject<Double> {
         value_txt.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
                 try {
-                    Double value = Double.parseDouble(value_txt.getText());
-                    currentValue = value;
+                    Double value;
+                    if(value_txt.getText().equals("-") || value_txt.getText().equals("")){
+                        value = 0.0;
+                    }else{
+                        value = Double.parseDouble(value_txt.getText());
+                        currentValue = value;
+                    }
                     valueChanged(currentValue);
                 } catch (Exception ignored) {
                     value_txt.setText(currentValue.toString());
@@ -71,7 +76,11 @@ public class IntractableObject_Double extends IntractableObject<Double> {
         Double value = getBaseMember().get();
         if (value != null) {
             currentValue = getBaseMember().get();
-            value_txt.setText(currentValue.toString());
+            if(value == 0.0){
+                value_txt.setText("");
+            }else {
+                value_txt.setText(currentValue.toString());
+            }
         } else {
             value_txt.setText("");
         }

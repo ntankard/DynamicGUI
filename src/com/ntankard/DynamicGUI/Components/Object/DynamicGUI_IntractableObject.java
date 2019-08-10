@@ -47,6 +47,7 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
 
         dialog.setContentPane(panel);
         dialog.setModal(true); // block until complete
+        dialog.getRootPane().setDefaultButton(panel.getDefaultButton());
         dialog.pack();
         dialog.setVisible(true);
         return change[0];
@@ -86,6 +87,11 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
     //------------------------------------------------------------------------------------------------------------------
 
     /**
+     * The save button, stored because it acts as the default button
+     */
+    private JButton saveBtn;
+
+    /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
@@ -98,7 +104,7 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
      * Add a button panel with the save and cancel button
      */
     private void addControlButtons(FinalizeNotifier notifier) {
-        JButton saveBtn = new JButton("Save");
+        saveBtn = new JButton("Save");
         saveBtn.addActionListener(e -> {
             getMainPanel().execute();
             if (notifier != null) {
@@ -115,6 +121,14 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
             }
         });
         addButton(cancelBtn);
+    }
+
+    /**
+     * Get the button to be called when the user hits enter on a dialog
+     * @return The button to be called when the user hits enter on a dialog
+     */
+    public JButton getDefaultButton(){
+        return saveBtn;
     }
 
     //------------------------------------------------------------------------------------------------------------------
