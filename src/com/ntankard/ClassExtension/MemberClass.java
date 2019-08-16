@@ -164,12 +164,14 @@ public class MemberClass {
         List<T> fields = new ArrayList<>();
 
         for (Method getter : getAccessors()) {
-            if (o == null) {
-                Member member = new Member(this, getter);
-                fields.add((T) member);
-            } else {
-                ExecutableMember member = (new ExecutableMember(this, getter, o));
-                fields.add((T) member);
+            if(getter.getParameterCount() == 0) {
+                if (o == null) {
+                    Member member = new Member(this, getter);
+                    fields.add((T) member);
+                } else {
+                    ExecutableMember member = (new ExecutableMember(this, getter, o));
+                    fields.add((T) member);
+                }
             }
         }
         return fields;
