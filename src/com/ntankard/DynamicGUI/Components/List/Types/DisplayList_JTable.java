@@ -2,6 +2,7 @@ package com.ntankard.DynamicGUI.Components.List.Types;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.ClassExtension.MemberProperties;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -12,10 +13,12 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Nicholas on 26/06/2016.
@@ -108,7 +111,15 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
                 toAdd = dateFormat.format(((Calendar) member.getGetter().invoke(rowObject)).getTime());
             } else if (data instanceof Double){
-                toAdd = df2.format(data);
+                if(member.getFormat().equals(MemberProperties.Format.AUD)){
+                    NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
+                    toAdd = format.format(data);
+                }else if(member.getFormat().equals(MemberProperties.Format.YEN)){
+                    NumberFormat format = NumberFormat.getCurrencyInstance(Locale.JAPAN);
+                    toAdd = format.format(data);
+                }else{
+                    toAdd = df2.format(data);
+                }
             } else {
                 toAdd = data.toString();
             }

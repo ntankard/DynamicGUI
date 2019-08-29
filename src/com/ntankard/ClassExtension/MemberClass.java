@@ -165,13 +165,18 @@ public class MemberClass {
 
         for (Method getter : getAccessors()) {
             if(getter.getParameterCount() == 0) {
+                Member member;
                 if (o == null) {
-                    Member member = new Member(this, getter);
-                    fields.add((T) member);
+                    member = new Member(this, getter);
                 } else {
-                    ExecutableMember member = (new ExecutableMember(this, getter, o));
-                    fields.add((T) member);
+                    member = new ExecutableMember(this, getter, o);
                 }
+
+                MemberProperties properties = member.getGetter().getAnnotation(MemberProperties.class);
+                if (properties != null) {
+                    member.setFormat(properties.format());
+                }
+                fields.add((T) member);
             }
         }
         return fields;

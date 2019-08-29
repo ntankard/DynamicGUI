@@ -3,6 +3,8 @@ package com.ntankard.ClassExtension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import static com.ntankard.ClassExtension.MemberProperties.*;
+
 /**
  * A real or virtual method on a class signified by the fact that there is a getter available for it
  */
@@ -32,6 +34,11 @@ public class Member {
      * The setter if it is available (can be null)
      */
     private Method setter;
+
+    /**
+     * Should the data be formatted in any special way?
+     */
+    private Format format = Format.NONE;
 
     /**
      * Constructor
@@ -65,16 +72,28 @@ public class Member {
     public String getName() {
         return name;
     }
+
     public Field getField() {
         return field;
     }
+
     public Method getGetter() {
         return getter;
     }
+
     public Method getSetter() {
         return setter;
     }
-    public Class<?> getType(){
+
+    public Class<?> getType() {
         return type;
+    }
+
+    public void setFormat(Format format) {
+        this.format = format;
+    }
+
+    public Format getFormat() {
+        return format;
     }
 }
