@@ -1,29 +1,29 @@
 package com.ntankard.DynamicGUI.Components.List.Types;
 
+import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.ClassExtension.MemberProperties;
 
 import javax.swing.table.AbstractTableModel;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
-public class DisplayList_JTable_Model<T> extends AbstractTableModel {
+import static com.ntankard.ClassExtension.DisplayProperties.*;
+
+public class DisplayList_JTable_Model extends AbstractTableModel {
 
     /**
      * The members used to make the columns for the table
      */
-    private final List<Member> members;
+    private List<MemberColumn> orderList = new ArrayList<>();
 
     /**
      * The data used to populate the rowData of the table
      */
-    private final List<T> rowData;
+    private final List rowData;
 
     /**
      * Constructor
@@ -32,9 +32,11 @@ public class DisplayList_JTable_Model<T> extends AbstractTableModel {
      * @param rowData   The list of objects to display
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
      */
-    DisplayList_JTable_Model(MemberClass mClass, List<T> rowData, int verbosity) {
+    DisplayList_JTable_Model(MemberClass mClass, List rowData, int verbosity) {
         this.rowData = rowData;
-        members = mClass.getVerbosityMembers(verbosity);
+        List<Member> members = mClass.getVerbosityMembers(verbosity);
+        members.forEach(member -> orderList.add(new MemberColumn(member)));
+        orderList.sort(Comparator.comparingInt(o -> o.order));
     }
 
     /**
@@ -42,7 +44,7 @@ public class DisplayList_JTable_Model<T> extends AbstractTableModel {
      */
     @Override
     public String getColumnName(int column) {
-        return members.get(column).getName();
+        return orderList.get(column).name;
     }
 
     /**
@@ -66,7 +68,7 @@ public class DisplayList_JTable_Model<T> extends AbstractTableModel {
      */
     @Override
     public int getColumnCount() {
-        return members.size();
+        return orderList.size();
     }
 
     /**
@@ -75,11 +77,11 @@ public class DisplayList_JTable_Model<T> extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         String toAdd;
-        Member member = members.get(columnIndex);
-        DecimalFormat df2 = new DecimalFormat("#.##");
+        MemberColumn column = orderList.get(columnIndex);
         Object data;
+
         try {
-            data = member.getGetter().invoke(rowData.get(rowIndex));
+            data = column.member.getGetter().invoke(rowData.get(rowIndex));
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -91,13 +93,14 @@ public class DisplayList_JTable_Model<T> extends AbstractTableModel {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM YYYY HH:mm");
             toAdd = dateFormat.format(((Calendar) data).getTime());
         } else if (data instanceof Double) {
-            if (member.getFormat().equals(MemberProperties.Format.AUD)) {
+            if (column.format.equals(Format.AUD)) {
                 NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
                 toAdd = format.format(data);
-            } else if (member.getFormat().equals(MemberProperties.Format.YEN)) {
+            } else if (column.format.equals(Format.YEN)) {
                 NumberFormat format = NumberFormat.getCurrencyInstance(Locale.JAPAN);
                 toAdd = format.format(data);
             } else {
+                DecimalFormat df2 = new DecimalFormat("#.##");
                 toAdd = df2.format(data);
             }
         } else {
@@ -105,5 +108,52 @@ public class DisplayList_JTable_Model<T> extends AbstractTableModel {
         }
 
         return toAdd;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################### Util classes #####################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    private class MemberColumn {
+
+        /**
+         * The core member
+         */
+        private Member member;
+
+        /**
+         * The display order, Integer.MAX_VALUE if none is set
+         */
+        private int order = Integer.MAX_VALUE;
+
+        /**
+         * The display name of the column
+         */
+        private String name = "";
+
+        /**
+         * Any special format instructions other than the class type
+         */
+        private Format format = Format.NONE;
+
+        /**
+         * Constructor, parameters are set from the DisplayProperties set to the member
+         *
+         * @param member The member this column is based around
+         */
+        MemberColumn(Member member) {
+            this.member = member;
+
+            DisplayProperties properties = this.member.getGetter().getAnnotation(DisplayProperties.class);
+            if (properties != null) {
+                order = properties.order();
+                name = properties.name();
+                format = properties.format();
+            }
+
+            if (name.equals("")) {
+                name = member.getName();
+            }
+        }
     }
 }

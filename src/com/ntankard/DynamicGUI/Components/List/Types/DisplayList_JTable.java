@@ -55,7 +55,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      * Create the GUI components
      */
     private void createUIComponents() {
-        model = new DisplayList_JTable_Model<>(mClass, getObjects(), verbosity);
+        model = new DisplayList_JTable_Model(mClass, getObjects(), verbosity);
 
         structure_table = new JTable(model);
 

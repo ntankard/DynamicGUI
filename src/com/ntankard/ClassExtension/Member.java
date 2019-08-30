@@ -36,11 +36,6 @@ public class Member {
     private Method setter;
 
     /**
-     * Should the data be formatted in any special way?
-     */
-    private Format format = Format.NONE;
-
-    /**
      * Constructor
      *
      * @param context The base class the contains the member
@@ -87,13 +82,5 @@ public class Member {
 
     public Class<?> getType() {
         return type;
-    }
-
-    public void setFormat(Format format) {
-        this.format = format;
-    }
-
-    public Format getFormat() {
-        return format;
     }
 }

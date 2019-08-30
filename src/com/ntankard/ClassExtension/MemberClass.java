@@ -1,8 +1,8 @@
 package com.ntankard.ClassExtension;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -164,7 +164,7 @@ public class MemberClass {
         List<T> fields = new ArrayList<>();
 
         for (Method getter : getAccessors()) {
-            if(getter.getParameterCount() == 0) {
+            if (getter.getParameterCount() == 0) {
                 Member member;
                 if (o == null) {
                     member = new Member(this, getter);
@@ -172,10 +172,6 @@ public class MemberClass {
                     member = new ExecutableMember(this, getter, o);
                 }
 
-                MemberProperties properties = member.getGetter().getAnnotation(MemberProperties.class);
-                if (properties != null) {
-                    member.setFormat(properties.format());
-                }
                 fields.add((T) member);
             }
         }
