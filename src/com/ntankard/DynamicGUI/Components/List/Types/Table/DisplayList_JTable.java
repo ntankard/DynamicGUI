@@ -1,10 +1,11 @@
-package com.ntankard.DynamicGUI.Components.List.Types;
+package com.ntankard.DynamicGUI.Components.List.Types.Table;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
 import java.util.List;
 
 /**
@@ -57,7 +58,16 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
     private void createUIComponents() {
         model = new DisplayList_JTable_Model(mClass, getObjects(), verbosity);
 
-        structure_table = new JTable(model);
+        structure_table = new JTable(model) {
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                TableCellRenderer renderer = model.getColumnRenderer(column);
+                if (renderer != null) {
+                    return renderer;
+                }
+                return super.getCellRenderer(row, column);
+            }
+        };
 
         structure_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         structure_table.setAutoCreateRowSorter(true);

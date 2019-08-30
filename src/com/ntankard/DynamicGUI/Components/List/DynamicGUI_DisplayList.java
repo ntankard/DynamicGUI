@@ -2,7 +2,7 @@ package com.ntankard.DynamicGUI.Components.List;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter;
-import com.ntankard.DynamicGUI.Components.List.Types.DisplayList_JTable;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable;
 import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
