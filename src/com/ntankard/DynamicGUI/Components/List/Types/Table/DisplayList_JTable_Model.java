@@ -32,7 +32,7 @@ public class DisplayList_JTable_Model extends AbstractTableModel {
     DisplayList_JTable_Model(MemberClass mClass, List rowData, int verbosity) {
         this.rowData = rowData;
         List<Member> members = mClass.getVerbosityMembers(verbosity);
-        members.forEach(member -> orderList.add(new MemberColumn(member)));
+        members.forEach(member -> orderList.add(new MemberColumn(member, this)));
         orderList.sort(Comparator.comparingInt(o -> o.getOrder()));
     }
 

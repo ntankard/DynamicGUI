@@ -16,6 +16,7 @@ public @interface DisplayProperties {
         NONE,           // Data values have no specific value
         ZERO_BELOW_BAD, // Data above zero is normal but anything below 0 is noteworthy
         ZERO_BINARY,    // Data is centered on zero, values above or below are note worthy
+        ZERO_SCALE,     // Data is centered on zero, values above or below are note worthy compared to the range of all values
     }
 
     /**

@@ -8,12 +8,12 @@ import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.Decoder;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.DoubleDecoder;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NegativeHighlightRenderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.Renderer;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.ScaleRenderer;
 
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.ntankard.ClassExtension.DisplayProperties.DataContext.ZERO_BELOW_BAD;
-import static com.ntankard.ClassExtension.DisplayProperties.DataContext.ZERO_BINARY;
+import static com.ntankard.ClassExtension.DisplayProperties.DataContext.*;
 import static com.ntankard.ClassExtension.DisplayProperties.DataType;
 import static com.ntankard.ClassExtension.DisplayProperties.DataType.*;
 
@@ -43,8 +43,9 @@ public class MemberColumn {
      * Constructor, parameters are set from the DisplayProperties set to the member
      *
      * @param member The member this column is based around
+     * @param model  The model used to generate the columns containing this render.
      */
-    MemberColumn(Member member) {
+    MemberColumn(Member member, DisplayList_JTable_Model model) {
         this.member = member;
 
         // Extract any properties
@@ -55,10 +56,14 @@ public class MemberColumn {
             name = properties.name();
             dataType = properties.dataType();
 
-            if (properties.dataContext() == ZERO_BELOW_BAD) {
-                renderer = new NegativeHighlightRenderer(false);
-            } else if (properties.dataContext() == ZERO_BINARY) {
-                renderer = new NegativeHighlightRenderer(true);
+            if (member.getType().equals(Double.class)) {
+                if (properties.dataContext() == ZERO_BELOW_BAD) {
+                    renderer = new NegativeHighlightRenderer(false);
+                } else if (properties.dataContext() == ZERO_BINARY) {
+                    renderer = new NegativeHighlightRenderer(true);
+                } else if (properties.dataContext() == ZERO_SCALE) {
+                    renderer = new ScaleRenderer(model);
+                }
             }
         }
 
