@@ -8,17 +8,12 @@ import java.awt.*;
 public class ScaleRenderer extends Renderer {
 
     /**
-     * The model used to generate the columns containing this render. Used to find min max
-     */
-    private final DisplayList_JTable_Model model;
-
-    /**
      * Constructor
      *
      * @param model The model used to generate the columns containing this render. Used to find min max
      */
     public ScaleRenderer(DisplayList_JTable_Model model) {
-        this.model = model;
+        super(model);
     }
 
     /**
@@ -61,8 +56,8 @@ public class ScaleRenderer extends Renderer {
      */
     private double getMax(int column) {
         double max = Double.MIN_VALUE;
-        for (int row = 0; row < model.getRowCount(); row++) {
-            double value = (Double) model.getValueAt(row, column);
+        for (int row = 0; row < parent.getRowCount(); row++) {
+            double value = (Double) parent.getValueAt(row, column);
             if (value > max) {
                 max = value;
             }
@@ -78,8 +73,8 @@ public class ScaleRenderer extends Renderer {
      */
     private double getMin(int column) {
         double min = Double.MAX_VALUE;
-        for (int row = 0; row < model.getRowCount(); row++) {
-            double value = (Double) model.getValueAt(row, column);
+        for (int row = 0; row < parent.getRowCount(); row++) {
+            double value = (Double) parent.getValueAt(row, column);
             if (value < min) {
                 min = value;
             }

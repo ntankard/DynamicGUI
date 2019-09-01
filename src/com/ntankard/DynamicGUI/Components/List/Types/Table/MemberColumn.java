@@ -2,10 +2,7 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table;
 
 import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.Member;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CalendarDecoder;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.Decoder;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.DoubleDecoder;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.*;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NegativeHighlightRenderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.Renderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.ScaleRenderer;
@@ -58,9 +55,9 @@ public class MemberColumn {
 
             if (member.getType().equals(Double.class)) {
                 if (properties.dataContext() == ZERO_BELOW_BAD) {
-                    renderer = new NegativeHighlightRenderer(false);
+                    renderer = new NegativeHighlightRenderer(model, false);
                 } else if (properties.dataContext() == ZERO_BINARY) {
-                    renderer = new NegativeHighlightRenderer(true);
+                    renderer = new NegativeHighlightRenderer(model, true);
                 } else if (properties.dataContext() == ZERO_SCALE) {
                     renderer = new ScaleRenderer(model);
                 }
@@ -69,26 +66,63 @@ public class MemberColumn {
 
         // Fill in any missing properties
         if (renderer == null) {
-            renderer = new Renderer();
+            renderer = new Renderer(model);
         }
         if (name.equals("")) {
             name = member.getName();
         }
 
         // Build the decoder based on type
-        Decoder coder = null;
+        Decoder decoder = null;
         if (member.getType().equals(Calendar.class)) {
-            coder = new CalendarDecoder();
+            decoder = new CalendarDecoder();
         } else if (member.getType().equals(Double.class)) {
-            if (dataType.equals(CURRENCY_AUD)) {
-                coder = new CurrencyDecoder(Locale.US);
+            if (dataType.equals(CURRENCY)) {
+                decoder = new CurrencyDecoder(Locale.US);
+            } else if (dataType.equals(CURRENCY_AUD)) {
+                decoder = new CurrencyDecoder(Locale.US);
             } else if (dataType.equals(CURRENCY_YEN)) {
-                coder = new CurrencyDecoder(Locale.JAPAN);
+                decoder = new CurrencyDecoder(Locale.JAPAN);
             } else {
-                coder = new DoubleDecoder();
+                decoder = new DoubleDecoder();
             }
         }
-        renderer.setDecoder(coder);
+        renderer.setDecoder(decoder);
+    }
+
+    /**
+     * Set A user set source for the locale
+     *
+     * @param localeSource A user set source for the locale
+     */
+    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
+        Decoder decoder = renderer.getDecoder();
+        if (decoder instanceof CurrencyDecoder) {
+            CurrencyDecoder currencyDecoder = (CurrencyDecoder) decoder;
+            currencyDecoder.setLocaleInspector(localeSource);
+        }
+    }
+
+    /**
+     * Can this Column be edited?
+     *
+     * @return True if this Column be edited?
+     */
+    public boolean isEditable() {
+        if (member.getSetter() == null || getRenderer().getDecoder() == null) {
+            return false;
+        }
+        return renderer.getDecoder().isEditable();
+    }
+
+    /**
+     * Convert the string into a the original object
+     *
+     * @param value The value to convert
+     * @return The object made from the string
+     */
+    public Object encode(Object value) {
+        return getRenderer().getDecoder().encode(value);
     }
 
     //------------------------------------------------------------------------------------------------------------------

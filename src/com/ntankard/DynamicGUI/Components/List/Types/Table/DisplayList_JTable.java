@@ -2,6 +2,7 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -56,7 +57,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      * Create the GUI components
      */
     private void createUIComponents() {
-        model = new DisplayList_JTable_Model(mClass, getObjects(), verbosity);
+        model = new DisplayList_JTable_Model(mClass, getObjects(), verbosity, this);
 
         structure_table = new JTable(model) {
             @Override
@@ -80,11 +81,19 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
+     * @inheritDoc
+     */
+    @Override
+    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
+        model.setLocaleInspector(localeSource);
+    }
+
+    /**
      * @inheritDoc Bottom of the tree
      */
     @Override
     public void update() {
-        model.fireTableDataChanged();
+        model.update();
     }
 
     /**

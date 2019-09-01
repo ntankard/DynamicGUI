@@ -8,6 +8,7 @@ public @interface DisplayProperties {
 
     enum DataType {
         AS_CLASS,       // DataType based on class
+        CURRENCY,       // currency, can be any currency, field must be double otherwise this is ignored
         CURRENCY_AUD,   // AUD currency, field must be double otherwise this is ignored
         CURRENCY_YEN,   // YEN currency, field must be double otherwise this is ignored
     }

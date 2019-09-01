@@ -1,5 +1,7 @@
 package com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer;
 
+import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable_Model;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,7 +21,8 @@ public class NegativeHighlightRenderer extends Renderer {
      *
      * @param highlightAbove If the value is above 0 should it be highlighted as well?
      */
-    public NegativeHighlightRenderer(boolean highlightAbove) {
+    public NegativeHighlightRenderer(DisplayList_JTable_Model parent, boolean highlightAbove) {
+        super(parent);
         this.highlightAbove = highlightAbove;
     }
 
