@@ -38,6 +38,10 @@ public class CurrencyDecoder extends DoubleDecoder {
      */
     @Override
     public String decode(Object value, Object rowObject) {
+        if ((Double) value == 0) {
+            return "-";
+        }
+
         Locale locale = currencyLocale;
         if (localeSource != null) {
             locale = localeSource.getLocale(rowObject);
