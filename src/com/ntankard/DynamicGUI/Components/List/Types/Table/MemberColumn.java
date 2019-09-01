@@ -19,7 +19,7 @@ public class MemberColumn {
     /**
      * The core member
      */
-    private Member member;
+    protected Member member;
 
     /**
      * The display order, Integer.MAX_VALUE if none is set

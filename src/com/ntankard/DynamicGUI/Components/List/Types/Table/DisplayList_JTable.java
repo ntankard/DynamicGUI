@@ -7,6 +7,7 @@ import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.util.List;
 
 /**
@@ -34,6 +35,11 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      */
     private final MemberClass mClass;
 
+    /**
+     * Sources of data that can be set for various objects
+     */
+    private Object[] sources;
+
     //------------------------------------------------------------------------------------------------------------------
     //############################################## Constructors ######################################################
     //------------------------------------------------------------------------------------------------------------------
@@ -46,10 +52,11 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master    The parent of this object to be notified if data changes
      */
-    public DisplayList_JTable(MemberClass mClass, List<T> rowData, int verbosity, Updatable master) {
+    public DisplayList_JTable(MemberClass mClass, List<T> rowData, int verbosity, Updatable master, Object... sources) {
         super(rowData, master);
         this.mClass = mClass;
         this.verbosity = verbosity;
+        this.sources = sources;
         createUIComponents();
     }
 
@@ -57,9 +64,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      * Create the GUI components
      */
     private void createUIComponents() {
-        model = new DisplayList_JTable_Model(mClass, getObjects(), verbosity, this);
-
-        structure_table = new JTable(model) {
+        structure_table = new JTable() {
             @Override
             public TableCellRenderer getCellRenderer(int row, int column) {
                 TableCellRenderer renderer = model.getColumnRenderer(column);
@@ -69,6 +74,17 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
                 return super.getCellRenderer(row, column);
             }
         };
+        model = new DisplayList_JTable_Model(mClass, getObjects(), verbosity, this, sources);
+
+        structure_table.setModel(model);
+
+        for (MemberColumn column : model.getOrderList()) {
+            if (column instanceof MemberColumn_List) {
+                int index = model.getOrderList().indexOf(column);
+                TableColumn cell = structure_table.getColumnModel().getColumn(index);
+                cell.setCellEditor(new DefaultCellEditor(((MemberColumn_List) column).getCellComboBox()));
+            }
+        }
 
         structure_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         structure_table.setAutoCreateRowSorter(true);

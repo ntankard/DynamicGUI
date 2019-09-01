@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.ntankard.ClassExtension.Util.getSetterSource;
+
 public class DisplayList_JTable_Model extends AbstractTableModel implements Updatable {
 
     /**
@@ -35,12 +37,25 @@ public class DisplayList_JTable_Model extends AbstractTableModel implements Upda
      * @param mClass    The kind of object used to generate this panel
      * @param rowData   The list of objects to display
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
+     * @param master    The top level GUI
+     * @param sources   Sources of data that can be set for various objects
      */
-    DisplayList_JTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master) {
+    DisplayList_JTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master, Object... sources) {
         this.rowData = rowData;
         this.master = master;
+
         List<Member> members = mClass.getVerbosityMembers(verbosity);
-        members.forEach(member -> orderList.add(new MemberColumn(member, this)));
+        for (Member member : members) {
+            MemberColumn column;
+            List options = getSetterSource(member, sources);
+            if (options != null) {
+                column = new MemberColumn_List(member, this, options);
+            } else {
+                column = new MemberColumn(member, this);
+            }
+
+            orderList.add(column);
+        }
         orderList.sort(Comparator.comparingInt(MemberColumn::getOrder));
     }
 
@@ -63,6 +78,15 @@ public class DisplayList_JTable_Model extends AbstractTableModel implements Upda
      */
     public TableCellRenderer getColumnRenderer(int column) {
         return orderList.get(column).getRenderer();
+    }
+
+    /**
+     * Get the members used to make the columns for the table
+     *
+     * @return The members used to make the columns for the table
+     */
+    public List<MemberColumn> getOrderList() {
+        return orderList;
     }
 
     /**

@@ -65,12 +65,12 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
         DynamicGUI_DisplayList_Impl main;
         if (addFilter) {
-            main = new DisplayList_JTable<T>(mClass, filtered, verbosity, container);
+            main = new DisplayList_JTable<>(mClass, filtered, verbosity, container, sources);
             DynamicGUI_Filter control = DynamicGUI_Filter.newFilterPanel(mClass, predicates, verbosity, container);
             container.setMainPanel(main);
             container.setControlPanel(control);
         } else {
-            main = new DisplayList_JTable<>(mClass, base, verbosity, container);
+            main = new DisplayList_JTable<>(mClass, base, verbosity, container, sources);
             container.setMainPanel(main);
         }
 
