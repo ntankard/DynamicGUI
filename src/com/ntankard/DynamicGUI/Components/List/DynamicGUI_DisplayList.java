@@ -156,12 +156,22 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             ListControl_Button newBtn = new ListControl_Button<>("New", this);
             newBtn.addActionListener(e -> {
                 T newObj = controller.newElement();
+                controller.addElement(newObj);
+                notifyUpdate();
+            });
+            addButton(newBtn);
+        }
+
+        if (controller != null) {
+            ListControl_Button newEditBtn = new ListControl_Button<>("New Edit", this);
+            newEditBtn.addActionListener(e -> {
+                T newObj = controller.newElement();
                 if (DynamicGUI_IntractableObject.openIntractableObjectDialog(newObj, 0, this, sources)) {
                     controller.addElement(newObj);
                 }
                 notifyUpdate();
             });
-            addButton(newBtn);
+            addButton(newEditBtn);
         }
 
         ListControl_Button editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
