@@ -4,6 +4,7 @@ import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.*;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NegativeHighlightRenderer;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NonZeroRenderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.Renderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.ScaleRenderer;
 
@@ -60,6 +61,8 @@ public class MemberColumn {
                     renderer = new NegativeHighlightRenderer(model, true);
                 } else if (properties.dataContext() == ZERO_SCALE) {
                     renderer = new ScaleRenderer(model);
+                } else if (properties.dataContext() == ZERO_TARGET) {
+                    renderer = new NonZeroRenderer(model);
                 }
             }
         }
