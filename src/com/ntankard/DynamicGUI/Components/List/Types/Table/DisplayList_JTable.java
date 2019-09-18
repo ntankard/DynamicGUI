@@ -3,6 +3,7 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Util.TableColumnAdjuster;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
@@ -39,6 +40,11 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      * Sources of data that can be set for various objects
      */
     private Object[] sources;
+
+    /**
+     * TableColumnAdjuster used to shrink the table
+     */
+    private TableColumnAdjuster tableColumnAdjuster;
 
     //------------------------------------------------------------------------------------------------------------------
     //############################################## Constructors ######################################################
@@ -87,6 +93,8 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
         }
 
         structure_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tableColumnAdjuster = new TableColumnAdjuster(structure_table);
+
         structure_table.setAutoCreateRowSorter(true);
 
         this.setViewportView(structure_table);
@@ -110,6 +118,7 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
     @Override
     public void update() {
         model.update();
+        tableColumnAdjuster.adjustColumns();
     }
 
     /**
