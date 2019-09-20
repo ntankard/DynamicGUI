@@ -89,6 +89,8 @@ public class MemberColumn {
             } else {
                 decoder = new DoubleDecoder();
             }
+        } else if (member.getType().equals(String.class)) {
+            decoder = new StringDecoder();
         }
         renderer.setDecoder(decoder);
     }
