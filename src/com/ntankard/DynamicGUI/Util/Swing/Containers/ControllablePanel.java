@@ -87,15 +87,22 @@ public class ControllablePanel<S extends UpdatableJScrollPane, C extends Control
     public S getMainPanel() {
         return mainPanel;
     }
+
     public C getControlPanel() {
         return controlPanel;
     }
+
     protected void setMainPanel(S mainPanel) {
         this.mainPanel = mainPanel;
         this.add(mainPanel, BorderLayout.CENTER);
     }
+
     protected void setControlPanel(C controlPanel) {
         this.controlPanel = controlPanel;
         this.add(controlPanel, BorderLayout.EAST);
+    }
+
+    public void setNorth(Component north) {
+        this.add(north, BorderLayout.NORTH);
     }
 }
