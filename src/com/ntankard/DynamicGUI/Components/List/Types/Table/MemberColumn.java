@@ -46,6 +46,12 @@ public class MemberColumn {
     MemberColumn(Member member, DisplayList_JTable_Model model) {
         this.member = member;
 
+
+
+        if(member.getName().equals("Value")){
+            System.out.println(member.getName());
+        }
+
         // Extract any properties
         DisplayProperties properties = this.member.getGetter().getAnnotation(DisplayProperties.class);
         DataType dataType = AS_CLASS;
