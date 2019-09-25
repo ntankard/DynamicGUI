@@ -94,9 +94,32 @@ public class MemberClass {
         List<Method> methods = new ArrayList<>();
         for (Method m : getDeclaredMethods()) {
             if (Modifier.isPublic(m.getModifiers()) && !Modifier.isAbstract(m.getModifiers()) && (m.getName().contains("get") || m.getName().contains("is") || m.getName().contains("has"))) {
-                methods.add(m);
+
+                // Check to see if you have the same method twice
+                boolean wasAdded = false;
+                for (Method added : methods) {
+                    if (m.getName().equals(added.getName())) {
+                        Class<?> mType = m.getReturnType();
+                        Class<?> addedType = added.getReturnType();
+
+                        // Find the one that is lower on the tree
+                        if (mType.isAssignableFrom(addedType)) {
+                            wasAdded = true;
+                        } else if (addedType.isAssignableFrom(mType)) {
+                            methods.remove(added);
+                            methods.add(m);
+                            wasAdded = true;
+                        } else {
+                            throw new RuntimeException("Imposable class");
+                        }
+                    }
+                }
+                if (!wasAdded) {
+                    methods.add(m);
+                }
             }
         }
+
         return methods.toArray(new Method[0]);
     }
 
