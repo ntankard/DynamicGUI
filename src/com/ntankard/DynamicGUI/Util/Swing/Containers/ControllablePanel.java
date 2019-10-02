@@ -46,7 +46,6 @@ public class ControllablePanel<S extends UpdatableJScrollPane, C extends Control
      * Create the GUI components
      */
     private void createUIComponents() {
-        this.setBorder(new EmptyBorder(12, 12, 12, 12));
         this.setLayout(new BorderLayout());
 
         this.buttonPanel = new ButtonPanel();
