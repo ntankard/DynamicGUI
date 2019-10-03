@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 
 public class IntractableObject_Double extends IntractableObject<Double> {
 
@@ -68,7 +69,8 @@ public class IntractableObject_Double extends IntractableObject<Double> {
      * @param value The value to set
      */
     protected void setValue(Double value) {
-        value_txt.setText(value.toString());
+        DecimalFormat df2 = new DecimalFormat("#.##");
+        value_txt.setText(df2.format(value));
     }
 
 
