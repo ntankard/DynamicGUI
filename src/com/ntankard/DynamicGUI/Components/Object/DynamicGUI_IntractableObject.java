@@ -1,5 +1,6 @@
 package com.ntankard.DynamicGUI.Components.Object;
 
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -28,7 +29,7 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
      * @param sources      Sources of data that can be set for various objects
      * @param <T>          The type of the base instance
      */
-    public static <T> boolean openIntractableObjectDialog(T baseInstance, int verbosity, Updatable master, Object... sources) {
+    public static <T> boolean openIntractableObjectDialog(T baseInstance, int verbosity, CurrencyDecoder_LocaleSource localeSource, Updatable master, Object... sources) {
         final boolean[] change = {false};
         JDialog dialog = new JDialog();
         DynamicGUI_IntractableObject panel = newIntractableObjectPanel(baseInstance, verbosity, false, new FinalizeNotifier() {
@@ -44,7 +45,7 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
                 dialog.dispose();
             }
         }, master, sources);
-
+        panel.getMainPanel().setLocaleInspector(localeSource);
         dialog.setContentPane(panel);
         dialog.setModal(true); // block until complete
         dialog.getRootPane().setDefaultButton(panel.getDefaultButton());
@@ -125,9 +126,10 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
 
     /**
      * Get the button to be called when the user hits enter on a dialog
+     *
      * @return The button to be called when the user hits enter on a dialog
      */
-    public JButton getDefaultButton(){
+    public JButton getDefaultButton() {
         return saveBtn;
     }
 

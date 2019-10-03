@@ -7,7 +7,7 @@ public class ExecutableMember<T> extends Member {
     /**
      * The object to execute on
      */
-    private Object o;
+    private Object object;
 
     /**
      * Constructor
@@ -18,7 +18,16 @@ public class ExecutableMember<T> extends Member {
      */
     public ExecutableMember(MemberClass context, Method getter, Object o) {
         super(context, getter);
-        this.o = o;
+        this.object = o;
+    }
+
+    /**
+     * Get the object to execute on
+     *
+     * @return The object to execute on
+     */
+    public Object getObject() {
+        return object;
     }
 
     /**
@@ -28,7 +37,7 @@ public class ExecutableMember<T> extends Member {
      */
     public void set(T value) {
         try {
-            getSetter().invoke(o, (T) value);
+            getSetter().invoke(object, (T) value);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +50,7 @@ public class ExecutableMember<T> extends Member {
      */
     public T get() {
         try {
-            return (T) getGetter().invoke(o, null);
+            return (T) getGetter().invoke(object, null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

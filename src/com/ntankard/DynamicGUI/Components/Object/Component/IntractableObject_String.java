@@ -21,8 +21,8 @@ public class IntractableObject_String extends IntractableObject<String> {
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_String(ExecutableMember<String> baseMember, boolean saveOnUpdate, Updatable master) {
-        super(baseMember, saveOnUpdate, master);
+    public IntractableObject_String(ExecutableMember<String> baseMember, boolean saveOnUpdate, int order, Updatable master) {
+        super(baseMember, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }

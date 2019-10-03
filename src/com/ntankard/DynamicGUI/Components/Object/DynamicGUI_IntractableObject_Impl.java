@@ -1,17 +1,22 @@
 package com.ntankard.DynamicGUI.Components.Object;
 
+import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
 import com.ntankard.DynamicGUI.Components.Object.Component.*;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.PanelContainer;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
+import static com.ntankard.ClassExtension.DisplayProperties.DataType.*;
 import static com.ntankard.ClassExtension.Util.getSetterSource;
 
-class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
+public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
 
     /**
      * The instance to interact with
@@ -82,6 +87,19 @@ class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
         }
     }
 
+    /**
+     * Set A user set source for the locale
+     *
+     * @param localeSource A user set source for the locale
+     */
+    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
+        for (IntractableObject intractableObject : intractableObjects) {
+            if (intractableObject instanceof IntractableObject_Currency) {
+                ((IntractableObject_Currency) intractableObject).setLocaleInspector(localeSource);
+            }
+        }
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     //############################################# Extended methods ###################################################
     //------------------------------------------------------------------------------------------------------------------
@@ -98,22 +116,54 @@ class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
             // find a compatible filter type
             IntractableObject intractableObject;
             Class<?> theClass = member.getType();
+
+            DisplayProperties properties = member.getGetter().getAnnotation(DisplayProperties.class);
+            DisplayProperties.DataType dataType = AS_CLASS;
+            int order = Integer.MAX_VALUE;
+            if (properties != null) {
+                dataType = properties.dataType();
+                order = properties.order();
+            }
+
             if (theClass.isEnum()) {
-                intractableObject = new IntractableObject_Enum(member, saveOnUpdate, this);
+                intractableObject = new IntractableObject_Enum(member, saveOnUpdate, order, this);
             } else if (theClass.equals(String.class)) {
-                intractableObject = new IntractableObject_String(member, saveOnUpdate, this);
+                intractableObject = new IntractableObject_String(member, saveOnUpdate, order, this);
             } else if (theClass.equals(Double.class)) {
-                intractableObject = new IntractableObject_Double(member, saveOnUpdate, this);
+                if (dataType.equals(CURRENCY)) {
+                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, Locale.US, this);
+                } else if (dataType.equals(CURRENCY_AUD)) {
+                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, Locale.US, this);
+                } else if (dataType.equals(CURRENCY_YEN)) {
+                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, Locale.JAPAN, this);
+                } else {
+                    intractableObject = new IntractableObject_Double(member, saveOnUpdate, order, this);
+                }
             } else {
                 List options = getSetterSource(member, sources);
                 if (options != null) {
-                    intractableObject = new IntractableObject_List(member, saveOnUpdate, options, this);
+                    intractableObject = new IntractableObject_List(member, saveOnUpdate, order, options, this);
                 } else {
                     continue; // No supported panel available
                 }
             }
             intractableObjects.add(intractableObject);
+        }
+
+        intractableObjects.sort(Comparator.comparingInt(IntractableObject::getOrder));
+
+        for (IntractableObject intractableObject : intractableObjects) {
             addMember(intractableObject);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void update() {
+        for (IntractableObject intractableObject : intractableObjects) {
+            intractableObject.update();
         }
     }
 }

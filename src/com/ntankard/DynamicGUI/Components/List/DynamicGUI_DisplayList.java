@@ -2,6 +2,7 @@ package com.ntankard.DynamicGUI.Components.List;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable;
 import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
@@ -20,23 +21,23 @@ import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayList_Impl, DynamicGUI_Filter> {
 
     public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableTable(objects, mClass, false, false, ALWAYS_DISPLAY, null, master);
+        return newIntractableTable(objects, mClass, false, false, ALWAYS_DISPLAY, null, null, master);
     }
 
     public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, int verbosity, Updatable master) {
-        return newIntractableTable(objects, mClass, false, false, verbosity, null, master);
+        return newIntractableTable(objects, mClass, false, false, verbosity, null, null, master);
     }
 
     public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, boolean addFilter, int verbosity, Updatable master) {
-        return newIntractableTable(objects, mClass, addFilter, false, verbosity, null, master);
+        return newIntractableTable(objects, mClass, addFilter, false, verbosity, null, null, master);
     }
 
     public static <T> DynamicGUI_DisplayList<T> newEditIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableTable(objects, mClass, false, true, ALWAYS_DISPLAY, null, master);
+        return newIntractableTable(objects, mClass, false, true, ALWAYS_DISPLAY, null, null, master);
     }
 
     public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableList(objects, mClass, false, ALWAYS_DISPLAY, null, master);
+        return newIntractableList(objects, mClass, false, ALWAYS_DISPLAY, null, null, master);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -57,7 +58,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * @param <T>        THe type of objects to display
      * @return A new intractable table
      */
-    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> base, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, ElementController<T> controller, Updatable master, Object... sources) {
+    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> base, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_LocaleSource localeSource, Updatable master, Object... sources) {
         List<Predicate<T>> predicates = new ArrayList<>();
         List<T> filtered = new ArrayList<>();
 
@@ -75,7 +76,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         }
 
         if (addControl) {
-            container.addControlButtons(sources, controller);
+            container.addControlButtons(sources, controller, localeSource);
         }
 
         container.update();
@@ -96,7 +97,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * @param <T>        THe type of objects to display
      * @return A new intractable table
      */
-    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> base, MemberClass mClass, boolean addControl, int verbosity, ElementController<T> controller, Updatable master, Object... sources) {
+    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> base, MemberClass mClass, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_LocaleSource localeSource, Updatable master, Object... sources) {
         List<Predicate<T>> predicates = new ArrayList<>();
         List<T> filtered = new ArrayList<>();
 
@@ -106,7 +107,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         container.setMainPanel(main);
 
         if (addControl) {
-            container.addControlButtons(sources, controller);
+            container.addControlButtons(sources, controller, localeSource);
         }
 
         container.update();
@@ -151,7 +152,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      *
      * @param sources The source data needed for a child object
      */
-    private void addControlButtons(Object[] sources, ElementController<T> controller) {
+    private void addControlButtons(Object[] sources, ElementController<T> controller, CurrencyDecoder_LocaleSource localeSource) {
         if (controller != null) {
             ListControl_Button newBtn = new ListControl_Button<>("New", this);
             newBtn.addActionListener(e -> {
@@ -166,7 +167,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             ListControl_Button newEditBtn = new ListControl_Button<>("New Edit", this);
             newEditBtn.addActionListener(e -> {
                 T newObj = controller.newElement();
-                if (DynamicGUI_IntractableObject.openIntractableObjectDialog(newObj, 0, this, sources)) {
+                if (DynamicGUI_IntractableObject.openIntractableObjectDialog(newObj, 0, localeSource, this, sources)) {
                     controller.addElement(newObj);
                 }
                 notifyUpdate();
@@ -177,7 +178,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         ListControl_Button editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
         editBtn.addActionListener(e -> {
             List selected = getMainPanel().getSelectedItems();
-            DynamicGUI_IntractableObject.openIntractableObjectDialog(selected.get(0), 0, this, sources);
+            DynamicGUI_IntractableObject.openIntractableObjectDialog(selected.get(0), 0, localeSource, this, sources);
         });
         addButton(editBtn);
 

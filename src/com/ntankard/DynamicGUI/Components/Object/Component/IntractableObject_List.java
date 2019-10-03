@@ -29,8 +29,8 @@ public class IntractableObject_List extends IntractableObject<Object> implements
      * @param options      The values that can be selected
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_List(ExecutableMember<Object> baseMember, boolean saveOnUpdate, List options, Updatable master) {
-        super(baseMember, saveOnUpdate, master);
+    public IntractableObject_List(ExecutableMember<Object> baseMember, boolean saveOnUpdate, int order, List options, Updatable master) {
+        super(baseMember, saveOnUpdate, order, master);
         this.options = options;
         createUIComponents();
         update();

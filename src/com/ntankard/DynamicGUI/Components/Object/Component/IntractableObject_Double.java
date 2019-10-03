@@ -13,7 +13,7 @@ public class IntractableObject_Double extends IntractableObject<Double> {
     /**
      * The main text box
      */
-    private JTextField value_txt;
+    protected JTextField value_txt;
 
     /**
      * The current displayed value to revert to if the user enters an invalid value
@@ -27,8 +27,8 @@ public class IntractableObject_Double extends IntractableObject<Double> {
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_Double(ExecutableMember<Double> baseMember, boolean saveOnUpdate, Updatable master) {
-        super(baseMember, saveOnUpdate, master);
+    public IntractableObject_Double(ExecutableMember<Double> baseMember, boolean saveOnUpdate, int order, Updatable master) {
+        super(baseMember, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }
@@ -47,15 +47,13 @@ public class IntractableObject_Double extends IntractableObject<Double> {
             public void keyReleased(KeyEvent e) {
                 try {
                     Double value;
-                    if(value_txt.getText().equals("-") || value_txt.getText().equals("")){
-                        value = 0.0;
-                    }else{
+                    if (!value_txt.getText().equals("-") && !value_txt.getText().equals("")) {
                         value = Double.parseDouble(value_txt.getText());
                         currentValue = value;
                     }
                     valueChanged(currentValue);
                 } catch (Exception ignored) {
-                    value_txt.setText(currentValue.toString());
+                    setValue(currentValue);
                 }
 
             }
@@ -63,6 +61,16 @@ public class IntractableObject_Double extends IntractableObject<Double> {
 
         this.add(value_txt, BorderLayout.CENTER);
     }
+
+    /**
+     * Set the non 0 value
+     *
+     * @param value The value to set
+     */
+    protected void setValue(Double value) {
+        value_txt.setText(value.toString());
+    }
+
 
     //------------------------------------------------------------------------------------------------------------------
     //############################################# Extended methods ###################################################
@@ -76,10 +84,10 @@ public class IntractableObject_Double extends IntractableObject<Double> {
         Double value = getBaseMember().get();
         if (value != null) {
             currentValue = getBaseMember().get();
-            if(value == 0.0){
+            if (value == 0.0) {
                 value_txt.setText("");
-            }else {
-                value_txt.setText(currentValue.toString());
+            } else {
+                setValue(currentValue);
             }
         } else {
             value_txt.setText("");

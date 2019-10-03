@@ -9,18 +9,20 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     /**
      * The member that this panel is built around
      */
-    private ExecutableMember<T> baseMember;
+    protected ExecutableMember<T> baseMember;
+
+    /**
+     * The display order, Integer.MAX_VALUE if none is set
+     */
+    private int order = Integer.MAX_VALUE;
 
     /**
      * Constructor
-     *
-     * @param baseMember   The member that this panel is built around
-     * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
-     * @param master       The parent of this object to be notified if data changes
      */
-    IntractableObject(ExecutableMember<T> baseMember, boolean saveOnUpdate, Updatable master) {
+    IntractableObject(ExecutableMember<T> baseMember, boolean saveOnUpdate, int order, Updatable master) {
         super(saveOnUpdate, master);
         this.baseMember = baseMember;
+        this.order = order;
     }
 
     /**
@@ -35,6 +37,15 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
      */
     protected ExecutableMember<T> getBaseMember() {
         return baseMember;
+    }
+
+    /**
+     * Get the display order, Integer.MAX_VALUE if none is set
+     *
+     * @return The display order, Integer.MAX_VALUE if none is set
+     */
+    public int getOrder() {
+        return order;
     }
 
     //------------------------------------------------------------------------------------------------------------------
