@@ -99,18 +99,20 @@ public class MemberClass {
                 boolean wasAdded = false;
                 for (Method added : methods) {
                     if (m.getName().equals(added.getName())) {
-                        Class<?> mType = m.getReturnType();
-                        Class<?> addedType = added.getReturnType();
+                        if (m.getParameterCount() == added.getParameterCount()) {
+                            Class<?> mType = m.getReturnType();
+                            Class<?> addedType = added.getReturnType();
 
-                        // Find the one that is lower on the tree
-                        if (mType.isAssignableFrom(addedType)) {
-                            wasAdded = true;
-                        } else if (addedType.isAssignableFrom(mType)) {
-                            methods.remove(added);
-                            methods.add(m);
-                            wasAdded = true;
-                        } else {
-                            throw new RuntimeException("Imposable class");
+                            // Find the one that is lower on the tree
+                            if (mType.isAssignableFrom(addedType)) {
+                                wasAdded = true;
+                            } else if (addedType.isAssignableFrom(mType)) {
+                                methods.remove(added);
+                                methods.add(m);
+                                wasAdded = true;
+                            } else {
+                                throw new RuntimeException("Imposable class");
+                            }
                         }
                     }
                 }
