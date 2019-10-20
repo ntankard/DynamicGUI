@@ -3,11 +3,12 @@ package com.ntankard.DynamicGUI.Components.Object;
 import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Components.Object.Component.*;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.PanelContainer;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -92,7 +93,7 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
      *
      * @param localeSource A user set source for the locale
      */
-    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
+    public void setLocaleInspector(CurrencyDecoder_NumberFormatSource localeSource) {
         for (IntractableObject intractableObject : intractableObjects) {
             if (intractableObject instanceof IntractableObject_Currency) {
                 ((IntractableObject_Currency) intractableObject).setLocaleInspector(localeSource);
@@ -131,11 +132,11 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                 intractableObject = new IntractableObject_String(member, saveOnUpdate, order, this);
             } else if (theClass.equals(Double.class)) {
                 if (dataType.equals(CURRENCY)) {
-                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, Locale.US, this);
+                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, NumberFormat.getCurrencyInstance(Locale.US), this);
                 } else if (dataType.equals(CURRENCY_AUD)) {
-                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, Locale.US, this);
+                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, NumberFormat.getCurrencyInstance(Locale.US), this);
                 } else if (dataType.equals(CURRENCY_YEN)) {
-                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, Locale.JAPAN, this);
+                    intractableObject = new IntractableObject_Currency(member, saveOnUpdate, order, NumberFormat.getCurrencyInstance(Locale.JAPAN), this);
                 } else {
                     intractableObject = new IntractableObject_Double(member, saveOnUpdate, order, this);
                 }

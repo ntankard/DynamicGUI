@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List;
 
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Swing.Base.UpdatableJScrollPane;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -80,5 +80,5 @@ public abstract class DynamicGUI_DisplayList_Impl<T> extends UpdatableJScrollPan
      *
      * @param localeSource A user set source for the locale
      */
-    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource){}
+    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource localeSource){}
 }

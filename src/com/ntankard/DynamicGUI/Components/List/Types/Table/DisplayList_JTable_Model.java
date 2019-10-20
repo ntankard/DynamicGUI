@@ -2,7 +2,7 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.table.AbstractTableModel;
@@ -62,11 +62,11 @@ public class DisplayList_JTable_Model extends AbstractTableModel implements Upda
     /**
      * Set A user set source for the locale
      *
-     * @param localeSource A user set source for the locale
+     * @param numberFormatSource A user set source for the locale
      */
-    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
+    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource numberFormatSource) {
         for (MemberColumn col : orderList) {
-            col.setLocaleInspector(localeSource);
+            col.setNumberFormatSource(numberFormatSource);
         }
     }
 

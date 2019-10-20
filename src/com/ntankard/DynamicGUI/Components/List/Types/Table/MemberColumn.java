@@ -8,6 +8,7 @@ import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NonZeroRende
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.Renderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.ScaleRenderer;
 
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -81,11 +82,11 @@ public class MemberColumn {
             decoder = new CalendarDecoder();
         } else if (member.getType().equals(Double.class)) {
             if (dataType.equals(CURRENCY)) {
-                decoder = new CurrencyDecoder(Locale.US);
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US));
             } else if (dataType.equals(CURRENCY_AUD)) {
-                decoder = new CurrencyDecoder(Locale.US);
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US));
             } else if (dataType.equals(CURRENCY_YEN)) {
-                decoder = new CurrencyDecoder(Locale.JAPAN);
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN));
             } else {
                 decoder = new DoubleDecoder();
             }
@@ -98,13 +99,13 @@ public class MemberColumn {
     /**
      * Set A user set source for the locale
      *
-     * @param localeSource A user set source for the locale
+     * @param numberFormatSource A user set source for the locale
      */
-    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
+    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource numberFormatSource) {
         Decoder decoder = renderer.getDecoder();
         if (decoder instanceof CurrencyDecoder) {
             CurrencyDecoder currencyDecoder = (CurrencyDecoder) decoder;
-            currencyDecoder.setLocaleInspector(localeSource);
+            currencyDecoder.setNumberFormatSource(numberFormatSource);
         }
     }
 

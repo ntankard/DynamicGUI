@@ -1,36 +1,35 @@
 package com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder;
 
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class CurrencyDecoder extends DoubleDecoder {
 
     /**
      * The location used to get the currency
      */
-    private Locale currencyLocale;
+    private NumberFormat numberFormat;
 
     /**
-     * A user set source for the locale, currencyLocale used if not set
+     * A user set source for the locale, numberFormat used if not set
      */
-    private CurrencyDecoder_LocaleSource localeSource = null;
+    private CurrencyDecoder_NumberFormatSource numberFormatSource = null;
 
     /**
      * Constructor
      *
-     * @param currencyLocale The location used to get the currency
+     * @param numberFormat The location used to get the currency
      */
-    public CurrencyDecoder(Locale currencyLocale) {
-        this.currencyLocale = currencyLocale;
+    public CurrencyDecoder(NumberFormat numberFormat) {
+        this.numberFormat = numberFormat;
     }
 
     /**
      * Set A user set source for the locale
      *
-     * @param localeSource A user set source for the locale
+     * @param numberFormatSource A user set source for the locale
      */
-    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
-        this.localeSource = localeSource;
+    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource numberFormatSource) {
+        this.numberFormatSource = numberFormatSource;
     }
 
     /**
@@ -42,12 +41,11 @@ public class CurrencyDecoder extends DoubleDecoder {
             return "-";
         }
 
-        Locale locale = currencyLocale;
-        if (localeSource != null) {
-            locale = localeSource.getLocale(rowObject);
+        NumberFormat format = numberFormat;
+        if (numberFormatSource != null) {
+            format = numberFormatSource.getNumberFormat(rowObject);
         }
 
-        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         return format.format(value);
     }
 }

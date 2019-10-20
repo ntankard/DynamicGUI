@@ -2,7 +2,7 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.TableColumnAdjuster;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -108,8 +108,8 @@ public class DisplayList_JTable<T> extends DynamicGUI_DisplayList_Impl<T> {
      * @inheritDoc
      */
     @Override
-    public void setLocaleInspector(CurrencyDecoder_LocaleSource localeSource) {
-        model.setLocaleInspector(localeSource);
+    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource numberFormatSource) {
+        model.setNumberFormatSource(numberFormatSource);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.Object;
 
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -29,7 +29,7 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
      * @param sources      Sources of data that can be set for various objects
      * @param <T>          The type of the base instance
      */
-    public static <T> boolean openIntractableObjectDialog(T baseInstance, int verbosity, CurrencyDecoder_LocaleSource localeSource, Updatable master, Object... sources) {
+    public static <T> boolean openIntractableObjectDialog(T baseInstance, int verbosity, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
         final boolean[] change = {false};
         JDialog dialog = new JDialog();
         DynamicGUI_IntractableObject panel = newIntractableObjectPanel(baseInstance, verbosity, false, new FinalizeNotifier() {

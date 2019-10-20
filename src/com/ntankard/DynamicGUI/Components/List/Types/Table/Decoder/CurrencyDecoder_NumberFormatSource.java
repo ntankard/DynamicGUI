@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder;
 
-import java.util.Locale;
+import java.text.NumberFormat;
 
-public interface CurrencyDecoder_LocaleSource {
+public interface CurrencyDecoder_NumberFormatSource {
 
     /**
      * Get the Locale used for the currency to display for this row
@@ -10,5 +10,5 @@ public interface CurrencyDecoder_LocaleSource {
      * @param rowObject The row the cell is in
      * @return The locale for the currency to display
      */
-    Locale getLocale(Object rowObject);
+    NumberFormat getNumberFormat(Object rowObject);
 }

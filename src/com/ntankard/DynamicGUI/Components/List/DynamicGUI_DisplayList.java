@@ -2,7 +2,7 @@ package com.ntankard.DynamicGUI.Components.List;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_LocaleSource;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable;
 import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
@@ -58,7 +58,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * @param <T>        THe type of objects to display
      * @return A new intractable table
      */
-    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> base, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_LocaleSource localeSource, Updatable master, Object... sources) {
+    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> base, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
         List<Predicate<T>> predicates = new ArrayList<>();
         List<T> filtered = new ArrayList<>();
 
@@ -97,7 +97,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * @param <T>        THe type of objects to display
      * @return A new intractable table
      */
-    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> base, MemberClass mClass, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_LocaleSource localeSource, Updatable master, Object... sources) {
+    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> base, MemberClass mClass, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
         List<Predicate<T>> predicates = new ArrayList<>();
         List<T> filtered = new ArrayList<>();
 
@@ -152,7 +152,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      *
      * @param sources The source data needed for a child object
      */
-    private void addControlButtons(Object[] sources, ElementController<T> controller, CurrencyDecoder_LocaleSource localeSource) {
+    private void addControlButtons(Object[] sources, ElementController<T> controller, CurrencyDecoder_NumberFormatSource localeSource) {
         if (controller != null) {
             ListControl_Button newBtn = new ListControl_Button<>("New", this);
             newBtn.addActionListener(e -> {
