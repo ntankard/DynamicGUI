@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Filter.Component;
 
 import com.ntankard.ClassExtension.Member;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -1,8 +1,9 @@
-package com.ntankard.DynamicGUI.Components.Filter;
+package com.ntankard.DynamicGUI.Containers;
 
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter_Impl;
+import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.util.List;
 import java.util.function.Predicate;

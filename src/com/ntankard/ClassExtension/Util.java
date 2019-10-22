@@ -1,7 +1,5 @@
 package com.ntankard.ClassExtension;
 
-import com.ntankard.DynamicGUI.Components.Object.SetterProperties;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.List.Types.Table;
+package com.ntankard.DynamicGUI.Components.List.Component;
 
 import com.ntankard.ClassExtension.Member;
 

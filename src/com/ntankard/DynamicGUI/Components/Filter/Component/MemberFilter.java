@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Components.Filter.Component;
 
 import com.ntankard.ClassExtension.Member;
-import com.ntankard.DynamicGUI.Util.Swing.Base.UpdatableJPanel;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.UpdatableJPanel;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.util.function.Predicate;
 

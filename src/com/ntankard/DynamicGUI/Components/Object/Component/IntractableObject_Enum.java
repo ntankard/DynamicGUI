@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
 import com.ntankard.ClassExtension.ExecutableMember;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

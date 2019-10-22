@@ -1,8 +1,9 @@
-package com.ntankard.DynamicGUI.Components.Object;
+package com.ntankard.DynamicGUI.Containers;
 
+import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject_Impl;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
-import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 

@@ -8,8 +8,8 @@ import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Decoder.DoubleDecoder;
 import com.ntankard.DynamicGUI.Util.Decoder.StringDecoder;
 import com.ntankard.DynamicGUI.Components.Object.Component.*;
-import com.ntankard.DynamicGUI.Util.Swing.Containers.PanelContainer;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Containers.PanelContainer;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
      * @param master       The top level GUI
      * @param sources      Sources of data that can be set for various objects
      */
-    DynamicGUI_IntractableObject_Impl(T baseInstance, int verbosity, boolean saveOnUpdate, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
+    public DynamicGUI_IntractableObject_Impl(T baseInstance, int verbosity, boolean saveOnUpdate, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
         super(master);
         this.baseInstance = baseInstance;
         this.verbosity = verbosity;

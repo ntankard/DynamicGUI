@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Util;
+package com.ntankard.DynamicGUI.Util.Table;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -347,7 +347,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
     }
 
     /*
-     *  Toggle properties of the com.ntankard.DynamicGUI.Util.TableColumnAdjuster so the user can
+     *  Toggle properties of the com.ntankard.DynamicGUI.Util.Table.TableColumnAdjuster so the user can
      *  customize the functionality to their preferences
      */
     class ToggleAction extends AbstractAction {

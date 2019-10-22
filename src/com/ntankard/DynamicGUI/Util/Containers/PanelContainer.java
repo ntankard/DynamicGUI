@@ -1,8 +1,8 @@
-package com.ntankard.DynamicGUI.Util.Swing.Containers;
+package com.ntankard.DynamicGUI.Util.Containers;
 
-import com.ntankard.DynamicGUI.Util.Swing.Base.UpdatableJPanel;
-import com.ntankard.DynamicGUI.Util.Swing.Base.UpdatableJScrollPane;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.UpdatableJPanel;
+import com.ntankard.DynamicGUI.Util.Update.UpdatableJScrollPane;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import java.awt.*;

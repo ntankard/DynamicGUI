@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
 import com.ntankard.ClassExtension.ExecutableMember;
-import com.ntankard.DynamicGUI.Util.Swing.Base.BufferedJPanel;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Containers.BufferedJPanel;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 public abstract class IntractableObject<T> extends BufferedJPanel<T> {
 

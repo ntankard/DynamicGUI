@@ -1,12 +1,11 @@
-package com.ntankard.DynamicGUI.Components.List;
+package com.ntankard.DynamicGUI.Containers;
 
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter;
-import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable;
-import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Components.List.Component.DisplayList_JTable;
+import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

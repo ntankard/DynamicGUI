@@ -1,6 +1,6 @@
-package com.ntankard.DynamicGUI.Util.Swing.Base;
+package com.ntankard.DynamicGUI.Util.Update;
 
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.JScrollPane;
 

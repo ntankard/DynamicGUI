@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Util.Swing.Containers;
+package com.ntankard.DynamicGUI.Util.Containers;
 
 import javax.swing.*;
 import java.awt.*;

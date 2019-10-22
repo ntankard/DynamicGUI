@@ -1,6 +1,7 @@
-package com.ntankard.DynamicGUI.Util.Swing.Base;
+package com.ntankard.DynamicGUI.Util.Containers;
 
-import com.ntankard.DynamicGUI.Util.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.UpdatableJPanel;
 
 import java.awt.*;
 

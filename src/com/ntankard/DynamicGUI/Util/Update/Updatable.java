@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Util;
+package com.ntankard.DynamicGUI.Util.Update;
 
 /**
  * Created by Nicholas on 24/05/2016.
