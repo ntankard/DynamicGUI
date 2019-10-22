@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer;
 
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.Decoder;
+import com.ntankard.DynamicGUI.Util.Decoder.Decoder;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable_Model;
 
 import javax.swing.*;

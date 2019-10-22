@@ -1,8 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
 import com.ntankard.ClassExtension.ExecutableMember;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.Decoder;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.DoubleDecoder;
+import com.ntankard.DynamicGUI.Util.Decoder.Decoder;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;

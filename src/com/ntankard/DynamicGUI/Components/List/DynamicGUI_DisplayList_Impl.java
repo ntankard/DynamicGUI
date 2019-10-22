@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List;
 
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
+import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Swing.Base.UpdatableJScrollPane;
 import com.ntankard.DynamicGUI.Util.Updatable;
 

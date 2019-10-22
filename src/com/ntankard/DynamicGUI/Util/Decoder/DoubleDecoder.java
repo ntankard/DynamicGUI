@@ -1,4 +1,4 @@
-package com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder;
+package com.ntankard.DynamicGUI.Util.Decoder;
 
 import java.text.DecimalFormat;
 

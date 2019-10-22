@@ -2,11 +2,11 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table;
 
 import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.Member;
-import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.*;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NegativeHighlightRenderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.NonZeroRenderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.Renderer;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Renderer.ScaleRenderer;
+import com.ntankard.DynamicGUI.Util.Decoder.*;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
