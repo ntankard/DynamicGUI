@@ -112,6 +112,9 @@ public class DisplayList_JTable_Model extends AbstractTableModel implements Upda
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
+        if (orderList.get(columnIndex).getMember().getType().equals(Double.class)) {
+            return String.class;
+        }
         return orderList.get(columnIndex).getMember().getType();
     }
 

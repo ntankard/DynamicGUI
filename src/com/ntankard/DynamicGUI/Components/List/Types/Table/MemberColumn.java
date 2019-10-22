@@ -128,7 +128,7 @@ public class MemberColumn {
      * @return The object made from the string
      */
     public Object encode(Object value) {
-        return getRenderer().getDecoder().encode(value);
+        return getRenderer().getDecoder().encode((String) value);
     }
 
     //------------------------------------------------------------------------------------------------------------------

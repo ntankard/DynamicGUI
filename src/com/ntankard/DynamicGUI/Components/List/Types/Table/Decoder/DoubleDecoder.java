@@ -2,15 +2,23 @@ package com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder;
 
 import java.text.DecimalFormat;
 
-public class DoubleDecoder extends Decoder {
+public class DoubleDecoder extends Decoder<Double> {
 
     /**
      * @inheritDoc
      */
     @Override
-    public String decode(Object value, Object rowObject) {
+    public String decode(Double value, Object rowObject) {
         DecimalFormat df2 = new DecimalFormat("#.##");
         return df2.format(value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Double encode(String value) {
+        return Double.parseDouble(value);
     }
 
     /**

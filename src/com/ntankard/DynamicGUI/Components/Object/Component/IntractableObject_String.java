@@ -1,13 +1,16 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
 import com.ntankard.ClassExtension.ExecutableMember;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.Decoder;
+import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.DoubleDecoder;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public class IntractableObject_String extends IntractableObject<String> {
+public class IntractableObject_String<T> extends IntractableObject<T> {
 
     /**
      * The main text box
@@ -15,14 +18,27 @@ public class IntractableObject_String extends IntractableObject<String> {
     private JTextField value_txt;
 
     /**
+     * The current displayed value to revert to if the user enters an invalid value
+     */
+    private T currentValue;
+
+    /**
+     * The decoder used to convert to and from a string
+     */
+    protected Decoder<T> decoder;
+
+    /**
      * Constructor
      *
      * @param baseMember   The member that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
+     * @param order        The order of this object
+     * @param decoder      The decoder used to convert to and from a string
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_String(ExecutableMember<String> baseMember, boolean saveOnUpdate, int order, Updatable master) {
+    public IntractableObject_String(ExecutableMember<T> baseMember, boolean saveOnUpdate, int order, Decoder<T> decoder, Updatable master) {
         super(baseMember, saveOnUpdate, order, master);
+        this.decoder = decoder;
         createUIComponents();
         update();
     }
@@ -39,7 +55,12 @@ public class IntractableObject_String extends IntractableObject<String> {
         value_txt.setEditable(getBaseMember().canEdit());
         value_txt.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                valueChanged(value_txt.getText());
+                try {
+                    currentValue = decoder.encode(value_txt.getText());
+                    valueChanged(currentValue);
+                } catch (Exception ignored) {
+                    value_txt.setText(decoder.decode(currentValue, null));
+                }
             }
         });
 
@@ -55,6 +76,12 @@ public class IntractableObject_String extends IntractableObject<String> {
      */
     @Override
     protected void load() {
-        value_txt.setText(getBaseMember().get());
+        Object value = getBaseMember().get();
+        if (value != null) {
+            currentValue = getBaseMember().get();
+            value_txt.setText(decoder.decode(currentValue, getBaseMember().getObject()));
+        } else {
+            value_txt.setText("");
+        }
     }
 }

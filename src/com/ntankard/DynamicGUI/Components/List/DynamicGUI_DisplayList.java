@@ -2,9 +2,9 @@ package com.ntankard.DynamicGUI.Components.List;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter;
+import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Components.List.Types.Table.DisplayList_JTable;
-import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject;
 import com.ntankard.DynamicGUI.Util.Swing.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Updatable;
 
@@ -34,10 +34,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
     public static <T> DynamicGUI_DisplayList<T> newEditIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
         return newIntractableTable(objects, mClass, false, true, ALWAYS_DISPLAY, null, null, master);
-    }
-
-    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableList(objects, mClass, false, ALWAYS_DISPLAY, null, null, master);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -74,37 +70,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             main = new DisplayList_JTable<>(mClass, base, verbosity, container, sources);
             container.setMainPanel(main);
         }
-
-        if (addControl) {
-            container.addControlButtons(sources, controller, localeSource);
-        }
-
-        container.update();
-
-        return container;
-    }
-
-    /**
-     * Create a new intractable list
-     *
-     * @param base       The master content of the list
-     * @param mClass     The kind of object used to generate this panel
-     * @param addControl Should the New, Edit, Delete button be added?
-     * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param controller The object used to generate new objects and delete others
-     * @param master     The parent of this object to be notified if data changes
-     * @param sources    The object used to get values for a selectable list
-     * @param <T>        THe type of objects to display
-     * @return A new intractable table
-     */
-    public static <T> DynamicGUI_DisplayList<T> newIntractableList(List<T> base, MemberClass mClass, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
-        List<Predicate<T>> predicates = new ArrayList<>();
-        List<T> filtered = new ArrayList<>();
-
-        DynamicGUI_DisplayList<T> container = new DynamicGUI_DisplayList<>(base, filtered, predicates, master);
-
-        DynamicGUI_DisplayList_Impl<T> main = new DisplayList_JTable<>(mClass, base, verbosity, container);
-        container.setMainPanel(main);
 
         if (addControl) {
             container.addControlButtons(sources, controller, localeSource);

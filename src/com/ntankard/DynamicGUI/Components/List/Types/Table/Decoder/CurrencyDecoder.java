@@ -16,8 +16,14 @@ public class CurrencyDecoder extends DoubleDecoder {
 
     /**
      * Constructor
-     *
-     * @param numberFormat The location used to get the currency
+     */
+    public CurrencyDecoder(NumberFormat numberFormat, CurrencyDecoder_NumberFormatSource numberFormatSource) {
+        this.numberFormat = numberFormat;
+        this.numberFormatSource = numberFormatSource;
+    }
+
+    /**
+     * Constructor
      */
     public CurrencyDecoder(NumberFormat numberFormat) {
         this.numberFormat = numberFormat;
@@ -28,21 +34,22 @@ public class CurrencyDecoder extends DoubleDecoder {
      *
      * @param numberFormatSource A user set source for the locale
      */
-    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource numberFormatSource) {
+    public CurrencyDecoder setNumberFormatSource(CurrencyDecoder_NumberFormatSource numberFormatSource) {
         this.numberFormatSource = numberFormatSource;
+        return this;
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public String decode(Object value, Object rowObject) {
-        if ((Double) value == 0) {
+    public String decode(Double value, Object rowObject) {
+        if (value == 0) {
             return "-";
         }
 
         NumberFormat format = numberFormat;
-        if (numberFormatSource != null) {
+        if (numberFormatSource != null && rowObject != null) {
             format = numberFormatSource.getNumberFormat(rowObject);
         }
 

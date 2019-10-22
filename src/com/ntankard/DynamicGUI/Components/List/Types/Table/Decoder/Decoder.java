@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List.Types.Table.Decoder;
 
-public abstract class Decoder {
+public abstract class Decoder<T> {
 
     /**
      * Convert the object into a string to be displayed
@@ -9,7 +9,7 @@ public abstract class Decoder {
      * @param rowObject The row that this value is in. Used for custom formatting
      * @return The string to display
      */
-    public abstract String decode(Object value, Object rowObject);
+    public abstract String decode(T value, Object rowObject);
 
     /**
      * Convert the string into a the original object
@@ -17,8 +17,8 @@ public abstract class Decoder {
      * @param value The value to convert
      * @return The object made from the string
      */
-    public Object encode(Object value) {
-        return value;
+    public T encode(String value) {
+        throw new RuntimeException("Should not be able to be called");
     }
 
     /**
