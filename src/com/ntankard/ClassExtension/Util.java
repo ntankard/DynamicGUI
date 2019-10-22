@@ -33,8 +33,15 @@ public class Util {
         for (Object source : sources)
             try {
                 // get the source data (an exception will be thrown if not available)
-                Method sourceGetter = source.getClass().getDeclaredMethod(sourceMethod);
-                Object sourceData = sourceGetter.invoke(source);
+                Method sourceGetter;
+                Object sourceData;
+                try {
+                    sourceGetter = source.getClass().getDeclaredMethod(sourceMethod);
+                    sourceData = sourceGetter.invoke(source);
+                }catch (Exception ignored){
+                    sourceGetter = source.getClass().getDeclaredMethod(sourceMethod, String.class);
+                    sourceData = sourceGetter.invoke(source, member.getType().getSimpleName());
+                }
 
                 // is it a <String,Object> map
                 if (sourceData instanceof Map) {
@@ -68,6 +75,7 @@ public class Util {
                     return listSourceData;
                 }
             } catch (Exception ignored) {
+                throw new RuntimeException(ignored);
             }
         return null;
     }
