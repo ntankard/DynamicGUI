@@ -82,6 +82,9 @@ public class ControllablePanel<S extends UpdatableJScrollPane, C extends Control
     //################################################ Accessors #######################################################
     //------------------------------------------------------------------------------------------------------------------
 
+    public void setTitle(String name) {
+        this.add(new JLabel(name), BorderLayout.NORTH);
+    }
 
     public S getMainPanel() {
         return mainPanel;
@@ -99,9 +102,5 @@ public class ControllablePanel<S extends UpdatableJScrollPane, C extends Control
     protected void setControlPanel(C controlPanel) {
         this.controlPanel = controlPanel;
         this.add(controlPanel, BorderLayout.EAST);
-    }
-
-    public void setNorth(Component north) {
-        this.add(north, BorderLayout.NORTH);
     }
 }
