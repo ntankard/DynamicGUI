@@ -74,7 +74,9 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
     public static <T> DynamicGUI_IntractableObject newIntractableObjectPanel(T baseInstance, int verbosity, boolean saveOnUpdate, FinalizeNotifier notifier, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
         DynamicGUI_IntractableObject container = new DynamicGUI_IntractableObject(master);
 
-        DynamicGUI_IntractableObject_Impl main = new DynamicGUI_IntractableObject_Impl<>(baseInstance, verbosity, saveOnUpdate, localeSource, master, sources);
+        DynamicGUI_IntractableObject_Impl main = new DynamicGUI_IntractableObject_Impl<>(baseInstance, verbosity, saveOnUpdate, master);
+        main.setLocaleSource(localeSource);
+        main.setSources(sources);
         container.setMainPanel(main);
 
         if (!saveOnUpdate) {

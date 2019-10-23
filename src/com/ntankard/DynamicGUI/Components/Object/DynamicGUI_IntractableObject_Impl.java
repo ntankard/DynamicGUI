@@ -63,21 +63,43 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
      * @param baseInstance The instance to interact with
      * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
-     * @param localeSource A user set source for the locale, numberFormat used if not set
      * @param master       The top level GUI
-     * @param sources      Sources of data that can be set for various objects
      */
-    public DynamicGUI_IntractableObject_Impl(T baseInstance, int verbosity, boolean saveOnUpdate, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
+    public DynamicGUI_IntractableObject_Impl(T baseInstance, int verbosity, boolean saveOnUpdate, Updatable master) {
         super(master);
         this.baseInstance = baseInstance;
         this.verbosity = verbosity;
         this.mClass = new MemberClass(baseInstance.getClass());
-        this.sources = sources;
         this.saveOnUpdate = saveOnUpdate;
-        this.localeSource = localeSource;
 
         createUIComponents();
         update();
+    }
+
+    /**
+     * Set a user set source for the locale, numberFormat used if not set
+     *
+     * @param localeSource A user set source for the locale, numberFormat used if not set
+     * @return
+     */
+    public DynamicGUI_IntractableObject_Impl<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
+        this.localeSource = localeSource;
+        createUIComponents();
+        update();
+        return this;
+    }
+
+    /**
+     * Set the sources of data that can be set for various objects
+     *
+     * @param sources Sources of data that can be set for various objects
+     * @return This
+     */
+    public DynamicGUI_IntractableObject_Impl<T> setSources(Object... sources) {
+        this.sources = sources;
+        createUIComponents();
+        update();
+        return this;
     }
 
     /**
@@ -108,6 +130,7 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
     @Override
     protected void createUIComponents() {
         super.createUIComponents();
+        intractableObjects.clear();
 
         for (ExecutableMember member : mClass.getVerbosityMembers(verbosity, baseInstance)) {
 
