@@ -1,9 +1,8 @@
 package com.ntankard.DynamicGUI.Containers;
 
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayList_Impl;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Impl;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
-import com.ntankard.DynamicGUI.Components.List.Component.DisplayList_JTable;
 import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 
-public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayList_Impl, DynamicGUI_Filter> {
+public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayTable_Impl, DynamicGUI_Filter> {
 
     public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
         return newIntractableTable(objects, mClass, false, false, ALWAYS_DISPLAY, null, null, master);
@@ -59,16 +58,17 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
         DynamicGUI_DisplayList<T> container = new DynamicGUI_DisplayList<>(base, filtered, predicates, master);
 
-        DynamicGUI_DisplayList_Impl main;
+        DynamicGUI_DisplayTable_Impl main;
         if (addFilter) {
-            main = new DisplayList_JTable<>(mClass, filtered, verbosity, container, sources);
+            main = new DynamicGUI_DisplayTable_Impl<>(mClass, filtered, verbosity, container);
             DynamicGUI_Filter control = DynamicGUI_Filter.newFilterPanel(mClass, predicates, verbosity, container);
             container.setMainPanel(main);
             container.setControlPanel(control);
         } else {
-            main = new DisplayList_JTable<>(mClass, base, verbosity, container, sources);
+            main = new DynamicGUI_DisplayTable_Impl<>(mClass, base, verbosity, container);
             container.setMainPanel(main);
         }
+        main.setSources(sources);
 
         if (addControl) {
             container.addControlButtons(sources, controller, localeSource);
@@ -232,7 +232,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         /**
          * The list containing this button
          */
-        private DynamicGUI_DisplayList_Impl coreList;
+        private DynamicGUI_DisplayTable_Impl coreList;
 
         /**
          * Constructor

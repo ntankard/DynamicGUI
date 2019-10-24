@@ -6,6 +6,7 @@ import com.ntankard.DynamicGUI.Components.List.Component.Renderer.NegativeHighli
 import com.ntankard.DynamicGUI.Components.List.Component.Renderer.NonZeroRenderer;
 import com.ntankard.DynamicGUI.Components.List.Component.Renderer.Renderer;
 import com.ntankard.DynamicGUI.Components.List.Component.Renderer.ScaleRenderer;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 import com.ntankard.DynamicGUI.Util.Decoder.*;
 
 import java.text.NumberFormat;
@@ -44,7 +45,7 @@ public class MemberColumn {
      * @param member The member this column is based around
      * @param model  The model used to generate the columns containing this render.
      */
-    MemberColumn(Member member, DisplayList_JTable_Model model) {
+    public MemberColumn(Member member, DynamicGUI_DisplayTable_Model model) {
         this.member = member;
 
         // Extract any properties

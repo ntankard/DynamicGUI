@@ -1,6 +1,7 @@
 package com.ntankard.DynamicGUI.Components.List.Component;
 
 import com.ntankard.ClassExtension.Member;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 
 import javax.swing.*;
 import java.util.List;
@@ -24,7 +25,7 @@ public class MemberColumn_List extends MemberColumn {
      * @param model   The model used to generate the columns containing this render.
      * @param options The values that can be selected
      */
-    public MemberColumn_List(Member member, DisplayList_JTable_Model model, List options) {
+    public MemberColumn_List(Member member, DynamicGUI_DisplayTable_Model model, List options) {
         super(member, model);
         this.options = options;
 

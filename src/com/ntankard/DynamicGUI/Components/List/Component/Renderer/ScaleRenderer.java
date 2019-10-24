@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List.Component.Renderer;
 
-import com.ntankard.DynamicGUI.Components.List.Component.DisplayList_JTable_Model;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class ScaleRenderer extends Renderer {
      *
      * @param model The model used to generate the columns containing this render. Used to find min max
      */
-    public ScaleRenderer(DisplayList_JTable_Model model) {
+    public ScaleRenderer(DynamicGUI_DisplayTable_Model model) {
         super(model);
     }
 

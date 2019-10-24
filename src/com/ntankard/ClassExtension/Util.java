@@ -28,53 +28,56 @@ public class Util {
         }
 
         // search all possible sources of data for one that has the needed getter
-        for (Object source : sources)
-            try {
-                // get the source data (an exception will be thrown if not available)
-                Method sourceGetter;
-                Object sourceData;
+        if (sources != null) {
+            for (Object source : sources) {
                 try {
-                    sourceGetter = source.getClass().getDeclaredMethod(sourceMethod);
-                    sourceData = sourceGetter.invoke(source);
-                }catch (Exception ignored){
-                    sourceGetter = source.getClass().getDeclaredMethod(sourceMethod, String.class);
-                    sourceData = sourceGetter.invoke(source, member.getType().getSimpleName());
+                    // get the source data (an exception will be thrown if not available)
+                    Method sourceGetter;
+                    Object sourceData;
+                    try {
+                        sourceGetter = source.getClass().getDeclaredMethod(sourceMethod);
+                        sourceData = sourceGetter.invoke(source);
+                    } catch (Exception ignored) {
+                        sourceGetter = source.getClass().getDeclaredMethod(sourceMethod, String.class);
+                        sourceData = sourceGetter.invoke(source, member.getType().getSimpleName());
+                    }
+
+                    // is it a <String,Object> map
+                    if (sourceData instanceof Map) {
+
+                        // is any data available
+                        Map mapSourceData = (Map) sourceData;
+                        if (mapSourceData.isEmpty()) {
+                            continue;
+                        }
+
+                        // is the value the same as the value we are expecting to set
+                        if (!mapSourceData.values().toArray()[0].getClass().equals(member.getSetter().getParameterTypes()[0])) {
+                            continue;
+                        }
+
+                        return new ArrayList<>(mapSourceData.values());
+
+                    } else if (sourceData instanceof List) {
+
+                        // is any data available
+                        List listSourceData = (List) sourceData;
+                        if (listSourceData.isEmpty()) {
+                            continue;
+                        }
+
+                        // is the value the same as the value we are expecting to set
+                        if (!listSourceData.get(0).getClass().equals(member.getSetter().getParameterTypes()[0])) {
+                            continue;
+                        }
+
+                        return listSourceData;
+                    }
+                } catch (Exception ignored) {
+                    throw new RuntimeException(ignored);
                 }
-
-                // is it a <String,Object> map
-                if (sourceData instanceof Map) {
-
-                    // is any data available
-                    Map mapSourceData = (Map) sourceData;
-                    if (mapSourceData.isEmpty()) {
-                        continue;
-                    }
-
-                    // is the value the same as the value we are expecting to set
-                    if (!mapSourceData.values().toArray()[0].getClass().equals(member.getSetter().getParameterTypes()[0])) {
-                        continue;
-                    }
-
-                    return new ArrayList<>(mapSourceData.values());
-
-                } else if (sourceData instanceof List) {
-
-                    // is any data available
-                    List listSourceData = (List) sourceData;
-                    if (listSourceData.isEmpty()) {
-                        continue;
-                    }
-
-                    // is the value the same as the value we are expecting to set
-                    if (!listSourceData.get(0).getClass().equals(member.getSetter().getParameterTypes()[0])) {
-                        continue;
-                    }
-
-                    return listSourceData;
-                }
-            } catch (Exception ignored) {
-                throw new RuntimeException(ignored);
             }
+        }
         return null;
     }
 }

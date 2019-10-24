@@ -1,7 +1,9 @@
-package com.ntankard.DynamicGUI.Components.List.Component;
+package com.ntankard.DynamicGUI.Components.List;
 
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn;
+import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn_List;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
@@ -14,7 +16,7 @@ import java.util.List;
 
 import static com.ntankard.ClassExtension.Util.getSetterSource;
 
-public class DisplayList_JTable_Model extends AbstractTableModel implements Updatable {
+public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements Updatable {
 
     /**
      * The members used to make the columns for the table
@@ -40,7 +42,7 @@ public class DisplayList_JTable_Model extends AbstractTableModel implements Upda
      * @param master    The top level GUI
      * @param sources   Sources of data that can be set for various objects
      */
-    DisplayList_JTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master, Object... sources) {
+    public DynamicGUI_DisplayTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master, Object... sources) {
         this.rowData = rowData;
         this.master = master;
 

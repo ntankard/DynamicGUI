@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Components.List.Component.Renderer;
 
 import com.ntankard.DynamicGUI.Util.Decoder.Decoder;
-import com.ntankard.DynamicGUI.Components.List.Component.DisplayList_JTable_Model;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -22,14 +22,14 @@ public class Renderer extends DefaultTableCellRenderer {
     /**
      * The model containing this render, used to get row data
      */
-    protected DisplayList_JTable_Model parent;
+    protected DynamicGUI_DisplayTable_Model parent;
 
     /**
      * Constructor
      *
      * @param parent The model containing this render, used to get row data
      */
-    public Renderer(DisplayList_JTable_Model parent) {
+    public Renderer(DynamicGUI_DisplayTable_Model parent) {
         this.parent = parent;
     }
 

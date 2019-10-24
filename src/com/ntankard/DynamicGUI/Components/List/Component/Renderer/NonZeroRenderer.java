@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List.Component.Renderer;
 
-import com.ntankard.DynamicGUI.Components.List.Component.DisplayList_JTable_Model;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class NonZeroRenderer extends Renderer {
     /**
      * Constructor
      */
-    public NonZeroRenderer(DisplayList_JTable_Model parent) {
+    public NonZeroRenderer(DynamicGUI_DisplayTable_Model parent) {
         super(parent);
     }
 
