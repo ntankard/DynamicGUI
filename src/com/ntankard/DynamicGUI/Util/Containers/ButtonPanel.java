@@ -11,6 +11,11 @@ public class ButtonPanel extends JPanel {
     private GridBagConstraints buttonC = null;
 
     /**
+     * The primary button on the panel
+     */
+    private JButton mainBtn;
+
+    /**
      * Create the GUI components
      */
     private void createUIComponents() {
@@ -24,14 +29,40 @@ public class ButtonPanel extends JPanel {
     /**
      * Add a button to the panel
      *
-     * @param toAdd The button to add
+     * @param toAdd  The button to add
+     * @param isMain Should this be the main button
      */
-    public void addButton(JButton toAdd) {
+    public void addButton(JButton toAdd, boolean isMain) {
         if (buttonC == null) {
             createUIComponents();
         }
 
+        if (isMain) {
+            if (mainBtn != null) {
+                throw new RuntimeException("Double setting the main btn");
+            }
+            mainBtn = toAdd;
+        }
+
         buttonC.gridx++;
         this.add(toAdd, buttonC);
+    }
+
+    /**
+     * Add a button to the panel
+     *
+     * @param toAdd The button to add
+     */
+    public void addButton(JButton toAdd) {
+        addButton(toAdd, false);
+    }
+
+    /**
+     * get the primary button on the panel
+     *
+     * @return The primary button on the panel
+     */
+    public JButton getMainBtn() {
+        return mainBtn;
     }
 }

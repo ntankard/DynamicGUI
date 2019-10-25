@@ -14,7 +14,7 @@ import java.awt.*;
  * @param <S> The type of panel in the center (the main panel)
  * @param <C> The type on panel on the side (the controller)
  */
-public class ControllablePanel<S extends UpdatableJScrollPane, C extends ControllablePanel> extends UpdatableJPanel {
+public class ControllablePanel<S extends UpdatableJScrollPane, C extends UpdatableJPanel> extends UpdatableJPanel {
 
     /**
      * The main panel displayed (required)
@@ -52,12 +52,31 @@ public class ControllablePanel<S extends UpdatableJScrollPane, C extends Control
     }
 
     /**
+     * Add a title to the panel
+     *
+     * @param name The title to add
+     */
+    public void setTitle(String name) {
+        this.add(new JLabel(name), BorderLayout.NORTH);
+    }
+
+    /**
      * Add a button to the panel at the bottom
      *
      * @param toAdd The button to add
      */
     public void addButton(JButton toAdd) {
         buttonPanel.addButton(toAdd);
+    }
+
+    /**
+     * Add a button to the panel at the bottom
+     *
+     * @param toAdd  The button to add
+     * @param isMain Should this be the main button
+     */
+    public void addButton(JButton toAdd, boolean isMain) {
+        buttonPanel.addButton(toAdd, isMain);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -81,16 +100,16 @@ public class ControllablePanel<S extends UpdatableJScrollPane, C extends Control
     //################################################ Accessors #######################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public void setTitle(String name) {
-        this.add(new JLabel(name), BorderLayout.NORTH);
-    }
-
     public S getMainPanel() {
         return mainPanel;
     }
 
     public C getControlPanel() {
         return controlPanel;
+    }
+
+    public ButtonPanel getButtonPanel() {
+        return buttonPanel;
     }
 
     protected void setMainPanel(S mainPanel) {

@@ -6,6 +6,8 @@ import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -52,8 +54,13 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
 
         value_txt = new JTextField();
         value_txt.setEditable(getBaseMember().canEdit());
-        value_txt.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
+        value_txt.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
                 try {
                     currentValue = decoder.encode(value_txt.getText());
                     valueChanged(currentValue);

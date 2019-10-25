@@ -25,7 +25,7 @@ public class DynamicGUI_Filter extends ControllablePanel<DynamicGUI_Filter_Impl,
     public static <T> DynamicGUI_Filter newFilterPanel(MemberClass mClass, List<Predicate<T>> predicates, int verbosity, Updatable master) {
         DynamicGUI_Filter container = new DynamicGUI_Filter(master);
 
-        DynamicGUI_Filter_Impl<T> main = new DynamicGUI_Filter_Impl<>(mClass, predicates, verbosity, container);
+        DynamicGUI_Filter_Impl<T> main = new DynamicGUI_Filter_Impl<>(mClass, predicates, container).setVerbosity(verbosity);
         container.setMainPanel(main);
 
         return container;

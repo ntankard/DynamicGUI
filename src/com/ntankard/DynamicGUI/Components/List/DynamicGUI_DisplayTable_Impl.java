@@ -3,6 +3,7 @@ package com.ntankard.DynamicGUI.Components.List;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn_List;
+import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject_Impl;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Table.TableColumnAdjuster;
 import com.ntankard.DynamicGUI.Util.Update.UpdatableJScrollPane;
@@ -13,6 +14,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
 
@@ -34,7 +37,7 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     /**
      * What level of verbosity should be shown? (compared against MemberProperties verbosity)
      */
-    private final int verbosity;
+    private int verbosity;
 
     /**
      * The kind of object used to generate this table
@@ -54,18 +57,30 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     /**
      * Constructor
      *
-     * @param mClass    The kind of object used to generate this panel
-     * @param rowData   The list of rowData to display
-     * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param master    The parent of this object to be notified if data changes
+     * @param mClass  The kind of object used to generate this panel
+     * @param rowData The list of rowData to display
+     * @param master  The parent of this object to be notified if data changes
      */
-    public DynamicGUI_DisplayTable_Impl(MemberClass mClass, List<T> rowData, int verbosity, Updatable master) {
+    public DynamicGUI_DisplayTable_Impl(MemberClass mClass, List<T> rowData, Updatable master) {
         super(master);
         this.rowData = rowData;
         this.mClass = mClass;
+        this.verbosity = ALWAYS_DISPLAY;
+        createUIComponents();
+        update();
+    }
+
+    /**
+     * Set what level of verbosity should be shown?
+     *
+     * @param verbosity What level of verbosity should be shown?
+     * @return This
+     */
+    public DynamicGUI_DisplayTable_Impl<T> setVerbosity(int verbosity) {
         this.verbosity = verbosity;
         createUIComponents();
         update();
+        return this;
     }
 
     /**

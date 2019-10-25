@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.ntankard.ClassExtension.DisplayProperties.DataType.*;
+import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 import static com.ntankard.ClassExtension.Util.getSetterSource;
 
 public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
@@ -61,26 +62,50 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
      * Constructor
      *
      * @param baseInstance The instance to interact with
-     * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The top level GUI
      */
-    public DynamicGUI_IntractableObject_Impl(T baseInstance, int verbosity, boolean saveOnUpdate, Updatable master) {
+    public DynamicGUI_IntractableObject_Impl(T baseInstance, Updatable master) {
         super(master);
         this.baseInstance = baseInstance;
-        this.verbosity = verbosity;
+        this.verbosity = ALWAYS_DISPLAY;
         this.mClass = new MemberClass(baseInstance.getClass());
-        this.saveOnUpdate = saveOnUpdate;
+        this.saveOnUpdate = true;
 
         createUIComponents();
         update();
     }
 
     /**
+     * Set should the action of the panel be done as soon as an update is received? or on command
+     *
+     * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
+     * @return This
+     */
+    public DynamicGUI_IntractableObject_Impl<T> setSaveOnUpdate(boolean saveOnUpdate) {
+        this.saveOnUpdate = saveOnUpdate;
+        createUIComponents();
+        update();
+        return this;
+    }
+
+    /**
+     * Set what level of verbosity should be shown?
+     *
+     * @param verbosity What level of verbosity should be shown?
+     * @return This
+     */
+    public DynamicGUI_IntractableObject_Impl<T> setVerbosity(int verbosity) {
+        this.verbosity = verbosity;
+        createUIComponents();
+        update();
+        return this;
+    }
+
+    /**
      * Set a user set source for the locale, numberFormat used if not set
      *
      * @param localeSource A user set source for the locale, numberFormat used if not set
-     * @return
+     * @return This
      */
     public DynamicGUI_IntractableObject_Impl<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
         this.localeSource = localeSource;

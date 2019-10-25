@@ -1,40 +1,25 @@
 package com.ntankard.DynamicGUI.Containers;
 
 import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject_Impl;
-import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
+import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 
-public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_IntractableObject_Impl, ControllablePanel> {
-
-    //------------------------------------------------------------------------------------------------------------------
-    //########################################## Overloaded Factories ##################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    public static <T> DynamicGUI_IntractableObject newIntractableObjectPanel(T baseInstance, int verbosity, boolean saveOnUpdate, Updatable master, Object... sources) {
-        return newIntractableObjectPanel(baseInstance, verbosity, saveOnUpdate, null, null, master, sources);
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //########################################## Container Factories ###################################################
-    //------------------------------------------------------------------------------------------------------------------
+public class DynamicGUI_IntractableObject<T> extends ControllablePanel<DynamicGUI_IntractableObject_Impl, ControllablePanel> {
 
     /**
-     * Open a dialog containing a new DynamicGUI_IntractableObject_Impl with controls
+     * Open a dialog containing a new DynamicGUI_IntractableObject with controls
      *
-     * @param baseInstance The instance to interact with
-     * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param localeSource A user set source for the locale, numberFormat used if not set
-     * @param master       The top level GUI
-     * @param sources      Sources of data that can be set for various objects
-     * @param <T>          The type of the base instance
+     * @param corePanel The main panel to display
+     * @param <T>       The type of the base instance
+     * @return True if the object was modified
      */
-    public static <T> boolean openIntractableObjectDialog(T baseInstance, int verbosity, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
+    public static <T> boolean openIntractableObjectDialog(DynamicGUI_IntractableObject<T> corePanel) {
         final boolean[] change = {false};
         JDialog dialog = new JDialog();
-        DynamicGUI_IntractableObject panel = newIntractableObjectPanel(baseInstance, verbosity, false, new FinalizeNotifier() {
+        corePanel.saveButton(new FinalizeNotifier() {
             @Override
             public void cancel() {
                 change[0] = false;
@@ -46,76 +31,90 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
                 change[0] = true;
                 dialog.dispose();
             }
-        }, localeSource, master, sources);
-        dialog.setContentPane(panel);
+        });
+
+
+        dialog.setContentPane(corePanel);
         dialog.setModal(true); // block until complete
-        dialog.getRootPane().setDefaultButton(panel.getDefaultButton());
+        dialog.getRootPane().setDefaultButton(corePanel.getButtonPanel().getMainBtn());
         dialog.pack();
         dialog.setVisible(true);
         return change[0];
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################ Master Factories ####################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Create a new DynamicGUI_IntractableObject_Impl with controls if needed
-     *
-     * @param baseInstance The instance to interact with
-     * @param verbosity    What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param saveOnUpdate Should changes occurs straight away or after save is pressed?
-     * @param notifier     The object top notify when the panel is finished
-     * @param master       The top level GUI
-     * @param sources      Sources of data that can be set for various objects
-     * @param <T>          The type of the base instance
-     * @return A ControllablePanel containing a DynamicGUI_IntractableObject_Impl
-     */
-    public static <T> DynamicGUI_IntractableObject newIntractableObjectPanel(T baseInstance, int verbosity, boolean saveOnUpdate, FinalizeNotifier notifier, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
-        DynamicGUI_IntractableObject container = new DynamicGUI_IntractableObject(master);
-
-        DynamicGUI_IntractableObject_Impl main = new DynamicGUI_IntractableObject_Impl<>(baseInstance, verbosity, saveOnUpdate, master);
-        main.setLocaleSource(localeSource);
-        main.setSources(sources);
-        container.setMainPanel(main);
-
-        if (!saveOnUpdate) {
-            container.addControlButtons(notifier);
-        }
-
-        return container;
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################### Core Object ######################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * The save button, stored because it acts as the default button
-     */
-    private JButton saveBtn;
-
     /**
      * Constructor
      *
-     * @param master The parent of this object to be notified if data changes
+     * @param baseInstance The instance to interact with
+     * @param master       The parent of this object to be notified if data changes
      */
-    private DynamicGUI_IntractableObject(Updatable master) {
+    public DynamicGUI_IntractableObject(T baseInstance, Updatable master) {
         super(master);
+        setMainPanel(new DynamicGUI_IntractableObject_Impl<>(baseInstance, master));
+        update();
+    }
+
+    /**
+     * Add save and cancel buttons
+     *
+     * @param notifier Callback for when the buttons are pressed
+     * @return This
+     */
+    public DynamicGUI_IntractableObject<T> saveButton(FinalizeNotifier notifier) {
+        getMainPanel().setSaveOnUpdate(false);
+        addControlButtons(notifier);
+        update();
+        return this;
+    }
+
+    /**
+     * Set what level of verbosity should be shown?
+     *
+     * @param verbosity What level of verbosity should be shown?
+     * @return This
+     */
+    public DynamicGUI_IntractableObject<T> setVerbosity(int verbosity) {
+        getMainPanel().setVerbosity(verbosity);
+        update();
+        return this;
+    }
+
+    /**
+     * Set a user set source for the locale, numberFormat used if not set
+     *
+     * @param localeSource A user set source for the locale, numberFormat used if not set
+     * @return This
+     */
+    public DynamicGUI_IntractableObject<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
+        getMainPanel().setLocaleSource(localeSource);
+        update();
+        return this;
+    }
+
+    /**
+     * Set the sources of data that can be set for various objects
+     *
+     * @param sources Sources of data that can be set for various objects
+     * @return This
+     */
+    public DynamicGUI_IntractableObject<T> setSources(Object... sources) {
+        getMainPanel().setSources(sources);
+        update();
+        return this;
     }
 
     /**
      * Add a button panel with the save and cancel button
      */
     private void addControlButtons(FinalizeNotifier notifier) {
-        saveBtn = new JButton("Save");
+        JButton saveBtn = new JButton("Save");
         saveBtn.addActionListener(e -> {
             getMainPanel().execute();
             if (notifier != null) {
                 notifier.complete();
             }
         });
-        addButton(saveBtn);
+        addButton(saveBtn, true);
 
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.addActionListener(e -> {
@@ -125,15 +124,6 @@ public class DynamicGUI_IntractableObject extends ControllablePanel<DynamicGUI_I
             }
         });
         addButton(cancelBtn);
-    }
-
-    /**
-     * Get the button to be called when the user hits enter on a dialog
-     *
-     * @return The button to be called when the user hits enter on a dialog
-     */
-    public JButton getDefaultButton() {
-        return saveBtn;
     }
 
     //------------------------------------------------------------------------------------------------------------------

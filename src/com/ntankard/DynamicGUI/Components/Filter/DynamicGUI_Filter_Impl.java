@@ -3,11 +3,14 @@ package com.ntankard.DynamicGUI.Components.Filter;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.Component.*;
+import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Impl;
 import com.ntankard.DynamicGUI.Util.Containers.PanelContainer;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.util.List;
 import java.util.function.Predicate;
+
+import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
 
@@ -31,16 +34,28 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
      *
      * @param mClass     The kind of object used to generate this panel
      * @param predicates All the predicates for each of the individual controls
-     * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master     The parent of this object to be notified if data changes
      */
-    public DynamicGUI_Filter_Impl(MemberClass mClass, List<Predicate<T>> predicates, int verbosity, Updatable master) {
+    public DynamicGUI_Filter_Impl(MemberClass mClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
         this.mClass = mClass;
         this.predicates = predicates;
+        this.verbosity = ALWAYS_DISPLAY;
+        createUIComponents();
+        update();
+    }
+
+    /**
+     * Set what level of verbosity should be shown?
+     *
+     * @param verbosity What level of verbosity should be shown?
+     * @return This
+     */
+    public DynamicGUI_Filter_Impl<T> setVerbosity(int verbosity) {
         this.verbosity = verbosity;
         createUIComponents();
         update();
+        return this;
     }
 
     //------------------------------------------------------------------------------------------------------------------

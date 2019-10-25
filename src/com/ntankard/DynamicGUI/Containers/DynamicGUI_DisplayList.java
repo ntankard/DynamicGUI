@@ -60,15 +60,16 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
         DynamicGUI_DisplayTable_Impl main;
         if (addFilter) {
-            main = new DynamicGUI_DisplayTable_Impl<>(mClass, filtered, verbosity, container);
+            main = new DynamicGUI_DisplayTable_Impl<>(mClass, filtered, container);
             DynamicGUI_Filter control = DynamicGUI_Filter.newFilterPanel(mClass, predicates, verbosity, container);
             container.setMainPanel(main);
             container.setControlPanel(control);
         } else {
-            main = new DynamicGUI_DisplayTable_Impl<>(mClass, base, verbosity, container);
+            main = new DynamicGUI_DisplayTable_Impl<>(mClass, base, container);
             container.setMainPanel(main);
         }
         main.setSources(sources);
+        main.setVerbosity(verbosity);
 
         if (addControl) {
             container.addControlButtons(sources, controller, localeSource);
@@ -131,7 +132,10 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             ListControl_Button newEditBtn = new ListControl_Button<>("New Edit", this);
             newEditBtn.addActionListener(e -> {
                 T newObj = controller.newElement();
-                if (DynamicGUI_IntractableObject.openIntractableObjectDialog(newObj, 0, localeSource, this, sources)) {
+                DynamicGUI_IntractableObject<?> core = new DynamicGUI_IntractableObject<>(newObj, this)
+                        .setLocaleSource(localeSource)
+                        .setSources(sources);
+                if (DynamicGUI_IntractableObject.openIntractableObjectDialog(core)) {
                     controller.addElement(newObj);
                 }
                 notifyUpdate();
@@ -142,7 +146,9 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         ListControl_Button editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
         editBtn.addActionListener(e -> {
             List selected = getMainPanel().getSelectedItems();
-            DynamicGUI_IntractableObject.openIntractableObjectDialog(selected.get(0), 0, localeSource, this, sources);
+            DynamicGUI_IntractableObject.openIntractableObjectDialog(new DynamicGUI_IntractableObject<>(selected.get(0), this)
+                    .setLocaleSource(localeSource)
+                    .setSources(sources));
         });
         addButton(editBtn);
 
