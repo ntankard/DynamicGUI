@@ -2,8 +2,8 @@ package com.ntankard.DynamicGUI.Containers;
 
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Impl;
-import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
+import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
@@ -18,72 +18,6 @@ import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayTable_Impl, DynamicGUI_Filter> {
 
-    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableTable(objects, mClass, false, false, ALWAYS_DISPLAY, null, null, master);
-    }
-
-    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, int verbosity, Updatable master) {
-        return newIntractableTable(objects, mClass, false, false, verbosity, null, null, master);
-    }
-
-    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> objects, MemberClass mClass, boolean addFilter, int verbosity, Updatable master) {
-        return newIntractableTable(objects, mClass, addFilter, false, verbosity, null, null, master);
-    }
-
-    public static <T> DynamicGUI_DisplayList<T> newEditIntractableTable(List<T> objects, MemberClass mClass, Updatable master) {
-        return newIntractableTable(objects, mClass, false, true, ALWAYS_DISPLAY, null, null, master);
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //################################################ Factories #######################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Create a new intractable table
-     *
-     * @param base       The master content of the list
-     * @param mClass     The kind of object used to generate this panel
-     * @param addFilter  Should a filler panel be added?
-     * @param addControl Should the New, Edit, Delete button be added?
-     * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param controller The object used to generate new objects and delete others
-     * @param master     The parent of this object to be notified if data changes
-     * @param sources    The object used to get values for a selectable list
-     * @param <T>        THe type of objects to display
-     * @return A new intractable table
-     */
-    public static <T> DynamicGUI_DisplayList<T> newIntractableTable(List<T> base, MemberClass mClass, boolean addFilter, boolean addControl, int verbosity, ElementController<T> controller, CurrencyDecoder_NumberFormatSource localeSource, Updatable master, Object... sources) {
-        List<Predicate<T>> predicates = new ArrayList<>();
-        List<T> filtered = new ArrayList<>();
-
-        DynamicGUI_DisplayList<T> container = new DynamicGUI_DisplayList<>(base, filtered, predicates, master);
-
-        DynamicGUI_DisplayTable_Impl main;
-        if (addFilter) {
-            main = new DynamicGUI_DisplayTable_Impl<>(mClass, filtered, container);
-            DynamicGUI_Filter control = DynamicGUI_Filter.newFilterPanel(mClass, predicates, verbosity, container);
-            container.setMainPanel(main);
-            container.setControlPanel(control);
-        } else {
-            main = new DynamicGUI_DisplayTable_Impl<>(mClass, base, container);
-            container.setMainPanel(main);
-        }
-        main.setSources(sources);
-        main.setVerbosity(verbosity);
-
-        if (addControl) {
-            container.addControlButtons(sources, controller, localeSource);
-        }
-
-        container.update();
-
-        return container;
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################### Core Object ######################################################
-    //------------------------------------------------------------------------------------------------------------------
-
     /**
      * The master content of the list
      */
@@ -92,32 +26,106 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     /**
      * The version of the list with the fillers applied
      */
-    private List<T> filtered;
+    private List<T> filtered = new ArrayList<>();
 
     /**
      * All the predicates for each of the individual controls
      */
-    private List<Predicate<T>> predicates;
+    private List<Predicate<T>> predicates = null;
 
     /**
-     * @param base       The master content of the list
-     * @param filtered   The version of the list with the fillers applied
-     * @param predicates All the predicates for each of the individual controls
-     * @param master     The parent of this object to be notified if data changes
+     * The kind of object used to generate this table
      */
-    private DynamicGUI_DisplayList(List<T> base, List<T> filtered, List<Predicate<T>> predicates, Updatable master) {
+    private MemberClass mClass;
+
+    /**
+     * Set A user set source for the locale
+     */
+    private CurrencyDecoder_NumberFormatSource localeSource;
+    /**
+     * Sources of data that can be set for various objects
+     */
+    private Object[] sources;
+
+    /**
+     * What level of verbosity should be shown?
+     */
+    private int verbosity = ALWAYS_DISPLAY;
+
+    /**
+     * Constructor
+     *
+     * @param master The parent of this object to be notified if data changes
+     */
+    public DynamicGUI_DisplayList(List<T> base, MemberClass mClass, Updatable master) {
         super(master);
         this.base = base;
-        this.filtered = filtered;
-        this.predicates = predicates;
+        this.mClass = mClass;
+
+        setMainPanel(new DynamicGUI_DisplayTable_Impl<>(mClass, filtered, this));
+    }
+
+    /**
+     * Set a user set source for the locale, numberFormat used if not set
+     *
+     * @param localeSource A user set source for the locale, numberFormat used if not set
+     * @return This
+     */
+    public DynamicGUI_DisplayList<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
+        this.localeSource = localeSource;
+        getMainPanel().setLocaleSource(localeSource);
+        update();
+        return this;
+    }
+
+    /**
+     * Set the sources of data that can be set for various objects
+     *
+     * @param sources Sources of data that can be set for various objects
+     * @return This
+     */
+    public DynamicGUI_DisplayList<T> setSources(Object... sources) {
+        this.sources = sources;
+        getMainPanel().setSources(sources);
+        update();
+        return this;
+    }
+
+    /**
+     * Set what level of verbosity should be shown?
+     *
+     * @param verbosity What level of verbosity should be shown?
+     * @return This
+     */
+    public DynamicGUI_DisplayList<T> setVerbosity(int verbosity) {
+        this.verbosity = verbosity;
+        getMainPanel().setVerbosity(verbosity);
+        if (getControlPanel() != null) {
+            getControlPanel().setVerbosity(verbosity);
+        }
+        update();
+        return this;
+    }
+
+    /**
+     * Add a filter panel
+     *
+     * @return This
+     */
+    public DynamicGUI_DisplayList<T> addFilter() {
+        predicates = new ArrayList<>();
+        setControlPanel(new DynamicGUI_Filter<>(mClass, predicates, this));
+        getControlPanel().setVerbosity(verbosity);
+
+        return this;
     }
 
     /**
      * Get a button panel with the save and cancel button
      *
-     * @param sources The source data needed for a child object
+     * @param controller The main controller
      */
-    private void addControlButtons(Object[] sources, ElementController<T> controller, CurrencyDecoder_NumberFormatSource localeSource) {
+    public DynamicGUI_DisplayList<T> addControlButtons(ElementController<T> controller) {
         if (controller != null) {
             ListControl_Button newBtn = new ListControl_Button<>("New", this);
             newBtn.addActionListener(e -> {
@@ -134,7 +142,8 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
                 T newObj = controller.newElement();
                 DynamicGUI_IntractableObject<?> core = new DynamicGUI_IntractableObject<>(newObj, this)
                         .setLocaleSource(localeSource)
-                        .setSources(sources);
+                        .setSources(sources)
+                        .setVerbosity(verbosity);
                 if (DynamicGUI_IntractableObject.openIntractableObjectDialog(core)) {
                     controller.addElement(newObj);
                 }
@@ -148,7 +157,8 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             List selected = getMainPanel().getSelectedItems();
             DynamicGUI_IntractableObject.openIntractableObjectDialog(new DynamicGUI_IntractableObject<>(selected.get(0), this)
                     .setLocaleSource(localeSource)
-                    .setSources(sources));
+                    .setSources(sources)
+                    .setVerbosity(verbosity));
         });
         addButton(editBtn);
 
@@ -163,15 +173,18 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             });
             addButton(deleteBtn);
         }
+
+        return this;
     }
 
     /**
-     * @inheritDoc Bottom of the tree
+     * @inheritDoc
      */
+    @Override
     public void update() {
         filtered.clear();
 
-        if (base.size() != 0) {
+        if (base.size() != 0 && predicates != null) {
             List filteredList = base.stream().filter(o -> {
                 for (Predicate p : predicates) {
                     if (!p.test(o)) {
@@ -185,10 +198,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             filtered.addAll(base);
         }
 
-        getMainPanel().update();
-        if (getControlPanel() != null) {
-            getControlPanel().update();
-        }
+        super.update();
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -197,8 +207,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
     /**
      * Interface to interface with objects in the database
-     *
-     * @param <T>
      */
     public interface ElementController<T> {
         /**
@@ -233,7 +241,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         /**
          * In what situation should the button be enabled?
          */
-        private EnableCondition enableCondition;
+        private ListControl_Button.EnableCondition enableCondition;
 
         /**
          * The list containing this button

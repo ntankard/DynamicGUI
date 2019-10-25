@@ -8,39 +8,26 @@ import com.ntankard.DynamicGUI.Util.Update.Updatable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class DynamicGUI_Filter extends ControllablePanel<DynamicGUI_Filter_Impl, ControllablePanel> {
-
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################ Master Factories ####################################################
-    //------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Create a new DynamicGUI_Filter_Impl panel
-     *
-     * @param mClass     The kind of object used to generate this panel
-     * @param predicates All the predicates for each of the individual controls
-     * @param verbosity  What level of verbosity should be shown? (compared against MemberProperties verbosity)
-     * @param master     The parent of this object to be notified if data changes
-     */
-    public static <T> DynamicGUI_Filter newFilterPanel(MemberClass mClass, List<Predicate<T>> predicates, int verbosity, Updatable master) {
-        DynamicGUI_Filter container = new DynamicGUI_Filter(master);
-
-        DynamicGUI_Filter_Impl<T> main = new DynamicGUI_Filter_Impl<>(mClass, predicates, container).setVerbosity(verbosity);
-        container.setMainPanel(main);
-
-        return container;
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //############################################### Core Object ######################################################
-    //------------------------------------------------------------------------------------------------------------------
+public class DynamicGUI_Filter<T> extends ControllablePanel<DynamicGUI_Filter_Impl, ControllablePanel> {
 
     /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
      */
-    private DynamicGUI_Filter(Updatable master) {
+    public DynamicGUI_Filter(MemberClass mClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
+        setMainPanel(new DynamicGUI_Filter_Impl<>(mClass, predicates, master));
+    }
+
+    /**
+     * Set what level of verbosity should be shown?
+     *
+     * @param verbosity What level of verbosity should be shown?
+     * @return This
+     */
+    public DynamicGUI_Filter<T> setVerbosity(int verbosity) {
+        getMainPanel().setVerbosity(verbosity);
+        return this;
     }
 }

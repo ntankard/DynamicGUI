@@ -55,6 +55,11 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     private TableColumnAdjuster tableColumnAdjuster;
 
     /**
+     * Set A user set source for the locale
+     */
+    private CurrencyDecoder_NumberFormatSource localeSource;
+
+    /**
      * Constructor
      *
      * @param mClass  The kind of object used to generate this panel
@@ -97,19 +102,35 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     }
 
     /**
+     * Set a user set source for the locale
+     *
+     * @param localeSource A user set source for the locale
+     */
+    public DynamicGUI_DisplayTable_Impl<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
+        this.localeSource = localeSource;
+        createUIComponents();
+        update();
+        return this;
+    }
+
+    /**
      * Create the GUI components
      */
     private void createUIComponents() {
-        structure_table = new JTable() {
-            @Override
-            public TableCellRenderer getCellRenderer(int row, int column) {
-                TableCellRenderer renderer = model.getColumnRenderer(column);
-                if (renderer != null) {
-                    return renderer;
+
+
+        if (structure_table == null) {
+            structure_table = new JTable() {
+                @Override
+                public TableCellRenderer getCellRenderer(int row, int column) {
+                    TableCellRenderer renderer = model.getColumnRenderer(column);
+                    if (renderer != null) {
+                        return renderer;
+                    }
+                    return super.getCellRenderer(row, column);
                 }
-                return super.getCellRenderer(row, column);
-            }
-        };
+            };
+        }
         model = new DynamicGUI_DisplayTable_Model(mClass, getRowData(), verbosity, this, sources);
 
         structure_table.setModel(model);
@@ -128,6 +149,8 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
         structure_table.setAutoCreateRowSorter(true);
 
         this.setViewportView(structure_table);
+
+        model.setNumberFormatSource(localeSource);
     }
 
     /**
@@ -162,14 +185,6 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
         return structure_table.getSelectionModel();
     }
 
-    /**
-     * Set a user set source for the locale
-     *
-     * @param localeSource A user set source for the locale
-     */
-    public void setNumberFormatSource(CurrencyDecoder_NumberFormatSource localeSource) {
-        model.setNumberFormatSource(localeSource);
-    }
 
     /**
      * Get the element tired to a index in the list (usual the same but can be different if the display is sorted
