@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     /**
      * The master content of the list
      */
-    private List<T> base;
+    protected List<T> base;
 
     /**
      * The version of the list with the fillers applied
@@ -42,6 +43,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * Set A user set source for the locale
      */
     private CurrencyDecoder_NumberFormatSource localeSource;
+
     /**
      * Sources of data that can be set for various objects
      */
@@ -51,6 +53,11 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * What level of verbosity should be shown?
      */
     private int verbosity = ALWAYS_DISPLAY;
+
+    /**
+     * Comparator used to sort the list before displaying
+     */
+    private Comparator<T> comparator = null;
 
     /**
      * Constructor
@@ -178,6 +185,18 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     }
 
     /**
+     * Set the comparator used to sort the list before displaying
+     *
+     * @param comparator Comparator used to sort the list before displaying
+     * @return This
+     */
+    public DynamicGUI_DisplayList<T> setComparator(Comparator<T> comparator) {
+        this.comparator = comparator;
+        update();
+        return this;
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
@@ -196,6 +215,10 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             filtered.addAll(filteredList);
         } else {
             filtered.addAll(base);
+        }
+
+        if (comparator != null) {
+            filtered.sort(comparator);
         }
 
         super.update();
