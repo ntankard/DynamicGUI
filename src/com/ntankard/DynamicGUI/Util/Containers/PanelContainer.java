@@ -32,19 +32,33 @@ public class PanelContainer extends UpdatableJScrollPane {
     private List<UpdatableJPanel> panels = new ArrayList<>();
 
     /**
+     * Arrange the panel vertically?
+     */
+    private boolean vertical;
+
+    /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
      */
     protected PanelContainer(Updatable master) {
+        this(true, master);
+    }
+
+    protected PanelContainer(boolean vertical, Updatable master) {
         super(master);
+        this.vertical = vertical;
     }
 
     /**
      * Create the GUI components
      */
     protected void createUIComponents() {
-        viewportPanel = new JPanel(new GridBagLayout());
+        if (vertical) {
+            viewportPanel = new JPanel(new GridBagLayout());
+        } else {
+            viewportPanel = new JPanel();
+        }
 
         componentC = new GridBagConstraints();
         componentC.weightx = 1;
@@ -54,7 +68,9 @@ public class PanelContainer extends UpdatableJScrollPane {
         GridBagConstraints spacerC = new GridBagConstraints();
         spacerC.weighty = 1;
         spacerC.gridy = 0;
-        viewportPanel.add(separator, spacerC);
+        if (vertical) {
+            viewportPanel.add(separator, spacerC);
+        }
 
         this.setViewportView(viewportPanel);
     }
@@ -65,16 +81,25 @@ public class PanelContainer extends UpdatableJScrollPane {
      * @param memberPanel The panel to add
      */
     protected void addMember(UpdatableJPanel memberPanel) {
-        viewportPanel.remove(separator);
+        if (vertical) {
+            viewportPanel.remove(separator);
+        }
 
         componentC.gridy++;
-        viewportPanel.add(memberPanel, componentC);
+        if (vertical) {
+            viewportPanel.add(memberPanel, componentC);
+        } else {
+            viewportPanel.add(memberPanel);
+        }
         panels.add(memberPanel);
 
         GridBagConstraints spacerC = new GridBagConstraints();
         spacerC.weighty = 1;
         spacerC.gridy = componentC.gridy + 1;
-        viewportPanel.add(separator, spacerC);
+        if (vertical) {
+            viewportPanel.add(separator, spacerC);
+        }
+
     }
 
     //------------------------------------------------------------------------------------------------------------------
