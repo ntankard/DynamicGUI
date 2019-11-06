@@ -67,7 +67,7 @@ public class Util {
                         }
 
                         // is the value the same as the value we are expecting to set
-                        if (!listSourceData.get(0).getClass().equals(member.getSetter().getParameterTypes()[0])) {
+                        if (!member.getSetter().getParameterTypes()[0].isAssignableFrom(listSourceData.get(0).getClass())) {
                             continue;
                         }
 
