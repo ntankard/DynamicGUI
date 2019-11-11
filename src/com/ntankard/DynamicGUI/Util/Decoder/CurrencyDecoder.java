@@ -44,7 +44,7 @@ public class CurrencyDecoder extends DoubleDecoder {
      */
     @Override
     public String decode(Double value, Object rowObject) {
-        if (value == 0) {
+        if (value == null || value == 0) {
             return "-";
         }
 
