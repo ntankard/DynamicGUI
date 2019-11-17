@@ -83,11 +83,11 @@ public class MemberColumn {
             decoder = new CalendarDecoder();
         } else if (member.getType().equals(Double.class)) {
             if (dataType.equals(CURRENCY)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US));
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName());
             } else if (dataType.equals(CURRENCY_AUD)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US));
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName());
             } else if (dataType.equals(CURRENCY_YEN)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN));
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName());
             } else {
                 decoder = new DoubleDecoder();
             }

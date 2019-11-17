@@ -126,32 +126,24 @@ public class MemberClass {
     }
 
     /**
-     * Get all members for this class and its included layers
-     *
-     * @return All members for this class and its included layers
-     */
-    public List<Member> getAllMembers() {
-        return getAllMembers_impl(null);
-    }
-
-    /**
-     * Get all members for this class and its included layers in an executable form
-     *
-     * @param o The object to bind to all returns to make them executable
-     * @return All members for this class and its included layers in an executable form
-     */
-    public List<ExecutableMember> getAllMembers(Object o) {
-        return getAllMembers_impl(o);
-    }
-
-    /**
      * Get all members for this class and its included layers at the listed verbosity level
      *
      * @param verbosity The verbosity level to filter on
      * @return A list of all members for this class and its included layers at the listed verbosity level
      */
     public List<Member> getVerbosityMembers(int verbosity) {
-        return getVerbosityMembers_impl(verbosity, null);
+        return getVerbosityMembers(verbosity, true);
+    }
+
+    /**
+     * Get all members for this class and its included layers at the listed verbosity level
+     *
+     * @param verbosity          The verbosity level to filter on
+     * @param checkShouldDisplay Should the MemberProperties shouldDisplay flag be looked at?
+     * @return A list of all members for this class and its included layers at the listed verbosity level
+     */
+    public List<Member> getVerbosityMembers(int verbosity, boolean checkShouldDisplay) {
+        return getVerbosityMembers_impl(verbosity, null, checkShouldDisplay);
     }
 
     /**
@@ -162,7 +154,7 @@ public class MemberClass {
      * @return A list of all members for this class and its included layers at the listed verbosity level in an executable form
      */
     public List<ExecutableMember> getVerbosityMembers(int verbosity, Object o) {
-        return getVerbosityMembers_impl(verbosity, o);
+        return getVerbosityMembers_impl(verbosity, o, true);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -170,12 +162,15 @@ public class MemberClass {
     //------------------------------------------------------------------------------------------------------------------
 
     @SuppressWarnings("unchecked")
-    private <T extends Member> List<T> getVerbosityMembers_impl(int verbosity, Object o) {
+    private <T extends Member> List<T> getVerbosityMembers_impl(int verbosity, Object o, boolean checkShouldDisplay) {
         List<T> fields = new ArrayList<>();
         for (Member f : getAllMembers_impl(o)) {
             MemberProperties properties = f.getGetter().getAnnotation(MemberProperties.class);
             if (properties != null) {
                 if (properties.verbosityLevel() > verbosity) {
+                    continue;
+                }
+                if (checkShouldDisplay && !properties.shouldDisplay()) {
                     continue;
                 }
             }

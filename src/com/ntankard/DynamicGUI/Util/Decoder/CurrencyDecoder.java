@@ -15,18 +15,25 @@ public class CurrencyDecoder extends DoubleDecoder {
     private CurrencyDecoder_NumberFormatSource numberFormatSource = null;
 
     /**
+     * The name of the thing we are displaying for
+     */
+    private String contextName;
+
+    /**
      * Constructor
      */
-    public CurrencyDecoder(NumberFormat numberFormat, CurrencyDecoder_NumberFormatSource numberFormatSource) {
+    public CurrencyDecoder(NumberFormat numberFormat, String contextName, CurrencyDecoder_NumberFormatSource numberFormatSource) {
         this.numberFormat = numberFormat;
+        this.contextName = contextName;
         this.numberFormatSource = numberFormatSource;
     }
 
     /**
      * Constructor
      */
-    public CurrencyDecoder(NumberFormat numberFormat) {
+    public CurrencyDecoder(NumberFormat numberFormat, String contextName) {
         this.numberFormat = numberFormat;
+        this.contextName = contextName;
     }
 
     /**
@@ -50,7 +57,7 @@ public class CurrencyDecoder extends DoubleDecoder {
 
         NumberFormat format = numberFormat;
         if (numberFormatSource != null && rowObject != null) {
-            format = numberFormatSource.getNumberFormat(rowObject);
+            format = numberFormatSource.getNumberFormat(rowObject, contextName);
         }
 
         return format.format(value);

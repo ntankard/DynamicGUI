@@ -177,11 +177,11 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                 intractableObject = new IntractableObject_String<String>(member, saveOnUpdate, order, new StringDecoder(), this);
             } else if (theClass.equals(Double.class)) {
                 if (dataType.equals(CURRENCY)) {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName(), localeSource), this);
                 } else if (dataType.equals(CURRENCY_AUD)) {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName(), localeSource), this);
                 } else if (dataType.equals(CURRENCY_YEN)) {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName(), localeSource), this);
                 } else {
                     intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(), this);
                 }

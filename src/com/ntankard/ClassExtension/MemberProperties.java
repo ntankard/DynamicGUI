@@ -12,6 +12,13 @@ public @interface MemberProperties {
     int TRACE_DISPLAY = 3;
 
     /**
+     * Should this member be added to the display?
+     *
+     * @return True if this member be added to the display
+     */
+    boolean shouldDisplay() default true;
+
+    /**
      * At what verbosity level should this field be displayed?
      */
     int verbosityLevel() default ALWAYS_DISPLAY;
