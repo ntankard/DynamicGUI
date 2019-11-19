@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class IntractableObject_List extends IntractableObject<Object> implements ItemListener {
@@ -17,21 +18,14 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     private JComboBox<Object> combo;
 
     /**
-     * The possible options (must have toString)
-     */
-    private List options;
-
-    /**
      * Constructor
      *
      * @param baseMember   The member that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
-     * @param options      The values that can be selected
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_List(ExecutableMember<Object> baseMember, boolean saveOnUpdate, int order, List options, Updatable master) {
+    public IntractableObject_List(ExecutableMember<Object> baseMember, boolean saveOnUpdate, int order, Updatable master) {
         super(baseMember, saveOnUpdate, order, master);
-        this.options = options;
         createUIComponents();
         update();
     }
@@ -44,7 +38,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
         this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
         this.setLayout(new BorderLayout());
 
-        combo = new JComboBox<>(options.toArray()); // @TODO this can change over time, it should be updated in update
+        combo = new JComboBox<>();
         combo.addItemListener(this);
 
         this.add(combo, BorderLayout.CENTER);
@@ -66,9 +60,19 @@ public class IntractableObject_List extends IntractableObject<Object> implements
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("unchecked")
     protected void load() {
         Object current = getBaseMember().get();
         combo.removeItemListener(this);
+
+        List<Object> options;
+        try {
+            options = (List<Object>) baseMember.getSource().invoke(baseMember.getObject(), baseMember.getType(), baseMember.getName());
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        combo.setModel(new DefaultComboBoxModel<>(options.toArray()));
+
         combo.setSelectedItem(current);
         combo.addItemListener(this);
     }

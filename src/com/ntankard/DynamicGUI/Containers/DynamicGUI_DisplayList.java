@@ -45,11 +45,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     private CurrencyDecoder_NumberFormatSource localeSource;
 
     /**
-     * Sources of data that can be set for various objects
-     */
-    private Object[] sources;
-
-    /**
      * What level of verbosity should be shown?
      */
     private int verbosity = ALWAYS_DISPLAY;
@@ -81,19 +76,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     public DynamicGUI_DisplayList<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
         this.localeSource = localeSource;
         getMainPanel().setLocaleSource(localeSource);
-        update();
-        return this;
-    }
-
-    /**
-     * Set the sources of data that can be set for various objects
-     *
-     * @param sources Sources of data that can be set for various objects
-     * @return This
-     */
-    public DynamicGUI_DisplayList<T> setSources(Object... sources) {
-        this.sources = sources;
-        getMainPanel().setSources(sources);
         update();
         return this;
     }
@@ -149,7 +131,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
                 T newObj = controller.newElement();
                 DynamicGUI_IntractableObject<?> core = new DynamicGUI_IntractableObject<>(newObj, this)
                         .setLocaleSource(localeSource)
-                        .setSources(sources)
                         .setVerbosity(verbosity);
                 if (DynamicGUI_IntractableObject.openIntractableObjectDialog(core)) {
                     controller.addElement(newObj);
@@ -164,7 +145,6 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             List selected = getMainPanel().getSelectedItems();
             DynamicGUI_IntractableObject.openIntractableObjectDialog(new DynamicGUI_IntractableObject<>(selected.get(0), this)
                     .setLocaleSource(localeSource)
-                    .setSources(sources)
                     .setVerbosity(verbosity));
         });
         addButton(editBtn);

@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.ntankard.ClassExtension.Util.getSetterSource;
-
 public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements Updatable {
 
     /**
@@ -40,18 +38,16 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      * @param rowData   The list of objects to display
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master    The top level GUI
-     * @param sources   Sources of data that can be set for various objects
      */
-    public DynamicGUI_DisplayTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master, Object... sources) {
+    public DynamicGUI_DisplayTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master) {
         this.rowData = rowData;
         this.master = master;
 
         List<Member> members = mClass.getVerbosityMembers(verbosity);
         for (Member member : members) {
             MemberColumn column;
-            List options = getSetterSource(member, sources);
-            if (options != null) {
-                column = new MemberColumn_List(member, this, options);
+            if (member.getSource() != null) {
+                column = new MemberColumn_List(member, this);
             } else {
                 column = new MemberColumn(member, this);
             }

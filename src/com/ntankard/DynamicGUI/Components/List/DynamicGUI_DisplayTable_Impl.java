@@ -1,17 +1,19 @@
 package com.ntankard.DynamicGUI.Components.List;
 
+import com.ntankard.ClassExtension.Member;
 import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn_List;
-import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject_Impl;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.DynamicGUI.Util.Table.TableColumnAdjuster;
-import com.ntankard.DynamicGUI.Util.Update.UpdatableJScrollPane;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
+import com.ntankard.DynamicGUI.Util.Update.UpdatableJScrollPane;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +45,6 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
      * The kind of object used to generate this table
      */
     private final MemberClass mClass;
-
-    /**
-     * Sources of data that can be set for various rowData
-     */
-    private Object[] sources;
 
     /**
      * TableColumnAdjuster used to shrink the table
@@ -89,19 +86,6 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     }
 
     /**
-     * Set the sources of data that can be set for various rowData
-     *
-     * @param sources Sources of data that can be set for various rowData
-     * @return This
-     */
-    public DynamicGUI_DisplayTable_Impl<T> setSources(Object... sources) {
-        this.sources = sources;
-        createUIComponents();
-        update();
-        return this;
-    }
-
-    /**
      * Set a user set source for the locale
      *
      * @param localeSource A user set source for the locale
@@ -131,7 +115,7 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
                 }
             };
         }
-        model = new DynamicGUI_DisplayTable_Model(mClass, getRowData(), verbosity, this, sources);
+        model = new DynamicGUI_DisplayTable_Model(mClass, getRowData(), verbosity, this);
 
         structure_table.setModel(model);
 
@@ -139,7 +123,23 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
             if (column instanceof MemberColumn_List) {
                 int index = model.getOrderList().indexOf(column);
                 TableColumn cell = structure_table.getColumnModel().getColumn(index);
-                cell.setCellEditor(new DefaultCellEditor(((MemberColumn_List) column).getCellComboBox()));
+                cell.setCellEditor(new DefaultCellEditor(new JComboBox<>()) {
+                    @Override
+                    @SuppressWarnings("unchecked")
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int columnIndex) {
+                        Member member = column.getMember();
+                        List<Object> options;
+                        try {
+                            options = (List) member.getSource().invoke(model.getRowObject(rowIndex), member.getType(), member.getName());
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        JComboBox<Object> superCombo = (JComboBox<Object>) super.getTableCellEditorComponent(table, value, isSelected, rowIndex, columnIndex);
+                        superCombo.setModel(new DefaultComboBoxModel<>(options.toArray()));
+                        return superCombo;
+                    }
+                });
             }
         }
 

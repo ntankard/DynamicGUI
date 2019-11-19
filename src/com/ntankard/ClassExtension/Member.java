@@ -2,8 +2,7 @@ package com.ntankard.ClassExtension;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-import static com.ntankard.ClassExtension.MemberProperties.*;
+import java.util.List;
 
 /**
  * A real or virtual method on a class signified by the fact that there is a getter available for it
@@ -36,6 +35,11 @@ public class Member {
     private Method setter;
 
     /**
+     * The method to call to get options to set for a value
+     */
+    private Method source;
+
+    /**
      * Constructor
      *
      * @param context The base class the contains the member
@@ -62,6 +66,25 @@ public class Member {
                 throw new RuntimeException("Types don't match");
             }
         }
+
+        this.source = null;
+        if (getSetter() != null) {
+            SetterProperties properties = getSetter().getAnnotation(SetterProperties.class);
+            if (properties != null) {
+                if (!properties.localSourceMethod().equals("")) {
+                    try {
+                        this.source = context.getMethod(properties.localSourceMethod(), Class.class, String.class);
+                    } catch (NoSuchMethodException e) {
+                        System.out.println("WARNING: The method provided by localSourceMethod dose not have the right parameters");
+                    }
+
+                    if (!List.class.isAssignableFrom(this.source.getReturnType())) {
+                        this.source = null;
+                        System.out.println("WARNING: The method provided by localSourceMethod dose not have the right return type");
+                    }
+                }
+            }
+        }
     }
 
     public String getName() {
@@ -78,6 +101,10 @@ public class Member {
 
     public Method getSetter() {
         return setter;
+    }
+
+    public Method getSource() {
+        return source;
     }
 
     public Class<?> getType() {

@@ -103,18 +103,6 @@ public class DynamicGUI_IntractableObject<T> extends ControllablePanel<DynamicGU
     }
 
     /**
-     * Set the sources of data that can be set for various objects
-     *
-     * @param sources Sources of data that can be set for various objects
-     * @return This
-     */
-    public DynamicGUI_IntractableObject<T> setSources(Object... sources) {
-        getMainPanel().setSources(sources);
-        update();
-        return this;
-    }
-
-    /**
      * Add a button panel with the save and cancel button
      */
     private void addControlButtons(FinalizeNotifier notifier) {

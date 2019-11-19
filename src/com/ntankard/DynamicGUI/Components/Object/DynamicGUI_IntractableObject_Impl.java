@@ -3,9 +3,12 @@ package com.ntankard.DynamicGUI.Components.Object;
 import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Util.Decoder.*;
-import com.ntankard.DynamicGUI.Components.Object.Component.*;
+import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject;
+import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_Enum;
+import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_List;
+import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_String;
 import com.ntankard.DynamicGUI.Util.Containers.PanelContainer;
+import com.ntankard.DynamicGUI.Util.Decoder.*;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.text.NumberFormat;
@@ -16,7 +19,6 @@ import java.util.Locale;
 
 import static com.ntankard.ClassExtension.DisplayProperties.DataType.*;
 import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
-import static com.ntankard.ClassExtension.Util.getSetterSource;
 
 public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
 
@@ -34,11 +36,6 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
      * What level of verbosity should be shown? (compared against MemberProperties verbosity)
      */
     private int verbosity;
-
-    /**
-     * Sources of data that can be set for various objects
-     */
-    private Object[] sources;
 
     /**
      * All the panels generated from the object
@@ -112,19 +109,6 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
     }
 
     /**
-     * Set the sources of data that can be set for various objects
-     *
-     * @param sources Sources of data that can be set for various objects
-     * @return This
-     */
-    public DynamicGUI_IntractableObject_Impl<T> setSources(Object... sources) {
-        this.sources = sources;
-        createUIComponents();
-        update();
-        return this;
-    }
-
-    /**
      * Execute all action of this panel based on the buffed value
      */
     public void execute() {
@@ -183,9 +167,8 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                     intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(), this);
                 }
             } else {
-                List options = getSetterSource(member, sources);
-                if (options != null) {
-                    intractableObject = new IntractableObject_List(member, saveOnUpdate, order, options, this);
+                if (member.getSource() != null) {
+                    intractableObject = new IntractableObject_List(member, saveOnUpdate, order, this);
                 } else {
                     intractableObject = new IntractableObject_String<Object>(member, saveOnUpdate, order, new ToStringDecoder(), this);
                 }

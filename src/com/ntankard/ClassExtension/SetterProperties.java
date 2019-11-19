@@ -7,9 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 public @interface SetterProperties {
 
     /**
-     * The name of the method on a source object that can return an array (or map) of data that can be used to set this field
+     * The name of the method on a source object that can return a list of data that can be used to set this field
      *
      * @return The name of the method on a source object that can return an array (or map) of data that can be used to set this field
      */
-    String sourceMethod();
+    String localSourceMethod();
 }

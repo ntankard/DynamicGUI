@@ -3,44 +3,16 @@ package com.ntankard.DynamicGUI.Components.List.Component;
 import com.ntankard.ClassExtension.Member;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 
-import javax.swing.*;
-import java.util.List;
-
 public class MemberColumn_List extends MemberColumn {
-
-    /**
-     * The possible options (must have toString)
-     */
-    private List options;
-
-    /**
-     * The ComboBox used to display all the values that the column can be set to
-     */
-    private JComboBox<String> cellComboBox = new JComboBox<>();
 
     /**
      * Constructor, parameters are set from the DisplayProperties set to the member
      *
-     * @param member  The member this column is based around
-     * @param model   The model used to generate the columns containing this render.
-     * @param options The values that can be selected
+     * @param member The member this column is based around
+     * @param model  The model used to generate the columns containing this render.
      */
-    public MemberColumn_List(Member member, DynamicGUI_DisplayTable_Model model, List options) {
+    public MemberColumn_List(Member member, DynamicGUI_DisplayTable_Model model) {
         super(member, model);
-        this.options = options;
-
-        for (Object option : options) {
-            cellComboBox.addItem(option.toString());
-        }
-    }
-
-    /**
-     * Get the ComboBox used to display all the values that the column can be set to
-     *
-     * @return The ComboBox used to display all the values that the column can be set to
-     */
-    public JComboBox<String> getCellComboBox() {
-        return cellComboBox;
     }
 
     /**
@@ -48,7 +20,7 @@ public class MemberColumn_List extends MemberColumn {
      */
     @Override
     public boolean isEditable() {
-        return member.getSetter() != null;
+        return member.getSetter() != null && member.getSource() != null;
     }
 
     /**
@@ -56,11 +28,6 @@ public class MemberColumn_List extends MemberColumn {
      */
     @Override
     public Object encode(Object value) {
-        for (Object object : options) {
-            if (object.toString().equals(value)) {
-                return object;
-            }
-        }
-        throw new RuntimeException("Imposable value selected");
+        return value;
     }
 }
