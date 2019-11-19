@@ -3,10 +3,7 @@ package com.ntankard.DynamicGUI.Components.Object;
 import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.ExecutableMember;
 import com.ntankard.ClassExtension.MemberClass;
-import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder;
-import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
-import com.ntankard.DynamicGUI.Util.Decoder.DoubleDecoder;
-import com.ntankard.DynamicGUI.Util.Decoder.StringDecoder;
+import com.ntankard.DynamicGUI.Util.Decoder.*;
 import com.ntankard.DynamicGUI.Components.Object.Component.*;
 import com.ntankard.DynamicGUI.Util.Containers.PanelContainer;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
@@ -64,8 +61,8 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
      * @param baseInstance The instance to interact with
      * @param master       The top level GUI
      */
-    public DynamicGUI_IntractableObject_Impl(T baseInstance, Updatable master) {
-        super(master);
+    public DynamicGUI_IntractableObject_Impl(T baseInstance, boolean vertical, Updatable master) {
+        super(vertical, master);
         this.baseInstance = baseInstance;
         this.verbosity = ALWAYS_DISPLAY;
         this.mClass = new MemberClass(baseInstance.getClass());
@@ -190,7 +187,7 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                 if (options != null) {
                     intractableObject = new IntractableObject_List(member, saveOnUpdate, order, options, this);
                 } else {
-                    continue; // No supported panel available
+                    intractableObject = new IntractableObject_String<Object>(member, saveOnUpdate, order, new ToStringDecoder(), this);
                 }
             }
             intractableObjects.add(intractableObject);

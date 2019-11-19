@@ -49,8 +49,19 @@ public class DynamicGUI_IntractableObject<T> extends ControllablePanel<DynamicGU
      * @param master       The parent of this object to be notified if data changes
      */
     public DynamicGUI_IntractableObject(T baseInstance, Updatable master) {
+        this(baseInstance, true, master);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param baseInstance The instance to interact with
+     * @param vertical     Should the display be layered out vertically? Otherwise horizontally
+     * @param master       The parent of this object to be notified if data changes
+     */
+    public DynamicGUI_IntractableObject(T baseInstance, boolean vertical, Updatable master) {
         super(master);
-        setMainPanel(new DynamicGUI_IntractableObject_Impl<>(baseInstance, master));
+        setMainPanel(new DynamicGUI_IntractableObject_Impl<>(baseInstance, vertical, master));
         update();
     }
 
