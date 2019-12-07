@@ -35,6 +35,11 @@ public class Member {
     private Method setter;
 
     /**
+     * Can this field be edited?
+     */
+    protected boolean canEdit;
+
+    /**
      * The method to call to get options to set for a value
      */
     private Method source;
@@ -68,12 +73,14 @@ public class Member {
         }
 
         this.source = null;
+        this.canEdit = false;
         if (getSetter() != null) {
             SetterProperties properties = getSetter().getAnnotation(SetterProperties.class);
             if (properties != null) {
                 if (!properties.localSourceMethod().equals("")) {
                     try {
                         this.source = context.getMethod(properties.localSourceMethod(), Class.class, String.class);
+                        this.canEdit = true;
                     } catch (NoSuchMethodException e) {
                         System.out.println("WARNING: The method provided by localSourceMethod dose not have the right parameters");
                     }
@@ -82,6 +89,9 @@ public class Member {
                         this.source = null;
                         System.out.println("WARNING: The method provided by localSourceMethod dose not have the right return type");
                     }
+                }
+                if (!properties.displaySet()) {
+                    canEdit = false;
                 }
             }
         }
@@ -107,7 +117,12 @@ public class Member {
         return source;
     }
 
-    public Class<?> getType() {
+    public Class getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return type.getSimpleName() + " " + getName();
     }
 }

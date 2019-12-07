@@ -62,6 +62,6 @@ public class ExecutableMember<T> extends Member {
      * @return Can set be called?
      */
     public boolean canEdit() {
-        return getSetter() != null;
+        return canEdit;
     }
 }
