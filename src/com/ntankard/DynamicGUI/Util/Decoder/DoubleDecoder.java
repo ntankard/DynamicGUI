@@ -1,16 +1,25 @@
 package com.ntankard.DynamicGUI.Util.Decoder;
 
-import java.text.DecimalFormat;
-
 public class DoubleDecoder extends Decoder<Double> {
+
+    /**
+     * The number of decimal places to display
+     */
+    private int decimal;
+
+    /**
+     * Constructor
+     */
+    public DoubleDecoder(int decimal) {
+        this.decimal = decimal;
+    }
 
     /**
      * @inheritDoc
      */
     @Override
     public String decode(Double value, Object rowObject) {
-        DecimalFormat df2 = new DecimalFormat("#.##");
-        return df2.format(value);
+        return String.format("%." + decimal + "f", value);
     }
 
     /**

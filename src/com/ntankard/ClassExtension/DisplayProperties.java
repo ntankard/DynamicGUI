@@ -19,6 +19,7 @@ public @interface DisplayProperties {
         ZERO_BINARY,    // Data is centered on zero, values above or below are note worthy
         ZERO_SCALE,     // Data is centered on zero, values above or below are note worthy compared to the range of all values
         ZERO_TARGET,    // Values other than 0 are noteworthy
+        NOT_FALSE,      // Boolean false values are highlighted
     }
 
     /**
@@ -40,4 +41,9 @@ public @interface DisplayProperties {
      * Can the value provide any context to the state of the data (not used to field verification)
      */
     DataContext dataContext() default DataContext.NONE;
+
+    /**
+     * How many decimal places should be displayed? Ignored if a currency is used
+     */
+    int decimal() default 2;
 }

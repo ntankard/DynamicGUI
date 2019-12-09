@@ -23,6 +23,7 @@ public class CurrencyDecoder extends DoubleDecoder {
      * Constructor
      */
     public CurrencyDecoder(NumberFormat numberFormat, String contextName, CurrencyDecoder_NumberFormatSource numberFormatSource) {
+        super(2);
         this.numberFormat = numberFormat;
         this.contextName = contextName;
         this.numberFormatSource = numberFormatSource;
@@ -32,6 +33,7 @@ public class CurrencyDecoder extends DoubleDecoder {
      * Constructor
      */
     public CurrencyDecoder(NumberFormat numberFormat, String contextName) {
+        super(2);
         this.numberFormat = numberFormat;
         this.contextName = contextName;
     }

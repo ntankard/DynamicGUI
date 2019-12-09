@@ -2,10 +2,7 @@ package com.ntankard.DynamicGUI.Components.List.Component;
 
 import com.ntankard.ClassExtension.DisplayProperties;
 import com.ntankard.ClassExtension.Member;
-import com.ntankard.DynamicGUI.Components.List.Component.Renderer.NegativeHighlightRenderer;
-import com.ntankard.DynamicGUI.Components.List.Component.Renderer.NonZeroRenderer;
-import com.ntankard.DynamicGUI.Components.List.Component.Renderer.Renderer;
-import com.ntankard.DynamicGUI.Components.List.Component.Renderer.ScaleRenderer;
+import com.ntankard.DynamicGUI.Components.List.Component.Renderer.*;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 import com.ntankard.DynamicGUI.Util.Decoder.*;
 
@@ -67,6 +64,11 @@ public class MemberColumn {
                     renderer = new NonZeroRenderer(model);
                 }
             }
+            if (member.getType().equals(Boolean.class)) {
+                if (properties.dataContext() == NOT_FALSE) {
+                    renderer = new FalseHighlightRenderer(model);
+                }
+            }
         }
 
         // Fill in any missing properties
@@ -89,7 +91,7 @@ public class MemberColumn {
             } else if (dataType.equals(CURRENCY_YEN)) {
                 decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName());
             } else {
-                decoder = new DoubleDecoder();
+                decoder = new DoubleDecoder(properties.decimal());
             }
         } else if (member.getType().equals(String.class)) {
             decoder = new StringDecoder();
