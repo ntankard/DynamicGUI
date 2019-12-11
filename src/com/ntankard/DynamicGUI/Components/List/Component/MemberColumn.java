@@ -95,6 +95,8 @@ public class MemberColumn {
             }
         } else if (member.getType().equals(String.class)) {
             decoder = new StringDecoder();
+        } else if (member.getType().equals(Integer.class)) {
+            decoder = new IntegerDecoder();
         }
         renderer.setDecoder(decoder);
     }
@@ -131,7 +133,7 @@ public class MemberColumn {
      * @return The object made from the string
      */
     public Object encode(Object value) {
-        return getRenderer().getDecoder().encode((String) value);
+        return getRenderer().getDecoder().encode(value.toString());
     }
 
     //------------------------------------------------------------------------------------------------------------------

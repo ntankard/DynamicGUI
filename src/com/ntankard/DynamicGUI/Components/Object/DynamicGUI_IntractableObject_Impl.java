@@ -166,6 +166,8 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                 } else {
                     intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(properties.decimal()), this);
                 }
+            } else if (theClass.equals(Integer.class)) {
+                intractableObject = new IntractableObject_String<Integer>(member, saveOnUpdate, order, new IntegerDecoder(), this);
             } else {
                 if (member.getSource() != null) {
                     intractableObject = new IntractableObject_List(member, saveOnUpdate, order, this);
