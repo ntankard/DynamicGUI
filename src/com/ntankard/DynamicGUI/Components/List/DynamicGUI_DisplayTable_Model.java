@@ -166,8 +166,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
             Object decodedValue = orderList.get(columnIndex).encode(aValue);
             orderList.get(columnIndex).getMember().getSetter().invoke(rowData.get(rowIndex), decodedValue);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            Object a = "error value";
-            double b = (Double) a;
+            throw new RuntimeException(e);
         }
         notifyUpdate();
     }
