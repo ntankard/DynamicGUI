@@ -164,7 +164,11 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
                 } else if (dataType.equals(CURRENCY_YEN)) {
                     intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName(), localeSource), this);
                 } else {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(properties.decimal()), this);
+                    if (properties != null) {
+                        intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(properties.decimal()), this);
+                    } else {
+                        intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(2), this);
+                    }
                 }
             } else if (theClass.equals(Integer.class)) {
                 intractableObject = new IntractableObject_String<Integer>(member, saveOnUpdate, order, new IntegerDecoder(), this);

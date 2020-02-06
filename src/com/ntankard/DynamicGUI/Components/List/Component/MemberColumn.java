@@ -91,7 +91,11 @@ public class MemberColumn {
             } else if (dataType.equals(CURRENCY_YEN)) {
                 decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName());
             } else {
-                decoder = new DoubleDecoder(properties.decimal());
+                if (properties != null) {
+                    decoder = new DoubleDecoder(properties.decimal());
+                } else {
+                    decoder = new DoubleDecoder(2);
+                }
             }
         } else if (member.getType().equals(String.class)) {
             decoder = new StringDecoder();
