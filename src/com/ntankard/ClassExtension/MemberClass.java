@@ -93,7 +93,7 @@ public class MemberClass {
     private Method[] getAccessors() {
         List<Method> methods = new ArrayList<>();
         for (Method m : getDeclaredMethods()) {
-            if (Modifier.isPublic(m.getModifiers()) && (m.getName().contains("get") || m.getName().contains("is") || m.getName().contains("has"))) {
+            if (!Modifier.isStatic(m.getModifiers()) && Modifier.isPublic(m.getModifiers()) && (m.getName().contains("get") || m.getName().contains("is") || m.getName().contains("has"))) {
 
                 // Check to see if you have the same method twice
                 boolean wasAdded = false;
