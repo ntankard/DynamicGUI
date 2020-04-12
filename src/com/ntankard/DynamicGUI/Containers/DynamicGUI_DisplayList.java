@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
 
-public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayTable_Impl, DynamicGUI_Filter> {
+public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
 
     /**
      * The master content of the list
@@ -55,6 +55,21 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     private Comparator<T> comparator = null;
 
     /**
+     * The controller used to general new objects (if provided)
+     */
+    private ElementController<T> controller = null;
+
+    /**
+     * The new button, stored so it can be disabled if cant be used
+     */
+    private ListControl_Button<T> newBtn = null;
+
+    /**
+     * The new edit button, stored so it can be disabled if cant be used
+     */
+    private ListControl_Button<T> newEditBtn = null;
+
+    /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
@@ -73,6 +88,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * @param localeSource A user set source for the locale, numberFormat used if not set
      * @return This
      */
+    @SuppressWarnings("UnusedReturnValue")
     public DynamicGUI_DisplayList<T> setLocaleSource(CurrencyDecoder_NumberFormatSource localeSource) {
         this.localeSource = localeSource;
         getMainPanel().setLocaleSource(localeSource);
@@ -101,6 +117,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      *
      * @return This
      */
+    @SuppressWarnings("UnusedReturnValue")
     public DynamicGUI_DisplayList<T> addFilter() {
         predicates = new ArrayList<>();
         setControlPanel(new DynamicGUI_Filter<>(mClass, predicates, this));
@@ -114,9 +131,11 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      *
      * @param controller The main controller
      */
+    @SuppressWarnings("UnusedReturnValue")
     public DynamicGUI_DisplayList<T> addControlButtons(ElementController<T> controller) {
+        this.controller = controller;
         if (controller != null) {
-            ListControl_Button newBtn = new ListControl_Button<>("New", this);
+            newBtn = new ListControl_Button<>("New", this);
             newBtn.addActionListener(e -> {
                 T newObj = controller.newElement();
                 controller.addElement(newObj);
@@ -126,7 +145,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         }
 
         if (controller != null) {
-            ListControl_Button newEditBtn = new ListControl_Button<>("New Edit", this);
+            newEditBtn = new ListControl_Button<>("New Edit", this);
             newEditBtn.addActionListener(e -> {
                 T newObj = controller.newElement();
                 DynamicGUI_IntractableObject<?> core = new DynamicGUI_IntractableObject<>(newObj, this)
@@ -140,9 +159,9 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
             addButton(newEditBtn);
         }
 
-        ListControl_Button editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
+        ListControl_Button<T> editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
         editBtn.addActionListener(e -> {
-            List selected = getMainPanel().getSelectedItems();
+            List<?> selected = getMainPanel().getSelectedItems();
             DynamicGUI_IntractableObject.openIntractableObjectDialog(new DynamicGUI_IntractableObject<>(selected.get(0), this)
                     .setLocaleSource(localeSource)
                     .setVerbosity(verbosity));
@@ -150,7 +169,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         addButton(editBtn);
 
         if (controller != null) {
-            ListControl_Button deleteBtn = new ListControl_Button<>("Delete", this, ListControl_Button.EnableCondition.MULTI, false);
+            ListControl_Button<T> deleteBtn = new ListControl_Button<>("Delete", this, ListControl_Button.EnableCondition.MULTI, false);
             deleteBtn.addActionListener(e -> {
                 List<T> selected = getMainPanel().getSelectedItems();
                 for (T del : selected) {
@@ -170,6 +189,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      * @param comparator Comparator used to sort the list before displaying
      * @return This
      */
+    @SuppressWarnings("unused")
     public DynamicGUI_DisplayList<T> setComparator(Comparator<T> comparator) {
         this.comparator = comparator;
         update();
@@ -184,8 +204,8 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         filtered.clear();
 
         if (base.size() != 0 && predicates != null) {
-            List filteredList = base.stream().filter(o -> {
-                for (Predicate p : predicates) {
+            List<T> filteredList = base.stream().filter(o -> {
+                for (Predicate<T> p : predicates) {
                     if (!p.test(o)) {
                         return false;
                     }
@@ -199,6 +219,13 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
         if (comparator != null) {
             filtered.sort(comparator);
+        }
+
+        if (newBtn != null && controller != null) {
+            newBtn.setEnabled(controller.canCreate());
+        }
+        if (newEditBtn != null && controller != null) {
+            newEditBtn.setEnabled(controller.canCreate());
         }
 
         super.update();
@@ -232,6 +259,13 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
          * @param newObj The object to add
          */
         void addElement(T newObj);
+
+        /**
+         * Check that the controller is in a valid state to generate a new object
+         *
+         * @return True if the controller is in a valid state to generate a new object
+         */
+        boolean canCreate();
     }
 
     public static class ListControl_Button<T> extends JButton implements ListSelectionListener {
@@ -249,7 +283,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         /**
          * The list containing this button
          */
-        private DynamicGUI_DisplayTable_Impl coreList;
+        private DynamicGUI_DisplayTable_Impl<T> coreList;
 
         /**
          * Constructor
@@ -281,7 +315,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
          */
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            List selected = coreList.getSelectedItems();
+            List<?> selected = coreList.getSelectedItems();
             int noSelected = selected == null ? 0 : selected.size();
 
             switch (enableCondition) {
