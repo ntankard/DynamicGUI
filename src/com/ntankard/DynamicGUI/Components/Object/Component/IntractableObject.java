@@ -1,15 +1,21 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.ExecutableMember;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Containers.BufferedJPanel;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 public abstract class IntractableObject<T> extends BufferedJPanel<T> {
 
     /**
-     * The member that this panel is built around
+     * The DataField that this panel is built around
      */
-    protected ExecutableMember<T> baseMember;
+    protected DataField<T> dataField;
+
+    /**
+     * The instance of the object
+     */
+    protected CoreObject coreObject;
 
     /**
      * The display order, Integer.MAX_VALUE if none is set
@@ -19,9 +25,10 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     /**
      * Constructor
      */
-    IntractableObject(ExecutableMember<T> baseMember, boolean saveOnUpdate, int order, Updatable master) {
+    IntractableObject(DataField<T> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Updatable master) {
         super(saveOnUpdate, master);
-        this.baseMember = baseMember;
+        this.dataField = dataField;
+        this.coreObject = coreObject;
         this.order = order;
     }
 
@@ -31,12 +38,12 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     protected abstract void load();
 
     /**
-     * Get the member that this panel is built around
+     * Get the DataField that this panel is built around
      *
-     * @return The member that this panel is built around
+     * @return The DataField that this panel is built around
      */
-    protected ExecutableMember<T> getBaseMember() {
-        return baseMember;
+    public DataField<T> getDataField() {
+        return dataField;
     }
 
     /**
@@ -65,7 +72,7 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
      */
     @Override
     protected void executeValue(T value) {
-        getBaseMember().set(value);
+        set(value);
     }
 
     /**
@@ -76,5 +83,17 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
         if (!isEdited()) {
             load();
         }
+    }
+
+    protected void set(T value) {
+        coreObject.set(getDataField().getIdentifierName(), value);
+    }
+
+    protected T get() {
+        return coreObject.get(getDataField().getIdentifierName());
+    }
+
+    public CoreObject getCoreObject() {
+        return coreObject;
     }
 }

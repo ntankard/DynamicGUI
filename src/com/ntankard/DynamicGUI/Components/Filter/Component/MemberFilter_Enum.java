@@ -1,11 +1,11 @@
 package com.ntankard.DynamicGUI.Components.Filter.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
@@ -22,11 +22,11 @@ public class MemberFilter_Enum extends MemberFilter {
     /**
      * Constructor
      *
-     * @param baseMember The member connected to this panel
-     * @param master     The top level GUI
+     * @param dataField The DataField that this panel is built around
+     * @param master    The top level GUI
      */
-    public MemberFilter_Enum(Member baseMember, Updatable master) {
-        super(baseMember, master);
+    public MemberFilter_Enum(DataField dataField, Updatable master) {
+        super(dataField, master);
         createUIComponents();
     }
 
@@ -35,10 +35,10 @@ public class MemberFilter_Enum extends MemberFilter {
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
         this.setLayout(new BorderLayout());
 
-        Object[] possibleValues = getBaseMember().getType().getEnumConstants();
+        Object[] possibleValues = getDataField().getType().getEnumConstants();
 
         JList<Object> list = new JList<>(possibleValues);
 
@@ -72,16 +72,12 @@ public class MemberFilter_Enum extends MemberFilter {
      * {@inheritDoc}
      */
     @Override
-    public Predicate getPredicate() {
+    public Predicate<? extends CoreObject> getPredicate() {
         return o -> {
             if (selected == null || selected.size() == 0) {
                 return true;
             }
-            try {
-                return selected.contains(getBaseMember().getGetter().invoke(o));
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
+            return selected.contains(o.get(getDataField().getIdentifierName()));
         };
     }
 }

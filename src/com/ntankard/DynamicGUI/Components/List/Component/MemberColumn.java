@@ -1,7 +1,8 @@
 package com.ntankard.DynamicGUI.Components.List.Component;
 
-import com.ntankard.ClassExtension.DisplayProperties;
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.CoreObject.Field.DataField;
+import com.ntankard.CoreObject.Field.Properties.Display_Properties;
+import com.ntankard.CoreObject.Field.Properties.Display_Properties.DataType;
 import com.ntankard.DynamicGUI.Components.List.Component.Renderer.*;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Model;
 import com.ntankard.DynamicGUI.Util.Decoder.*;
@@ -10,16 +11,15 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.ntankard.ClassExtension.DisplayProperties.DataContext.*;
-import static com.ntankard.ClassExtension.DisplayProperties.DataType;
-import static com.ntankard.ClassExtension.DisplayProperties.DataType.*;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.DataContext.*;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.DataType.*;
 
 public class MemberColumn {
 
     /**
-     * The core member
+     * The DataField that this column is built around
      */
-    protected Member member;
+    protected DataField<?> dataField;
 
     /**
      * The display order, Integer.MAX_VALUE if none is set
@@ -39,35 +39,32 @@ public class MemberColumn {
     /**
      * Constructor, parameters are set from the DisplayProperties set to the member
      *
-     * @param member The member this column is based around
-     * @param model  The model used to generate the columns containing this render.
+     * @param dataField The DataField that this column is built around
+     * @param model     The model used to generate the columns containing this render.
      */
-    public MemberColumn(Member member, DynamicGUI_DisplayTable_Model model) {
-        this.member = member;
+    public MemberColumn(DataField<?> dataField, DynamicGUI_DisplayTable_Model model) {
+        this.dataField = dataField;
 
         // Extract any properties
-        DisplayProperties properties = this.member.getGetter().getAnnotation(DisplayProperties.class);
-        DataType dataType = AS_CLASS;
-        if (properties != null) {
-            order = properties.order();
-            name = properties.name();
-            dataType = properties.dataType();
+        Display_Properties properties = getDataField().getDisplayProperties();
+        DataType dataType = getDataField().getDisplayProperties().getDataType();
+        order = getDataField().getDisplayProperties().getOrder();
+        name = getDataField().getDisplayName();
 
-            if (member.getType().equals(Double.class)) {
-                if (properties.dataContext() == ZERO_BELOW_BAD) {
-                    renderer = new NegativeHighlightRenderer(model, false);
-                } else if (properties.dataContext() == ZERO_BINARY) {
-                    renderer = new NegativeHighlightRenderer(model, true);
-                } else if (properties.dataContext() == ZERO_SCALE) {
-                    renderer = new ScaleRenderer(model);
-                } else if (properties.dataContext() == ZERO_TARGET) {
-                    renderer = new NonZeroRenderer(model);
-                }
+        if (getDataField().getType().equals(Double.class)) {
+            if (properties.getDataContext() == ZERO_BELOW_BAD) {
+                renderer = new NegativeHighlightRenderer(model, false);
+            } else if (properties.getDataContext() == ZERO_BINARY) {
+                renderer = new NegativeHighlightRenderer(model, true);
+            } else if (properties.getDataContext() == ZERO_SCALE) {
+                renderer = new ScaleRenderer(model);
+            } else if (properties.getDataContext() == ZERO_TARGET) {
+                renderer = new NonZeroRenderer(model);
             }
-            if (member.getType().equals(Boolean.class)) {
-                if (properties.dataContext() == NOT_FALSE) {
-                    renderer = new FalseHighlightRenderer(model);
-                }
+        }
+        if (getDataField().getType().equals(Boolean.class)) {
+            if (getDataField().getDisplayProperties().getDataContext() == NOT_FALSE) {
+                renderer = new FalseHighlightRenderer(model);
             }
         }
 
@@ -75,31 +72,24 @@ public class MemberColumn {
         if (renderer == null) {
             renderer = new Renderer(model);
         }
-        if (name.equals("")) {
-            name = member.getName();
-        }
 
         // Build the decoder based on type
         Decoder decoder = null;
-        if (member.getType().equals(Calendar.class)) {
+        if (getDataField().getType().equals(Calendar.class)) {
             decoder = new CalendarDecoder();
-        } else if (member.getType().equals(Double.class)) {
+        } else if (getDataField().getType().equals(Double.class)) {
             if (dataType.equals(CURRENCY)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName());
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataField().getDisplayName());
             } else if (dataType.equals(CURRENCY_AUD)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName());
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataField().getDisplayName());
             } else if (dataType.equals(CURRENCY_YEN)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName());
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), getDataField().getDisplayName());
             } else {
-                if (properties != null) {
-                    decoder = new DoubleDecoder(properties.decimal());
-                } else {
-                    decoder = new DoubleDecoder(2);
-                }
+                decoder = new DoubleDecoder(getDataField().getDisplayProperties().getDisplayDecimal());
             }
-        } else if (member.getType().equals(String.class)) {
+        } else if (getDataField().getType().equals(String.class)) {
             decoder = new StringDecoder();
-        } else if (member.getType().equals(Integer.class)) {
+        } else if (getDataField().getType().equals(Integer.class)) {
             decoder = new IntegerDecoder();
         }
         renderer.setDecoder(decoder);
@@ -124,7 +114,7 @@ public class MemberColumn {
      * @return True if this Column be edited?
      */
     public boolean isEditable() {
-        if (member.getSetter() == null || getRenderer().getDecoder() == null) {
+        if (!getDataField().getDataCore().canEdit() || getRenderer().getDecoder() == null) {
             return false;
         }
         return renderer.getDecoder().isEditable();
@@ -144,8 +134,8 @@ public class MemberColumn {
     //########################################### Standard accessors ###################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public Member getMember() {
-        return member;
+    public DataField<?> getDataField() {
+        return dataField;
     }
 
     public int getOrder() {

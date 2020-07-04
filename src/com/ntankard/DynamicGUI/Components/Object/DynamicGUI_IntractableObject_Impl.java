@@ -1,8 +1,8 @@
 package com.ntankard.DynamicGUI.Components.Object;
 
-import com.ntankard.ClassExtension.DisplayProperties;
-import com.ntankard.ClassExtension.ExecutableMember;
-import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
+import com.ntankard.CoreObject.Field.Properties.Display_Properties;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_Enum;
 import com.ntankard.DynamicGUI.Components.Object.Component.IntractableObject_List;
@@ -17,10 +17,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import static com.ntankard.ClassExtension.DisplayProperties.DataType.*;
-import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.DataType.*;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.ALWAYS_DISPLAY;
 
-public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
+public class DynamicGUI_IntractableObject_Impl<T extends CoreObject> extends PanelContainer {
 
     /**
      * The instance to interact with
@@ -30,7 +30,7 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
     /**
      * The kind of object used to generate this panel
      */
-    private MemberClass mClass;
+    private Class aClass;
 
     /**
      * What level of verbosity should be shown? (compared against MemberProperties verbosity)
@@ -62,7 +62,7 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
         super(vertical, master);
         this.baseInstance = baseInstance;
         this.verbosity = ALWAYS_DISPLAY;
-        this.mClass = new MemberClass(baseInstance.getClass());
+        this.aClass = baseInstance.getClass();
         this.saveOnUpdate = true;
 
         createUIComponents();
@@ -138,45 +138,37 @@ public class DynamicGUI_IntractableObject_Impl<T> extends PanelContainer {
         super.createUIComponents();
         intractableObjects.clear();
 
-        for (ExecutableMember member : mClass.getVerbosityMembers(verbosity, baseInstance)) {
+        for (DataField dataField : CoreObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+
 
             // find a compatible filter type
-            IntractableObject intractableObject;
-            Class<?> theClass = member.getType();
+            IntractableObject<?> intractableObject;
+            Class<?> theClass = dataField.getType();
 
-            DisplayProperties properties = member.getGetter().getAnnotation(DisplayProperties.class);
-            DisplayProperties.DataType dataType = AS_CLASS;
-            int order = Integer.MAX_VALUE;
-            if (properties != null) {
-                dataType = properties.dataType();
-                order = properties.order();
-            }
+            Display_Properties.DataType dataType = dataField.getDisplayProperties().getDataType();
+            int order = dataField.getDisplayProperties().getOrder();
 
             if (theClass.isEnum()) {
-                intractableObject = new IntractableObject_Enum(member, saveOnUpdate, order, this);
+                intractableObject = new IntractableObject_Enum(dataField, baseInstance, saveOnUpdate, order, this);
             } else if (theClass.equals(String.class)) {
-                intractableObject = new IntractableObject_String<String>(member, saveOnUpdate, order, new StringDecoder(), this);
+                intractableObject = new IntractableObject_String<String>(dataField, baseInstance, saveOnUpdate, order, new StringDecoder(), this);
             } else if (theClass.equals(Double.class)) {
                 if (dataType.equals(CURRENCY)) {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName(), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), dataField.getDisplayName(), localeSource), this);
                 } else if (dataType.equals(CURRENCY_AUD)) {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), member.getName(), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), dataField.getDisplayName(), localeSource), this);
                 } else if (dataType.equals(CURRENCY_YEN)) {
-                    intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), member.getName(), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), dataField.getDisplayName(), localeSource), this);
                 } else {
-                    if (properties != null) {
-                        intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(properties.decimal()), this);
-                    } else {
-                        intractableObject = new IntractableObject_String<Double>(member, saveOnUpdate, order, new DoubleDecoder(2), this);
-                    }
+                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new DoubleDecoder(dataField.getDisplayProperties().getDisplayDecimal()), this);
                 }
             } else if (theClass.equals(Integer.class)) {
-                intractableObject = new IntractableObject_String<Integer>(member, saveOnUpdate, order, new IntegerDecoder(), this);
+                intractableObject = new IntractableObject_String<Integer>(dataField, baseInstance, saveOnUpdate, order, new IntegerDecoder(), this);
             } else {
-                if (member.getSource() != null) {
-                    intractableObject = new IntractableObject_List(member, saveOnUpdate, order, this);
+                if (dataField.getSource() != null) {
+                    intractableObject = new IntractableObject_List(dataField, baseInstance, saveOnUpdate, order, this);
                 } else {
-                    intractableObject = new IntractableObject_String<Object>(member, saveOnUpdate, order, new ToStringDecoder(), this);
+                    intractableObject = new IntractableObject_String<Object>(dataField, baseInstance, saveOnUpdate, order, new ToStringDecoder(), this);
                 }
             }
             intractableObjects.add(intractableObject);

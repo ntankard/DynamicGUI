@@ -1,13 +1,13 @@
 package com.ntankard.DynamicGUI.Components.Filter.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 /**
@@ -23,11 +23,11 @@ public class MemberFilter_Double extends MemberFilter {
     /**
      * Constructor
      *
-     * @param baseMember The member connected to this panel
-     * @param master     The top level GUI
+     * @param dataField The DataField that this panel is built around
+     * @param master    The top level GUI
      */
-    public MemberFilter_Double(Member baseMember, Updatable master) {
-        super(baseMember, master);
+    public MemberFilter_Double(DataField<?> dataField, Updatable master) {
+        super(dataField, master);
         createUIComponents();
     }
 
@@ -36,7 +36,7 @@ public class MemberFilter_Double extends MemberFilter {
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
         this.setLayout(new BorderLayout());
 
         JTextField value_txt = new JTextField();
@@ -68,16 +68,12 @@ public class MemberFilter_Double extends MemberFilter {
      * {@inheritDoc}
      */
     @Override
-    public Predicate getPredicate() {
+    public Predicate<? extends CoreObject> getPredicate() {
         return o -> {
             if (value == null) {
                 return true;
             }
-            try {
-                return getBaseMember().getGetter().invoke(o).equals(value);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
+            return o.get(getDataField().getIdentifierName()).equals(value);
         };
     }
 }

@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Components.Filter.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Update.UpdatableJPanel;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
@@ -12,19 +12,19 @@ import java.util.function.Predicate;
 public abstract class MemberFilter extends UpdatableJPanel {
 
     /**
-     * The member that this panel is built around
+     * The DataField that this panel is built around
      */
-    private Member baseMember;
+    private final DataField<?> dataField;
 
     /**
      * Constructor
      *
-     * @param baseMember The member connected to this panel
-     * @param master     The top level GUI
+     * @param dataField The DataField that this panel is built around
+     * @param master    The top level GUI
      */
-    MemberFilter(Member baseMember, Updatable master) {
+    MemberFilter(DataField<?> dataField, Updatable master) {
         super(master);
-        this.baseMember = baseMember;
+        this.dataField = dataField;
     }
 
     /**
@@ -35,12 +35,12 @@ public abstract class MemberFilter extends UpdatableJPanel {
     public abstract Predicate getPredicate();
 
     /**
-     * Get the member that this panel is built around
+     * Get the DataField that this panel is built around
      *
-     * @return The member that this panel is built around
+     * @return The DataField that this panel is built around
      */
-    protected Member getBaseMember() {
-        return baseMember;
+    protected DataField<?> getDataField() {
+        return dataField;
     }
 
     //------------------------------------------------------------------------------------------------------------------

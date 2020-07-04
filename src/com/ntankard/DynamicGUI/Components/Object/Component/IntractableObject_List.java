@@ -1,6 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.ExecutableMember;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
@@ -20,12 +21,12 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     /**
      * Constructor
      *
-     * @param baseMember   The member that this panel is built around
+     * @param dataField    The DataField that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_List(ExecutableMember<Object> baseMember, boolean saveOnUpdate, int order, Updatable master) {
-        super(baseMember, saveOnUpdate, order, master);
+    public IntractableObject_List(DataField<Object> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Updatable master) {
+        super(dataField, coreObject, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }
@@ -35,7 +36,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
      */
     protected void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
         this.setLayout(new BorderLayout());
 
         combo = new JComboBox<>();
@@ -62,12 +63,12 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     @Override
     @SuppressWarnings("unchecked")
     protected void load() {
-        Object current = getBaseMember().get();
+        Object current = get();
         combo.removeItemListener(this);
 
         List<Object> options;
         try {
-            options = (List<Object>) baseMember.getSource().invoke(baseMember.getObject(), baseMember.getType(), baseMember.getName());
+            options = (List<Object>) getDataField().getSource().invoke(getCoreObject(), getDataField().getType(), getDataField().getDisplayName());
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }

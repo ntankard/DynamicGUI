@@ -1,44 +1,44 @@
 package com.ntankard.DynamicGUI.Components.Filter;
 
-import com.ntankard.ClassExtension.Member;
-import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Components.Filter.Component.*;
-import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Impl;
 import com.ntankard.DynamicGUI.Util.Containers.PanelContainer;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
 
     /**
      * The kind of object used to generate this panel
      */
-    private MemberClass mClass;
+    private final Class<T> aClass;
 
     /**
      * All the predicates for each of the individual controls
      */
-    private List<Predicate<T>> predicates;
+    private final List<Predicate<T>> predicates;
 
     /**
      * What level of verbosity should be shown? (compared against MemberProperties verbosity)
      */
     private int verbosity;
 
+
     /**
      * Constructor
      *
-     * @param mClass     The kind of object used to generate this panel
+     * @param aClass     The kind of object used to generate this panel
      * @param predicates All the predicates for each of the individual controls
      * @param master     The parent of this object to be notified if data changes
      */
-    public DynamicGUI_Filter_Impl(MemberClass mClass, List<Predicate<T>> predicates, Updatable master) {
+    public DynamicGUI_Filter_Impl(Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
-        this.mClass = mClass;
+        this.aClass = aClass;
         this.predicates = predicates;
         this.verbosity = ALWAYS_DISPLAY;
         createUIComponents();
@@ -69,19 +69,19 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     protected void createUIComponents() {
         super.createUIComponents();
 
-        for (Member member : mClass.getVerbosityMembers(verbosity)) {
+        for (DataField<?> dataField : CoreObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
 
             // find a compatible filter type
             MemberFilter filterable;
-            Class<?> theClass = member.getType();
+            Class<?> theClass = dataField.getType();
             if (theClass.equals(String.class)) {
-                filterable = new MemberFilter_String(member, this);
-            } else if (theClass.equals(double.class) || member.getType().equals(Double.class)) {
-                filterable = new MemberFilter_Double(member, this);
+                filterable = new MemberFilter_String(dataField, this);
+            } else if (theClass.equals(double.class) || dataField.getType().equals(Double.class)) {
+                filterable = new MemberFilter_Double(dataField, this);
             } else if (theClass.isEnum()) {
-                filterable = new MemberFilter_Enum(member, this);
+                filterable = new MemberFilter_Enum(dataField, this);
             } else {
-                filterable = new MemberFilter_ToString(member, this);
+                filterable = new MemberFilter_ToString(dataField, this);
             }
 
             addMember(filterable);

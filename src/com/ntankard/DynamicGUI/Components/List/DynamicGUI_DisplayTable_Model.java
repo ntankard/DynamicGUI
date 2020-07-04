@@ -1,7 +1,7 @@
 package com.ntankard.DynamicGUI.Components.List;
 
-import com.ntankard.ClassExtension.Member;
-import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn_List;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
@@ -9,7 +9,6 @@ import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +23,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
     /**
      * The data used to populate the rowData of the table
      */
-    private final List rowData;
+    private final List<CoreObject> rowData;
 
     /**
      * The parent of this object to be notified if data changes
@@ -34,22 +33,22 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
     /**
      * Constructor
      *
-     * @param mClass    The kind of object used to generate this panel
+     * @param aClass    The kind of object used to generate this panel
      * @param rowData   The list of objects to display
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master    The top level GUI
      */
-    public DynamicGUI_DisplayTable_Model(MemberClass mClass, List rowData, int verbosity, Updatable master) {
+    public DynamicGUI_DisplayTable_Model(Class aClass, List rowData, int verbosity, Updatable master) {
         this.rowData = rowData;
         this.master = master;
 
-        List<Member> members = mClass.getVerbosityMembers(verbosity);
-        for (Member member : members) {
+        List<DataField<?>> dataFields = CoreObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
+        for (DataField<?> dataField : dataFields) {
             MemberColumn column;
-            if (member.getSource() != null) {
-                column = new MemberColumn_List(member, this);
+            if (dataField.getSource() != null) {
+                column = new MemberColumn_List(dataField, this);
             } else {
-                column = new MemberColumn(member, this);
+                column = new MemberColumn(dataField, this);
             }
 
             orderList.add(column);
@@ -110,10 +109,10 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (orderList.get(columnIndex).getMember().getType().equals(Double.class)) {
+        if (orderList.get(columnIndex).getDataField().getType().equals(Double.class)) {
             return String.class;
         }
-        return orderList.get(columnIndex).getMember().getType();
+        return orderList.get(columnIndex).getDataField().getType();
     }
 
     /**
@@ -138,15 +137,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         MemberColumn column = orderList.get(columnIndex);
-
-        Object data;
-        try {
-            data = column.getMember().getGetter().invoke(rowData.get(rowIndex));
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-
-        return data;
+        return rowData.get(rowIndex).get(column.getDataField().getIdentifierName());
     }
 
     /**
@@ -162,12 +153,8 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        try {
-            Object decodedValue = orderList.get(columnIndex).encode(aValue);
-            orderList.get(columnIndex).getMember().getSetter().invoke(rowData.get(rowIndex), decodedValue);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        Object decodedValue = orderList.get(columnIndex).encode(aValue);
+        rowData.get(rowIndex).set(orderList.get(columnIndex).getDataField().getIdentifierName(), decodedValue);
         notifyUpdate();
     }
 

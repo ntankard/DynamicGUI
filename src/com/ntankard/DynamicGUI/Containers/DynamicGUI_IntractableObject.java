@@ -1,5 +1,6 @@
 package com.ntankard.DynamicGUI.Containers;
 
+import com.ntankard.CoreObject.CoreObject;
 import com.ntankard.DynamicGUI.Components.Object.DynamicGUI_IntractableObject_Impl;
 import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
@@ -7,7 +8,7 @@ import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 
-public class DynamicGUI_IntractableObject<T> extends ControllablePanel<DynamicGUI_IntractableObject_Impl, ControllablePanel> {
+public class DynamicGUI_IntractableObject<T extends CoreObject> extends ControllablePanel<DynamicGUI_IntractableObject_Impl, ControllablePanel> {
 
     /**
      * Open a dialog containing a new DynamicGUI_IntractableObject with controls
@@ -16,7 +17,7 @@ public class DynamicGUI_IntractableObject<T> extends ControllablePanel<DynamicGU
      * @param <T>       The type of the base instance
      * @return True if the object was modified
      */
-    public static <T> boolean openIntractableObjectDialog(DynamicGUI_IntractableObject<T> corePanel) {
+    public static <T extends CoreObject> boolean openIntractableObjectDialog(DynamicGUI_IntractableObject<T> corePanel) {
         final boolean[] change = {false};
         JDialog dialog = new JDialog();
         corePanel.saveButton(new FinalizeNotifier() {

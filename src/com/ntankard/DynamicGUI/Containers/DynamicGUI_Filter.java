@@ -1,6 +1,5 @@
 package com.ntankard.DynamicGUI.Containers;
 
-import com.ntankard.ClassExtension.MemberClass;
 import com.ntankard.DynamicGUI.Components.Filter.DynamicGUI_Filter_Impl;
 import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
@@ -8,16 +7,16 @@ import com.ntankard.DynamicGUI.Util.Update.Updatable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class DynamicGUI_Filter<T> extends ControllablePanel<DynamicGUI_Filter_Impl, ControllablePanel> {
+public class DynamicGUI_Filter<T> extends ControllablePanel<DynamicGUI_Filter_Impl<T>, ControllablePanel> {
 
     /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
      */
-    public DynamicGUI_Filter(MemberClass mClass, List<Predicate<T>> predicates, Updatable master) {
+    public DynamicGUI_Filter(Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
-        setMainPanel(new DynamicGUI_Filter_Impl<>(mClass, predicates, master));
+        setMainPanel(new DynamicGUI_Filter_Impl<>(aClass, predicates, master));
     }
 
     /**

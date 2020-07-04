@@ -1,7 +1,6 @@
 package com.ntankard.DynamicGUI.Components.List;
 
-import com.ntankard.ClassExtension.Member;
-import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn;
 import com.ntankard.DynamicGUI.Components.List.Component.MemberColumn_List;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
@@ -17,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
 
@@ -44,7 +43,7 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     /**
      * The kind of object used to generate this table
      */
-    private final MemberClass mClass;
+    private Class<T> aClass;
 
     /**
      * TableColumnAdjuster used to shrink the table
@@ -59,14 +58,14 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     /**
      * Constructor
      *
-     * @param mClass  The kind of object used to generate this panel
+     * @param aClass  The kind of object used to generate this panel
      * @param rowData The list of rowData to display
      * @param master  The parent of this object to be notified if data changes
      */
-    public DynamicGUI_DisplayTable_Impl(MemberClass mClass, List<T> rowData, Updatable master) {
+    public DynamicGUI_DisplayTable_Impl(Class<T> aClass, List<T> rowData, Updatable master) {
         super(master);
         this.rowData = rowData;
-        this.mClass = mClass;
+        this.aClass = aClass;
         this.verbosity = ALWAYS_DISPLAY;
         createUIComponents();
         update();
@@ -115,7 +114,7 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
                 }
             };
         }
-        model = new DynamicGUI_DisplayTable_Model(mClass, getRowData(), verbosity, this);
+        model = new DynamicGUI_DisplayTable_Model(aClass, getRowData(), verbosity, this);
 
         structure_table.setModel(model);
 
@@ -127,10 +126,10 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
                     @Override
                     @SuppressWarnings("unchecked")
                     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int columnIndex) {
-                        Member member = column.getMember();
+                        DataField<?> dataField = column.getDataField();
                         List<Object> options;
                         try {
-                            options = (List) member.getSource().invoke(model.getRowObject(rowIndex), member.getType(), member.getName());
+                            options = (List) dataField.getSource().invoke(model.getRowObject(rowIndex), dataField.getType(), dataField.getDisplayName());
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             throw new RuntimeException(e);
                         }

@@ -1,6 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.ExecutableMember;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
-public class IntractableObject_Enum extends IntractableObject<Enum> implements ListSelectionListener {
+public class IntractableObject_Enum extends IntractableObject<Enum<?>> implements ListSelectionListener {
 
     /**
      * The main list
@@ -18,12 +19,12 @@ public class IntractableObject_Enum extends IntractableObject<Enum> implements L
     /**
      * Constructor
      *
-     * @param baseMember   The member that this panel is built around
+     * @param dataField    The DataField that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_Enum(ExecutableMember<Enum> baseMember, boolean saveOnUpdate, int order, Updatable master) {
-        super(baseMember, saveOnUpdate, order, master);
+    public IntractableObject_Enum(DataField<Enum<?>> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Updatable master) {
+        super(dataField, coreObject, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }
@@ -33,10 +34,10 @@ public class IntractableObject_Enum extends IntractableObject<Enum> implements L
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
         this.setLayout(new BorderLayout());
 
-        list = new JList<>(getBaseMember().getType().getEnumConstants());
+        list = new JList<>(getDataField().getType().getEnumConstants());
         list.addListSelectionListener(this);
         JScrollPane listPane = new JScrollPane(list);
 
@@ -52,7 +53,7 @@ public class IntractableObject_Enum extends IntractableObject<Enum> implements L
      */
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        valueChanged((Enum) list.getSelectedValue());
+        valueChanged((Enum<?>) list.getSelectedValue());
     }
 
     /**
@@ -60,7 +61,7 @@ public class IntractableObject_Enum extends IntractableObject<Enum> implements L
      */
     @Override
     protected void load() {
-        Enum current = getBaseMember().get();
+        Enum<?> current = get();
         list.removeListSelectionListener(this);
         list.setSelectedValue(current, true);
         list.addListSelectionListener(this);

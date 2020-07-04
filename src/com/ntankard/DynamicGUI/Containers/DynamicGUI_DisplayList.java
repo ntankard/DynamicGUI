@@ -1,6 +1,6 @@
 package com.ntankard.DynamicGUI.Containers;
 
-import com.ntankard.ClassExtension.MemberClass;
+import com.ntankard.CoreObject.CoreObject;
 import com.ntankard.DynamicGUI.Components.List.DynamicGUI_DisplayTable_Impl;
 import com.ntankard.DynamicGUI.Util.Containers.ControllablePanel;
 import com.ntankard.DynamicGUI.Util.Decoder.CurrencyDecoder_NumberFormatSource;
@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.ntankard.ClassExtension.MemberProperties.ALWAYS_DISPLAY;
+import static com.ntankard.CoreObject.Field.Properties.Display_Properties.ALWAYS_DISPLAY;
 
-public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
+public class DynamicGUI_DisplayList<T extends CoreObject> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
 
     /**
      * The master content of the list
@@ -27,7 +27,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     /**
      * The version of the list with the fillers applied
      */
-    private List<T> filtered = new ArrayList<>();
+    private final List<T> filtered = new ArrayList<>();
 
     /**
      * All the predicates for each of the individual controls
@@ -37,7 +37,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     /**
      * The kind of object used to generate this table
      */
-    private MemberClass mClass;
+    private final Class<T> aClass;
 
     /**
      * Set A user set source for the locale
@@ -74,12 +74,12 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
      *
      * @param master The parent of this object to be notified if data changes
      */
-    public DynamicGUI_DisplayList(List<T> base, MemberClass mClass, Updatable master) {
+    public DynamicGUI_DisplayList(List<T> base, Class<T> aClass, Updatable master) {
         super(master);
         this.base = base;
-        this.mClass = mClass;
+        this.aClass = aClass;
 
-        setMainPanel(new DynamicGUI_DisplayTable_Impl<>(mClass, filtered, this));
+        setMainPanel(new DynamicGUI_DisplayTable_Impl<>(aClass, filtered, this));
     }
 
     /**
@@ -120,7 +120,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
     @SuppressWarnings("UnusedReturnValue")
     public DynamicGUI_DisplayList<T> addFilter() {
         predicates = new ArrayList<>();
-        setControlPanel(new DynamicGUI_Filter<>(mClass, predicates, this));
+        setControlPanel(new DynamicGUI_Filter<>(aClass, predicates, this));
         getControlPanel().setVerbosity(verbosity);
 
         return this;
@@ -161,7 +161,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
 
         ListControl_Button<T> editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
         editBtn.addActionListener(e -> {
-            List<?> selected = getMainPanel().getSelectedItems();
+            List<? extends CoreObject> selected = getMainPanel().getSelectedItems();
             DynamicGUI_IntractableObject.openIntractableObjectDialog(new DynamicGUI_IntractableObject<>(selected.get(0), this)
                     .setLocaleSource(localeSource)
                     .setVerbosity(verbosity));
@@ -268,7 +268,7 @@ public class DynamicGUI_DisplayList<T> extends ControllablePanel<DynamicGUI_Disp
         boolean canCreate();
     }
 
-    public static class ListControl_Button<T> extends JButton implements ListSelectionListener {
+    public static class ListControl_Button<T extends CoreObject> extends JButton implements ListSelectionListener {
 
         /**
          * How many elements need to be selected for the button to be enabled

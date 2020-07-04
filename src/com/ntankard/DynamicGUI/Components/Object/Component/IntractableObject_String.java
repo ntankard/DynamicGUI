@@ -1,6 +1,7 @@
 package com.ntankard.DynamicGUI.Components.Object.Component;
 
-import com.ntankard.ClassExtension.ExecutableMember;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Decoder.Decoder;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
@@ -8,8 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class IntractableObject_String<T> extends IntractableObject<T> {
 
@@ -31,14 +30,14 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
     /**
      * Constructor
      *
-     * @param baseMember   The member that this panel is built around
+     * @param dataField The DataField that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param order        The order of this object
      * @param decoder      The decoder used to convert to and from a string
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_String(ExecutableMember<T> baseMember, boolean saveOnUpdate, int order, Decoder<T> decoder, Updatable master) {
-        super(baseMember, saveOnUpdate, order, master);
+    public IntractableObject_String(DataField<T> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Decoder<T> decoder, Updatable master) {
+        super(dataField, coreObject, saveOnUpdate, order, master);
         this.decoder = decoder;
         createUIComponents();
         update();
@@ -49,11 +48,11 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
      */
     protected void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
         this.setLayout(new BorderLayout());
 
         value_txt = new JTextField();
-        value_txt.setEditable(getBaseMember().canEdit());
+        value_txt.setEditable(getDataField().getDataCore().canEdit());
         value_txt.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -82,10 +81,10 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
      */
     @Override
     protected void load() {
-        Object value = getBaseMember().get();
+        Object value = get();
         if (value != null) {
-            currentValue = getBaseMember().get();
-            value_txt.setText(decoder.decode(currentValue, getBaseMember().getObject()));
+            currentValue = get();
+            value_txt.setText(decoder.decode(currentValue, getCoreObject()));
         } else {
             value_txt.setText("");
         }

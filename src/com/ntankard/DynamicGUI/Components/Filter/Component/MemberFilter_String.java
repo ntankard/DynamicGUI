@@ -1,13 +1,13 @@
 package com.ntankard.DynamicGUI.Components.Filter.Component;
 
-import com.ntankard.ClassExtension.Member;
+import com.ntankard.CoreObject.CoreObject;
+import com.ntankard.CoreObject.Field.DataField;
 import com.ntankard.DynamicGUI.Util.Update.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
 
 /**
@@ -33,11 +33,11 @@ public class MemberFilter_String extends MemberFilter {
     /**
      * Constructor
      *
-     * @param baseMember The member connected to this panel
-     * @param master     The top level GUI
+     * @param dataField The DataField that this panel is built around
+     * @param master    The top level GUI
      */
-    public MemberFilter_String(Member baseMember, Updatable master) {
-        super(baseMember, master);
+    public MemberFilter_String(DataField<?> dataField, Updatable master) {
+        super(dataField, master);
         createUIComponents();
         update();
     }
@@ -47,11 +47,9 @@ public class MemberFilter_String extends MemberFilter {
      *
      * @param o The object to test
      * @return The invoked value
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
      */
-    protected String getInstanceValue(Object o) throws InvocationTargetException, IllegalAccessException {
-        return (String) getBaseMember().getGetter().invoke(o);
+    protected String getInstanceValue(CoreObject o) {
+        return (String) o.get(getDataField().getIdentifierName());
     }
 
     /**
@@ -59,7 +57,7 @@ public class MemberFilter_String extends MemberFilter {
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getBaseMember().getName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
         this.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
@@ -114,31 +112,27 @@ public class MemberFilter_String extends MemberFilter {
      * {@inheritDoc}
      */
     @Override
-    public Predicate getPredicate() {
+    public Predicate<? extends CoreObject> getPredicate() {
         return o -> {
             if (value.isEmpty()) {
                 return true;
             }
-            try {
-                String readValue = getInstanceValue(o);
-                if (readValue == null) {
-                    return value.isEmpty();
-                }
-
-                String expected = value;
-                String actual = readValue;
-                if (!caseSensitive) {
-                    expected = value.toUpperCase();
-                    actual = readValue.toUpperCase();
-                }
-
-                if (!exactMatch) {
-                    return actual.contains(expected);
-                }
-                return actual.equals(expected);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+            String readValue = getInstanceValue(o);
+            if (readValue == null) {
+                return value.isEmpty();
             }
+
+            String expected = value;
+            String actual = readValue;
+            if (!caseSensitive) {
+                expected = value.toUpperCase();
+                actual = readValue.toUpperCase();
+            }
+
+            if (!exactMatch) {
+                return actual.contains(expected);
+            }
+            return actual.equals(expected);
         };
     }
 }
