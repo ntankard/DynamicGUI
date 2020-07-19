@@ -415,9 +415,9 @@ public class DataField<T> {
      */
     @Override
     public String toString() {
-        return "DataField{" +
-                "name='" + identifierName + '\'' +
-                ", type=" + type +
-                '}';
+        if (get() != null) {
+            return identifierName + " - " + type.getSimpleName() + " - " + getState().toString() + " - " + get().toString();
+        }
+        return identifierName + " - " + type.getSimpleName() + " - " + getState().toString() + " - null";
     }
 }
