@@ -1,5 +1,6 @@
 package com.ntankard.dynamicGUI.CoreObject;
 
+import com.ntankard.dynamicGUI.CoreObject.Factory.ObjectFactory;
 import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
 
 import java.lang.reflect.Modifier;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FieldContainer {
+
+    // Field -----------------------------------------------------------------------------------------------------------
 
     /**
      * The master container for the fields
@@ -35,16 +38,28 @@ public class FieldContainer {
      */
     private int orderStep = 10000000;
 
+    // Class Behavior --------------------------------------------------------------------------------------------------
+
     /**
-     * All the layers used to build the final object. Stored for testing purposes
+     * All the factory this class has
      */
-    final List<Class<? extends CoreObject>> inheritedObjects = new ArrayList<>();
+    private final List<ObjectFactory> objectFactories = new ArrayList<>();
+
+    // State -----------------------------------------------------------------------------------------------------------
 
     /**
      * Has this container been finalised
      */
     private boolean isFinalized = false;
 
+    /**
+     * All the layers used to build the final object. Stored for testing purposes
+     */
+    final List<Class<? extends CoreObject>> inheritedObjects = new ArrayList<>();
+
+    /**
+     * The lowest level of object that has added to this container. Stored for testing purposes
+     */
     Class<? extends CoreObject> solidObjectType = null;
 
     //------------------------------------------------------------------------------------------------------------------
@@ -86,6 +101,21 @@ public class FieldContainer {
         dataField.getDisplayProperties().setOrder(lastOrder);
 
         return dataField;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //################################################# Class Behavior #################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Add a new object factory to the list
+     *
+     * @param objectFactory The object factory to add
+     */
+    public void addObjectFactory(ObjectFactory objectFactory) {
+        if (isFinalized)
+            throw new IllegalStateException("Trying to modify a finalised container");
+        this.objectFactories.add(objectFactory);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -225,5 +255,13 @@ public class FieldContainer {
     @SuppressWarnings("unchecked")
     public <T> DataField<T> getLast() {
         return (DataField<T>) last;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //############################################# Class Behavior Access ##############################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    public List<ObjectFactory> getObjectFactories() {
+        return objectFactories;
     }
 }
