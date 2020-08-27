@@ -43,7 +43,7 @@ public class FieldContainer {
     /**
      * All the factory this class has
      */
-    private final List<ObjectFactory> objectFactories = new ArrayList<>();
+    private final List<ObjectFactory<?, ?>> objectFactories = new ArrayList<>();
 
     // State -----------------------------------------------------------------------------------------------------------
 
@@ -261,7 +261,7 @@ public class FieldContainer {
     //############################################# Class Behavior Access ##############################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public List<ObjectFactory> getObjectFactories() {
+    public List<ObjectFactory<?, ?>> getObjectFactories() {
         return objectFactories;
     }
 }
