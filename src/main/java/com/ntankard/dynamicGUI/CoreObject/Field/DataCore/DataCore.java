@@ -69,13 +69,6 @@ public abstract class DataCore<T> {
     public abstract boolean canEdit();
 
     /**
-     * Dose this DataCore contain core data? (Not derived from another field)
-     *
-     * @return True is this DataCore contain core data
-     */
-    public abstract boolean isDirectData();
-
-    /**
      * Can the field be initially set?
      *
      * @return True if the field be initially set?

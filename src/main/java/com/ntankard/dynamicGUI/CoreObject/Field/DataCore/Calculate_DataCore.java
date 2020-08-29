@@ -22,14 +22,6 @@ public abstract class Calculate_DataCore<T> extends DataCore<T> {
      * {@inheritDoc
      */
     @Override
-    public boolean isDirectData() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc
-     */
-    @Override
     public void set(T toSet) {
         throw new UnsupportedOperationException();
     }

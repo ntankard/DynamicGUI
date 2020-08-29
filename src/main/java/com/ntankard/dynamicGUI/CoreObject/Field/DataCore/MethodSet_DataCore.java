@@ -2,7 +2,7 @@ package com.ntankard.dynamicGUI.CoreObject.Field.DataCore;
 
 import com.ntankard.dynamicGUI.CoreObject.CoreObject;
 
-public class MethodSet_DataCore<T> extends Method_DataCore<T> {
+public class MethodSet_DataCore<T, ContainerType extends CoreObject> extends Method_DataCore<T, ContainerType> {
 
     /**
      * The method to get the value to set
@@ -12,7 +12,7 @@ public class MethodSet_DataCore<T> extends Method_DataCore<T> {
     /**
      * Constructor
      */
-    public MethodSet_DataCore(Getter<T> getter, Setter<T> setter) {
+    public MethodSet_DataCore(Getter<T, ContainerType> getter, Setter<T> setter) {
         super(getter);
         this.setter = setter;
     }

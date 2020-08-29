@@ -79,14 +79,6 @@ public class Derived_DataCore<T, L extends CoreObject> extends ValueRead_DataCor
         return false;
     }
 
-    /**
-     * {@inheritDoc
-     */
-    @Override
-    public boolean isDirectData() {
-        return false;
-    }
-
     //------------------------------------------------------------------------------------------------------------------
     //################################################## Implementation ################################################
     //------------------------------------------------------------------------------------------------------------------
@@ -305,11 +297,28 @@ public class Derived_DataCore<T, L extends CoreObject> extends ValueRead_DataCor
      */
     public static class DirectExternalSource<ResultType, SourceContainerType extends CoreObject> extends ExternalSource<ResultType, SourceContainerType, ResultType> {
 
+        public interface ValueModifier<ResultType> {
+            ResultType modify(ResultType original);
+        }
+
+        /**
+         * A modifier to use if the value is not exactly the same, if null the exact value is returned
+         */
+        private final ValueModifier<ResultType> valueModifier;
+
         /**
          * Constructor
          */
         public DirectExternalSource(DataField<SourceContainerType> sourceObjectField, String fieldName) {
-            super(sourceObjectField, fieldName);
+            this(sourceObjectField, fieldName, null);
+        }
+
+        /**
+         * Constructor
+         */
+        public DirectExternalSource(DataField<SourceContainerType> sourceContainerField, String sourceFieldName, ValueModifier<ResultType> valueModifier) {
+            super(sourceContainerField, sourceFieldName);
+            this.valueModifier = valueModifier;
         }
 
         /**
@@ -317,10 +326,17 @@ public class Derived_DataCore<T, L extends CoreObject> extends ValueRead_DataCor
          */
         @Override
         protected void sourceChanged() {
-            if (parent.getDataField().getState().equals(DataField.NewFieldState.N_ATTACHED_TO_OBJECT)) {
-                parent.initialSet((containerObject.<ResultType>getField(fieldName)).get());
+            ResultType toSet;
+            if (valueModifier != null) {
+                toSet = valueModifier.modify((containerObject.<ResultType>getField(fieldName)).get());
             } else {
-                parent.set_impl((containerObject.<ResultType>getField(fieldName)).get());
+                toSet = (containerObject.<ResultType>getField(fieldName)).get();
+            }
+
+            if (parent.getDataField().getState().equals(DataField.NewFieldState.N_ATTACHED_TO_OBJECT)) {
+                parent.initialSet(toSet);
+            } else {
+                parent.set_impl(toSet);
             }
         }
     }
