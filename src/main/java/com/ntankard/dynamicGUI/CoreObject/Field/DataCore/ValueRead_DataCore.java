@@ -82,6 +82,22 @@ public class ValueRead_DataCore<T> extends DataCore<T> {
         return canEdit;
     }
 
+    /**
+     * {@inheritDoc
+     */
+    @Override
+    public boolean canInitialSet() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc
+     */
+    @Override
+    public boolean doseSupportChangeListeners() {
+        return true;
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     //################################################## Implementation ################################################
     //------------------------------------------------------------------------------------------------------------------

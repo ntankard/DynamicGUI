@@ -1,5 +1,7 @@
 package com.ntankard.dynamicGUI.CoreObject.Field.DataCore;
 
+import com.ntankard.dynamicGUI.CoreObject.Field.Listener.FieldChangeListener;
+
 public class Static_DataCore<T> extends DataCore<T> {
 
     /**
@@ -52,5 +54,24 @@ public class Static_DataCore<T> extends DataCore<T> {
     @Override
     public boolean canInitialSet() {
         return false;
+    }
+
+    /**
+     * {@inheritDoc
+     */
+    @Override
+    public boolean doseSupportChangeListeners() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc
+     */
+    @Override
+    public void forceInitialSet() {
+        super.forceInitialSet();
+        for (FieldChangeListener<T> fieldChangeListener : getDataField().getFieldChangeListeners()) {
+            fieldChangeListener.valueChanged(getDataField(), null, get());
+        }
     }
 }

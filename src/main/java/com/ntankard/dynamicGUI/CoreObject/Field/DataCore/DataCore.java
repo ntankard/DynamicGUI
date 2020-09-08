@@ -57,6 +57,12 @@ public abstract class DataCore<T> {
      */
     public abstract void initialSet(T toSet);
 
+    /**
+     * This is called instead of initialSet if canInitialSet is false. It is used to initialise a internal value if needed
+     */
+    public void forceInitialSet() {
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     //############################################### DataCore Properties ##############################################
     //------------------------------------------------------------------------------------------------------------------
@@ -73,18 +79,14 @@ public abstract class DataCore<T> {
      *
      * @return True if the field be initially set?
      */
-    public boolean canInitialSet() {
-        return true;
-    }
+    public abstract boolean canInitialSet();
 
     /**
      * Can this DataCore respond to changes in other fields and notify them when i change?
      *
      * @return True if this DataCore respond to changes in other fields and notify them when i change
      */
-    public boolean doseSupportChangeListeners() {
-        return true;
-    }
+    public abstract boolean doseSupportChangeListeners();
 
     //------------------------------------------------------------------------------------------------------------------
     //################################################ Standard Access #################################################

@@ -142,6 +142,7 @@ public class DataField<T> {
         if (getDataCore().canInitialSet()) {
             state = N_ATTACHED_TO_OBJECT;
         } else {
+            getDataCore().forceInitialSet();
             state = N_INITIALIZED;
         }
     }
