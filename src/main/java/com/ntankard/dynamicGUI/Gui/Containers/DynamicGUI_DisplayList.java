@@ -1,10 +1,10 @@
 package com.ntankard.dynamicGUI.Gui.Containers;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
 import com.ntankard.dynamicGUI.Gui.Components.List.DynamicGUI_DisplayTable_Impl;
 import com.ntankard.dynamicGUI.Gui.Util.Containers.ControllablePanel;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.ntankard.dynamicGUI.CoreObject.Field.Properties.Display_Properties.ALWAYS_DISPLAY;
+import static com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties.ALWAYS_DISPLAY;
 
-public class DynamicGUI_DisplayList<T extends CoreObject> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
+public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
 
     /**
      * The master content of the list
@@ -161,7 +161,7 @@ public class DynamicGUI_DisplayList<T extends CoreObject> extends ControllablePa
 
         ListControl_Button<T> editBtn = new ListControl_Button<>("Edit", this, ListControl_Button.EnableCondition.SINGLE, false);
         editBtn.addActionListener(e -> {
-            List<? extends CoreObject> selected = getMainPanel().getSelectedItems();
+            List<? extends DataObject> selected = getMainPanel().getSelectedItems();
             DynamicGUI_IntractableObject.openIntractableObjectDialog(new DynamicGUI_IntractableObject<>(selected.get(0), this)
                     .setLocaleSource(localeSource)
                     .setVerbosity(verbosity));
@@ -268,7 +268,7 @@ public class DynamicGUI_DisplayList<T extends CoreObject> extends ControllablePa
         boolean canCreate();
     }
 
-    public static class ListControl_Button<T extends CoreObject> extends JButton implements ListSelectionListener {
+    public static class ListControl_Button<T extends DataObject> extends JButton implements ListSelectionListener {
 
         /**
          * How many elements need to be selected for the button to be enabled

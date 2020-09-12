@@ -1,11 +1,11 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Components.Filter.Component.*;
 import com.ntankard.dynamicGUI.Gui.Util.Containers.PanelContainer;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
-import com.ntankard.dynamicGUI.CoreObject.Field.Properties.Display_Properties;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -68,7 +68,7 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     protected void createUIComponents() {
         super.createUIComponents();
 
-        for (DataField<?> dataField : CoreObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField<?> dataField : DataObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
 
             // find a compatible filter type
             MemberFilter filterable;

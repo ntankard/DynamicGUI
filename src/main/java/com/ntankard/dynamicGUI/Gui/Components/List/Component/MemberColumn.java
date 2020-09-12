@@ -1,7 +1,7 @@
 package com.ntankard.dynamicGUI.Gui.Components.List.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
-import com.ntankard.dynamicGUI.CoreObject.Field.Properties.Display_Properties;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.Renderer.*;
 import com.ntankard.dynamicGUI.Gui.Components.List.DynamicGUI_DisplayTable_Model;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.*;

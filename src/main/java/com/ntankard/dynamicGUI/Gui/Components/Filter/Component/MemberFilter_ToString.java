@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 /**
  * A MemberFilter used to filter an object string value (toString) with either an exact, partial, or case sensitive match
@@ -27,7 +27,7 @@ public class MemberFilter_ToString extends MemberFilter_String {
      * {@inheritDoc}
      */
     @Override
-    protected String getInstanceValue(CoreObject o) {
+    protected String getInstanceValue(DataObject o) {
         Object toRead = o.get(getDataField().getIdentifierName());
         if (toRead != null) {
             return toRead.toString();

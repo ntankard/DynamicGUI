@@ -1,9 +1,9 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Containers.BufferedJPanel;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 public abstract class IntractableObject<T> extends BufferedJPanel<T> {
 
@@ -15,7 +15,7 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     /**
      * The instance of the object
      */
-    protected CoreObject coreObject;
+    protected DataObject dataObject;
 
     /**
      * The display order, Integer.MAX_VALUE if none is set
@@ -25,10 +25,10 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     /**
      * Constructor
      */
-    IntractableObject(DataField<T> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Updatable master) {
+    IntractableObject(DataField<T> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
         super(saveOnUpdate, master);
         this.dataField = dataField;
-        this.coreObject = coreObject;
+        this.dataObject = dataObject;
         this.order = order;
     }
 
@@ -86,14 +86,14 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     }
 
     protected void set(T value) {
-        coreObject.set(getDataField().getIdentifierName(), value);
+        dataObject.set(getDataField().getIdentifierName(), value);
     }
 
     protected T get() {
-        return coreObject.get(getDataField().getIdentifierName());
+        return dataObject.get(getDataField().getIdentifierName());
     }
 
-    public CoreObject getCoreObject() {
-        return coreObject;
+    public DataObject getDataObject() {
+        return dataObject;
     }
 }

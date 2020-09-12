@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,7 +68,7 @@ public class MemberFilter_Double extends MemberFilter {
      * {@inheritDoc}
      */
     @Override
-    public Predicate<? extends CoreObject> getPredicate() {
+    public Predicate<? extends DataObject> getPredicate() {
         return o -> {
             if (value == null) {
                 return true;

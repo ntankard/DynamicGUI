@@ -1,13 +1,13 @@
 package com.ntankard.dynamicGUI.Gui.Components.List;
 
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn_List;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.Gui.Util.Table.TableColumnAdjuster;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.dynamicGUI.Gui.Util.Update.UpdatableJScrollPane;
-import com.ntankard.dynamicGUI.CoreObject.Field.Properties.Display_Properties;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;

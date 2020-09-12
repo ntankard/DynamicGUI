@@ -1,9 +1,9 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.Decoder;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,8 +36,8 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
      * @param decoder      The decoder used to convert to and from a string
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_String(DataField<T> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Decoder<T> decoder, Updatable master) {
-        super(dataField, coreObject, saveOnUpdate, order, master);
+    public IntractableObject_String(DataField<T> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Decoder<T> decoder, Updatable master) {
+        super(dataField, dataObject, saveOnUpdate, order, master);
         this.decoder = decoder;
         createUIComponents();
         update();
@@ -84,7 +84,7 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
         Object value = get();
         if (value != null) {
             currentValue = get();
-            value_txt.setText(decoder.decode(currentValue, getCoreObject()));
+            value_txt.setText(decoder.decode(currentValue, getDataObject()));
         } else {
             value_txt.setText("");
         }

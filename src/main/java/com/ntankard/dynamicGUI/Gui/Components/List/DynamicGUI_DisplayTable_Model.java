@@ -1,11 +1,11 @@
 package com.ntankard.dynamicGUI.Gui.Components.List;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn_List;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -23,7 +23,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
     /**
      * The data used to populate the rowData of the table
      */
-    private final List<CoreObject> rowData;
+    private final List<DataObject> rowData;
 
     /**
      * The parent of this object to be notified if data changes
@@ -42,7 +42,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
         this.rowData = rowData;
         this.master = master;
 
-        List<DataField<?>> dataFields = CoreObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
+        List<DataField<?>> dataFields = DataObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
         for (DataField<?> dataField : dataFields) {
             MemberColumn column;
             if (dataField.getSource() != null) {

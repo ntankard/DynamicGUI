@@ -1,16 +1,15 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
-import com.ntankard.dynamicGUI.CoreObject.Field.Properties.Display_Properties;
 import com.ntankard.dynamicGUI.Gui.Components.Object.Component.IntractableObject;
 import com.ntankard.dynamicGUI.Gui.Components.Object.Component.IntractableObject_Enum;
 import com.ntankard.dynamicGUI.Gui.Components.Object.Component.IntractableObject_List;
 import com.ntankard.dynamicGUI.Gui.Components.Object.Component.IntractableObject_String;
 import com.ntankard.dynamicGUI.Gui.Util.Containers.PanelContainer;
-
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.*;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class DynamicGUI_IntractableObject_Impl<T extends CoreObject> extends PanelContainer {
+public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends PanelContainer {
 
     /**
      * The instance to interact with
@@ -136,7 +135,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends CoreObject> extends Pan
         super.createUIComponents();
         intractableObjects.clear();
 
-        for (DataField dataField : CoreObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField dataField : DataObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
 
 
             // find a compatible filter type

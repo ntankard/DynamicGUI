@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +48,7 @@ public class MemberFilter_String extends MemberFilter {
      * @param o The object to test
      * @return The invoked value
      */
-    protected String getInstanceValue(CoreObject o) {
+    protected String getInstanceValue(DataObject o) {
         return (String) o.get(getDataField().getIdentifierName());
     }
 
@@ -112,7 +112,7 @@ public class MemberFilter_String extends MemberFilter {
      * {@inheritDoc}
      */
     @Override
-    public Predicate<? extends CoreObject> getPredicate() {
+    public Predicate<? extends DataObject> getPredicate() {
         return o -> {
             if (value.isEmpty()) {
                 return true;

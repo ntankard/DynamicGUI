@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -23,8 +23,8 @@ public class IntractableObject_Enum extends IntractableObject<Enum<?>> implement
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_Enum(DataField<Enum<?>> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Updatable master) {
-        super(dataField, coreObject, saveOnUpdate, order, master);
+    public IntractableObject_Enum(DataField<Enum<?>> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
+        super(dataField, dataObject, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }

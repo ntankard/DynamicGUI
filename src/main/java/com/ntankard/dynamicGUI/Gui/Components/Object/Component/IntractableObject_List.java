@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.dynamicGUI.CoreObject.CoreObject;
-import com.ntankard.dynamicGUI.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
+import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,8 +25,8 @@ public class IntractableObject_List extends IntractableObject<Object> implements
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_List(DataField<Object> dataField, CoreObject coreObject, boolean saveOnUpdate, int order, Updatable master) {
-        super(dataField, coreObject, saveOnUpdate, order, master);
+    public IntractableObject_List(DataField<Object> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
+        super(dataField, dataObject, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }
@@ -68,7 +68,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
 
         List<Object> options;
         try {
-            options = (List<Object>) getDataField().getSource().invoke(getCoreObject(), getDataField().getType(), getDataField().getDisplayName());
+            options = (List<Object>) getDataField().getSource().invoke(getDataObject(), getDataField().getType(), getDataField().getDisplayName());
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
