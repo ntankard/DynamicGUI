@@ -110,7 +110,7 @@ public class MemberColumn {
      * @return True if this Column be edited?
      */
     public boolean isEditable() {
-        if (!getDataField().getDataCore().canEdit() || getRenderer().getDecoder() == null) {
+        if (!getDataField().getCanEdit() || getRenderer().getDecoder() == null) {
             return false;
         }
         return renderer.getDecoder().isEditable();

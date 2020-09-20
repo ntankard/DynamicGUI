@@ -52,7 +52,7 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
         this.setLayout(new BorderLayout());
 
         value_txt = new JTextField();
-        value_txt.setEditable(getDataField().getDataCore().canEdit());
+        value_txt.setEditable(getDataField().getCanEdit());
         value_txt.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {

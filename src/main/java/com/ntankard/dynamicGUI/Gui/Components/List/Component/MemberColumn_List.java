@@ -20,7 +20,7 @@ public class MemberColumn_List extends MemberColumn {
      */
     @Override
     public boolean isEditable() {
-        return getDataField().getDataCore().canEdit() && getDataField().getSource() != null;
+        return getDataField().getCanEdit() && getDataField().getSource() != null;
     }
 
     /**
