@@ -10,6 +10,7 @@ import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
+import com.ntankard.javaObjectDatabase.CoreObject.TrackingDatabase_Schema;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
         super.createUIComponents();
         intractableObjects.clear();
 
-        for (DataField dataField : DataObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField dataField : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
 
 
             // find a compatible filter type

@@ -6,6 +6,7 @@ import com.ntankard.dynamicGUI.Gui.Util.Decoder.CurrencyDecoder_NumberFormatSour
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
+import com.ntankard.javaObjectDatabase.CoreObject.TrackingDatabase_Schema;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -42,7 +43,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
         this.rowData = rowData;
         this.master = master;
 
-        List<DataField<?>> dataFields = DataObject.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
+        List<DataField<?>> dataFields = TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
         for (DataField<?> dataField : dataFields) {
             MemberColumn column;
             if (dataField.getSource() != null) {
