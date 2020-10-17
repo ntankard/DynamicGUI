@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
@@ -22,11 +22,11 @@ public class MemberFilter_Enum extends MemberFilter {
     /**
      * Constructor
      *
-     * @param dataField The DataField that this panel is built around
+     * @param dataFieldSchema The DataField that this panel is built around
      * @param master    The top level GUI
      */
-    public MemberFilter_Enum(DataField dataField, Updatable master) {
-        super(dataField, master);
+    public MemberFilter_Enum(DataField_Schema dataFieldSchema, Updatable master) {
+        super(dataFieldSchema, master);
         createUIComponents();
     }
 
@@ -35,10 +35,10 @@ public class MemberFilter_Enum extends MemberFilter {
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataFieldSchema().getDisplayName()));
         this.setLayout(new BorderLayout());
 
-        Object[] possibleValues = getDataField().getType().getEnumConstants();
+        Object[] possibleValues = getDataFieldSchema().getType().getEnumConstants();
 
         JList<Object> list = new JList<>(possibleValues);
 
@@ -77,7 +77,7 @@ public class MemberFilter_Enum extends MemberFilter {
             if (selected == null || selected.size() == 0) {
                 return true;
             }
-            return selected.contains(o.get(getDataField().getIdentifierName()));
+            return selected.contains(o.get(getDataFieldSchema().getIdentifierName()));
         };
     }
 }

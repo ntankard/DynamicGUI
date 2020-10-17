@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
@@ -19,12 +19,12 @@ public class IntractableObject_Enum extends IntractableObject<Enum<?>> implement
     /**
      * Constructor
      *
-     * @param dataField    The DataField that this panel is built around
+     * @param dataFieldSchema    The DataField that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_Enum(DataField<Enum<?>> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
-        super(dataField, dataObject, saveOnUpdate, order, master);
+    public IntractableObject_Enum(DataField_Schema<Enum<?>> dataFieldSchema, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
+        super(dataFieldSchema, dataObject, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }
@@ -34,10 +34,10 @@ public class IntractableObject_Enum extends IntractableObject<Enum<?>> implement
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataFieldSchema().getDisplayName()));
         this.setLayout(new BorderLayout());
 
-        list = new JList<>(getDataField().getType().getEnumConstants());
+        list = new JList<>(getDataFieldSchema().getType().getEnumConstants());
         list.addListSelectionListener(this);
         JScrollPane listPane = new JScrollPane(list);
 

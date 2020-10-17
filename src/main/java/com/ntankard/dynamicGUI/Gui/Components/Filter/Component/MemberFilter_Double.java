@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
@@ -23,11 +23,11 @@ public class MemberFilter_Double extends MemberFilter {
     /**
      * Constructor
      *
-     * @param dataField The DataField that this panel is built around
+     * @param dataFieldSchema The DataField that this panel is built around
      * @param master    The top level GUI
      */
-    public MemberFilter_Double(DataField<?> dataField, Updatable master) {
-        super(dataField, master);
+    public MemberFilter_Double(DataField_Schema<?> dataFieldSchema, Updatable master) {
+        super(dataFieldSchema, master);
         createUIComponents();
     }
 
@@ -36,7 +36,7 @@ public class MemberFilter_Double extends MemberFilter {
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataFieldSchema().getDisplayName()));
         this.setLayout(new BorderLayout());
 
         JTextField value_txt = new JTextField();
@@ -73,7 +73,7 @@ public class MemberFilter_Double extends MemberFilter {
             if (value == null) {
                 return true;
             }
-            return o.get(getDataField().getIdentifierName()).equals(value);
+            return o.get(getDataFieldSchema().getIdentifierName()).equals(value);
         };
     }
 }

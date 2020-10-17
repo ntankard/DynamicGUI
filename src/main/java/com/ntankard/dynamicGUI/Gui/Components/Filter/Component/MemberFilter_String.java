@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
@@ -33,11 +33,11 @@ public class MemberFilter_String extends MemberFilter {
     /**
      * Constructor
      *
-     * @param dataField The DataField that this panel is built around
+     * @param dataFieldSchema The DataField that this panel is built around
      * @param master    The top level GUI
      */
-    public MemberFilter_String(DataField<?> dataField, Updatable master) {
-        super(dataField, master);
+    public MemberFilter_String(DataField_Schema<?> dataFieldSchema, Updatable master) {
+        super(dataFieldSchema, master);
         createUIComponents();
         update();
     }
@@ -49,7 +49,7 @@ public class MemberFilter_String extends MemberFilter {
      * @return The invoked value
      */
     protected String getInstanceValue(DataObject o) {
-        return (String) o.get(getDataField().getIdentifierName());
+        return (String) o.get(getDataFieldSchema().getIdentifierName());
     }
 
     /**
@@ -57,7 +57,7 @@ public class MemberFilter_String extends MemberFilter {
      */
     private void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataFieldSchema().getDisplayName()));
         this.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();

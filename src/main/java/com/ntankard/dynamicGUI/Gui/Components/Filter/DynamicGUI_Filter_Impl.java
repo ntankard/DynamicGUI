@@ -3,9 +3,9 @@ package com.ntankard.dynamicGUI.Gui.Components.Filter;
 import com.ntankard.dynamicGUI.Gui.Components.Filter.Component.*;
 import com.ntankard.dynamicGUI.Gui.Util.Containers.PanelContainer;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
-import com.ntankard.javaObjectDatabase.CoreObject.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.Database.TrackingDatabase_Schema;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -68,19 +68,19 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     protected void createUIComponents() {
         super.createUIComponents();
 
-        for (DataField<?> dataField : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema<?> dataFieldSchema : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
 
             // find a compatible filter type
             MemberFilter filterable;
-            Class<?> theClass = dataField.getType();
+            Class<?> theClass = dataFieldSchema.getType();
             if (theClass.equals(String.class)) {
-                filterable = new MemberFilter_String(dataField, this);
-            } else if (theClass.equals(double.class) || dataField.getType().equals(Double.class)) {
-                filterable = new MemberFilter_Double(dataField, this);
+                filterable = new MemberFilter_String(dataFieldSchema, this);
+            } else if (theClass.equals(double.class) || dataFieldSchema.getType().equals(Double.class)) {
+                filterable = new MemberFilter_Double(dataFieldSchema, this);
             } else if (theClass.isEnum()) {
-                filterable = new MemberFilter_Enum(dataField, this);
+                filterable = new MemberFilter_Enum(dataFieldSchema, this);
             } else {
-                filterable = new MemberFilter_ToString(dataField, this);
+                filterable = new MemberFilter_ToString(dataFieldSchema, this);
             }
 
             addMember(filterable);

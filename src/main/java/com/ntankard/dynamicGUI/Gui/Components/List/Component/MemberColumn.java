@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.List.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.Renderer.*;
 import com.ntankard.dynamicGUI.Gui.Components.List.DynamicGUI_DisplayTable_Model;
@@ -15,7 +15,7 @@ public class MemberColumn {
     /**
      * The DataField that this column is built around
      */
-    protected DataField<?> dataField;
+    protected DataField_Schema<?> dataFieldSchema;
 
     /**
      * The display order, Integer.MAX_VALUE if none is set
@@ -35,19 +35,19 @@ public class MemberColumn {
     /**
      * Constructor, parameters are set from the DisplayProperties set to the member
      *
-     * @param dataField The DataField that this column is built around
+     * @param dataFieldSchema The DataField that this column is built around
      * @param model     The model used to generate the columns containing this render.
      */
-    public MemberColumn(DataField<?> dataField, DynamicGUI_DisplayTable_Model model) {
-        this.dataField = dataField;
+    public MemberColumn(DataField_Schema<?> dataFieldSchema, DynamicGUI_DisplayTable_Model model) {
+        this.dataFieldSchema = dataFieldSchema;
 
         // Extract any properties
-        Display_Properties properties = getDataField().getDisplayProperties();
-        Display_Properties.DataType dataType = getDataField().getDisplayProperties().getDataType();
-        order = getDataField().getDisplayProperties().getOrder();
-        name = getDataField().getDisplayName();
+        Display_Properties properties = getDataFieldSchema().getDisplayProperties();
+        Display_Properties.DataType dataType = getDataFieldSchema().getDisplayProperties().getDataType();
+        order = getDataFieldSchema().getDisplayProperties().getOrder();
+        name = getDataFieldSchema().getDisplayName();
 
-        if (getDataField().getType().equals(Double.class)) {
+        if (getDataFieldSchema().getType().equals(Double.class)) {
             if (properties.getDataContext() == Display_Properties.DataContext.ZERO_BELOW_BAD) {
                 renderer = new NegativeHighlightRenderer(model, false);
             } else if (properties.getDataContext() == Display_Properties.DataContext.ZERO_BINARY) {
@@ -58,8 +58,8 @@ public class MemberColumn {
                 renderer = new NonZeroRenderer(model);
             }
         }
-        if (getDataField().getType().equals(Boolean.class)) {
-            if (getDataField().getDisplayProperties().getDataContext() == Display_Properties.DataContext.NOT_FALSE) {
+        if (getDataFieldSchema().getType().equals(Boolean.class)) {
+            if (getDataFieldSchema().getDisplayProperties().getDataContext() == Display_Properties.DataContext.NOT_FALSE) {
                 renderer = new FalseHighlightRenderer(model);
             }
         }
@@ -71,21 +71,21 @@ public class MemberColumn {
 
         // Build the decoder based on type
         Decoder decoder = null;
-        if (getDataField().getType().equals(Calendar.class)) {
+        if (getDataFieldSchema().getType().equals(Calendar.class)) {
             decoder = new CalendarDecoder();
-        } else if (getDataField().getType().equals(Double.class)) {
+        } else if (getDataFieldSchema().getType().equals(Double.class)) {
             if (dataType.equals(Display_Properties.DataType.CURRENCY)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataField().getDisplayName());
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataFieldSchema().getDisplayName());
             } else if (dataType.equals(Display_Properties.DataType.CURRENCY_AUD)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataField().getDisplayName());
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataFieldSchema().getDisplayName());
             } else if (dataType.equals(Display_Properties.DataType.CURRENCY_YEN)) {
-                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), getDataField().getDisplayName());
+                decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), getDataFieldSchema().getDisplayName());
             } else {
-                decoder = new DoubleDecoder(getDataField().getDisplayProperties().getDisplayDecimal());
+                decoder = new DoubleDecoder(getDataFieldSchema().getDisplayProperties().getDisplayDecimal());
             }
-        } else if (getDataField().getType().equals(String.class)) {
+        } else if (getDataFieldSchema().getType().equals(String.class)) {
             decoder = new StringDecoder();
-        } else if (getDataField().getType().equals(Integer.class)) {
+        } else if (getDataFieldSchema().getType().equals(Integer.class)) {
             decoder = new IntegerDecoder();
         }
         renderer.setDecoder(decoder);
@@ -110,7 +110,7 @@ public class MemberColumn {
      * @return True if this Column be edited?
      */
     public boolean isEditable() {
-        if (!getDataField().getCanEdit() || getRenderer().getDecoder() == null) {
+        if (!getDataFieldSchema().getCanEdit() || getRenderer().getDecoder() == null) {
             return false;
         }
         return renderer.getDecoder().isEditable();
@@ -130,8 +130,8 @@ public class MemberColumn {
     //########################################### Standard accessors ###################################################
     //------------------------------------------------------------------------------------------------------------------
 
-    public DataField<?> getDataField() {
-        return dataField;
+    public DataField_Schema<?> getDataFieldSchema() {
+        return dataFieldSchema;
     }
 
     public int getOrder() {

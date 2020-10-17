@@ -7,10 +7,10 @@ import com.ntankard.dynamicGUI.Gui.Components.Object.Component.IntractableObject
 import com.ntankard.dynamicGUI.Gui.Util.Containers.PanelContainer;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.*;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.javaObjectDatabase.CoreObject.Field.Properties.Display_Properties;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
-import com.ntankard.javaObjectDatabase.CoreObject.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.Database.TrackingDatabase_Schema;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -136,37 +136,37 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
         super.createUIComponents();
         intractableObjects.clear();
 
-        for (DataField dataField : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema dataFieldSchema : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
 
 
             // find a compatible filter type
             IntractableObject<?> intractableObject;
-            Class<?> theClass = dataField.getType();
+            Class<?> theClass = dataFieldSchema.getType();
 
-            Display_Properties.DataType dataType = dataField.getDisplayProperties().getDataType();
-            int order = dataField.getDisplayProperties().getOrder();
+            Display_Properties.DataType dataType = dataFieldSchema.getDisplayProperties().getDataType();
+            int order = dataFieldSchema.getDisplayProperties().getOrder();
 
             if (theClass.isEnum()) {
-                intractableObject = new IntractableObject_Enum(dataField, baseInstance, saveOnUpdate, order, this);
+                intractableObject = new IntractableObject_Enum(dataFieldSchema, baseInstance, saveOnUpdate, order, this);
             } else if (theClass.equals(String.class)) {
-                intractableObject = new IntractableObject_String<String>(dataField, baseInstance, saveOnUpdate, order, new StringDecoder(), this);
+                intractableObject = new IntractableObject_String<String>(dataFieldSchema, baseInstance, saveOnUpdate, order, new StringDecoder(), this);
             } else if (theClass.equals(Double.class)) {
                 if (dataType.equals(Display_Properties.DataType.CURRENCY)) {
-                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), dataField.getDisplayName(), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), dataFieldSchema.getDisplayName(), localeSource), this);
                 } else if (dataType.equals(Display_Properties.DataType.CURRENCY_AUD)) {
-                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), dataField.getDisplayName(), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), dataFieldSchema.getDisplayName(), localeSource), this);
                 } else if (dataType.equals(Display_Properties.DataType.CURRENCY_YEN)) {
-                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), dataField.getDisplayName(), localeSource), this);
+                    intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), dataFieldSchema.getDisplayName(), localeSource), this);
                 } else {
-                    intractableObject = new IntractableObject_String<Double>(dataField, baseInstance, saveOnUpdate, order, new DoubleDecoder(dataField.getDisplayProperties().getDisplayDecimal()), this);
+                    intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new DoubleDecoder(dataFieldSchema.getDisplayProperties().getDisplayDecimal()), this);
                 }
             } else if (theClass.equals(Integer.class)) {
-                intractableObject = new IntractableObject_String<Integer>(dataField, baseInstance, saveOnUpdate, order, new IntegerDecoder(), this);
+                intractableObject = new IntractableObject_String<Integer>(dataFieldSchema, baseInstance, saveOnUpdate, order, new IntegerDecoder(), this);
             } else {
-                if (dataField.getSource() != null) {
-                    intractableObject = new IntractableObject_List(dataField, baseInstance, saveOnUpdate, order, this);
+                if (dataFieldSchema.getSource() != null) {
+                    intractableObject = new IntractableObject_List(dataFieldSchema, baseInstance, saveOnUpdate, order, this);
                 } else {
-                    intractableObject = new IntractableObject_String<Object>(dataField, baseInstance, saveOnUpdate, order, new ToStringDecoder(), this);
+                    intractableObject = new IntractableObject_String<Object>(dataFieldSchema, baseInstance, saveOnUpdate, order, new ToStringDecoder(), this);
                 }
             }
             intractableObjects.add(intractableObject);

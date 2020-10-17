@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Filter.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
@@ -12,11 +12,11 @@ public class MemberFilter_ToString extends MemberFilter_String {
     /**
      * Constructor
      *
-     * @param dataField The DataField that this panel is built around
+     * @param dataFieldSchema The DataField that this panel is built around
      * @param master    The top level GUI
      */
-    public MemberFilter_ToString(DataField<?> dataField, Updatable master) {
-        super(dataField, master);
+    public MemberFilter_ToString(DataField_Schema<?> dataFieldSchema, Updatable master) {
+        super(dataFieldSchema, master);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ public class MemberFilter_ToString extends MemberFilter_String {
      */
     @Override
     protected String getInstanceValue(DataObject o) {
-        Object toRead = o.get(getDataField().getIdentifierName());
+        Object toRead = o.get(getDataFieldSchema().getIdentifierName());
         if (toRead != null) {
             return toRead.toString();
         }

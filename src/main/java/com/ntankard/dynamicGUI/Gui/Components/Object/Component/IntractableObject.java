@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Containers.BufferedJPanel;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
@@ -10,7 +10,7 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     /**
      * The DataField that this panel is built around
      */
-    protected DataField<T> dataField;
+    protected DataField_Schema<T> dataFieldSchema;
 
     /**
      * The instance of the object
@@ -25,9 +25,9 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     /**
      * Constructor
      */
-    IntractableObject(DataField<T> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
+    IntractableObject(DataField_Schema<T> dataFieldSchema, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
         super(saveOnUpdate, master);
-        this.dataField = dataField;
+        this.dataFieldSchema = dataFieldSchema;
         this.dataObject = dataObject;
         this.order = order;
     }
@@ -42,8 +42,8 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
      *
      * @return The DataField that this panel is built around
      */
-    public DataField<T> getDataField() {
-        return dataField;
+    public DataField_Schema<T> getDataFieldSchema() {
+        return dataFieldSchema;
     }
 
     /**
@@ -86,11 +86,11 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     }
 
     protected void set(T value) {
-        dataObject.set(getDataField().getIdentifierName(), value);
+        dataObject.set(getDataFieldSchema().getIdentifierName(), value);
     }
 
     protected T get() {
-        return dataObject.get(getDataField().getIdentifierName());
+        return dataObject.get(getDataFieldSchema().getIdentifierName());
     }
 
     public DataObject getDataObject() {

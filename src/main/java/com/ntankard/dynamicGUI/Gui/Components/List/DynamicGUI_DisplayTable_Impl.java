@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.List;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn_List;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.CurrencyDecoder_NumberFormatSource;
@@ -125,10 +125,10 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
                     @Override
                     @SuppressWarnings("unchecked")
                     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int columnIndex) {
-                        DataField<?> dataField = column.getDataField();
+                        DataField_Schema<?> dataFieldSchema = column.getDataFieldSchema();
                         List<Object> options;
                         try {
-                            options = (List) dataField.getSource().invoke(model.getRowObject(rowIndex), dataField.getType(), dataField.getDisplayName());
+                            options = (List) dataFieldSchema.getSource().invoke(model.getRowObject(rowIndex), dataFieldSchema.getType(), dataFieldSchema.getDisplayName());
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             throw new RuntimeException(e);
                         }

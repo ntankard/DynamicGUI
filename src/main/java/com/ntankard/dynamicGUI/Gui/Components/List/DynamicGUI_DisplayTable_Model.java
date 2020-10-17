@@ -4,9 +4,9 @@ import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn;
 import com.ntankard.dynamicGUI.Gui.Components.List.Component.MemberColumn_List;
 import com.ntankard.dynamicGUI.Gui.Util.Decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
-import com.ntankard.javaObjectDatabase.CoreObject.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.Database.TrackingDatabase_Schema;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -43,13 +43,13 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
         this.rowData = rowData;
         this.master = master;
 
-        List<DataField<?>> dataFields = TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
-        for (DataField<?> dataField : dataFields) {
+        List<DataField_Schema<?>> dataFieldSchemas = TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
+        for (DataField_Schema<?> dataFieldSchema : dataFieldSchemas) {
             MemberColumn column;
-            if (dataField.getSource() != null) {
-                column = new MemberColumn_List(dataField, this);
+            if (dataFieldSchema.getSource() != null) {
+                column = new MemberColumn_List(dataFieldSchema, this);
             } else {
-                column = new MemberColumn(dataField, this);
+                column = new MemberColumn(dataFieldSchema, this);
             }
 
             orderList.add(column);
@@ -110,10 +110,10 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (orderList.get(columnIndex).getDataField().getType().equals(Double.class)) {
+        if (orderList.get(columnIndex).getDataFieldSchema().getType().equals(Double.class)) {
             return String.class;
         }
-        return orderList.get(columnIndex).getDataField().getType();
+        return orderList.get(columnIndex).getDataFieldSchema().getType();
     }
 
     /**
@@ -138,7 +138,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         MemberColumn column = orderList.get(columnIndex);
-        return rowData.get(rowIndex).get(column.getDataField().getIdentifierName());
+        return rowData.get(rowIndex).get(column.getDataFieldSchema().getIdentifierName());
     }
 
     /**
@@ -155,7 +155,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Object decodedValue = orderList.get(columnIndex).encode(aValue);
-        rowData.get(rowIndex).set(orderList.get(columnIndex).getDataField().getIdentifierName(), decodedValue);
+        rowData.get(rowIndex).set(orderList.get(columnIndex).getDataFieldSchema().getIdentifierName(), decodedValue);
         notifyUpdate();
     }
 

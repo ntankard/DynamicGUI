@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.Gui.Components.Object.Component;
 
-import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField;
+import com.ntankard.javaObjectDatabase.CoreObject.Field.DataField_Schema;
 import com.ntankard.dynamicGUI.Gui.Util.Update.Updatable;
 import com.ntankard.javaObjectDatabase.CoreObject.DataObject;
 
@@ -21,12 +21,12 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     /**
      * Constructor
      *
-     * @param dataField    The DataField that this panel is built around
+     * @param dataFieldSchema    The DataField that this panel is built around
      * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
      * @param master       The parent of this object to be notified if data changes
      */
-    public IntractableObject_List(DataField<Object> dataField, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
-        super(dataField, dataObject, saveOnUpdate, order, master);
+    public IntractableObject_List(DataField_Schema<Object> dataFieldSchema, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
+        super(dataFieldSchema, dataObject, saveOnUpdate, order, master);
         createUIComponents();
         update();
     }
@@ -36,7 +36,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
      */
     protected void createUIComponents() {
         this.removeAll();
-        this.setBorder(BorderFactory.createTitledBorder(getDataField().getDisplayName()));
+        this.setBorder(BorderFactory.createTitledBorder(getDataFieldSchema().getDisplayName()));
         this.setLayout(new BorderLayout());
 
         combo = new JComboBox<>();
@@ -68,7 +68,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
 
         List<Object> options;
         try {
-            options = (List<Object>) getDataField().getSource().invoke(getDataObject(), getDataField().getType(), getDataField().getDisplayName());
+            options = (List<Object>) getDataFieldSchema().getSource().invoke(getDataObject(), getDataFieldSchema().getType(), getDataFieldSchema().getDisplayName());
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
