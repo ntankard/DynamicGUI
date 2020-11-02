@@ -7,6 +7,9 @@ public class IntegerDecoder extends Decoder<Integer> {
      */
     @Override
     public String decode(Integer value, Object rowObject) {
+        if (value == null) {
+            return " ";
+        }
         return value.toString();
     }
 
