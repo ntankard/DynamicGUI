@@ -68,7 +68,7 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     protected void createUIComponents() {
         super.createUIComponents();
 
-        for (DataField_Schema<?> dataFieldSchema : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema<?> dataFieldSchema : TrackingDatabase_Schema.get().getClassSchema(aClass).getVerbosityDataFields(verbosity)) {
 
             // find a compatible filter type
             MemberFilter filterable;

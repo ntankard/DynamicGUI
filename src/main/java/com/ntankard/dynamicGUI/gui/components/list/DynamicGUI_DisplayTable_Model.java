@@ -43,7 +43,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
         this.rowData = rowData;
         this.master = master;
 
-        List<DataField_Schema<?>> dataFieldSchemas = TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity);
+        List<DataField_Schema<?>> dataFieldSchemas = TrackingDatabase_Schema.get().getClassSchema(aClass).getVerbosityDataFields(verbosity);
         for (DataField_Schema<?> dataFieldSchema : dataFieldSchemas) {
             MemberColumn column;
             if (dataFieldSchema.getSource() != null) {

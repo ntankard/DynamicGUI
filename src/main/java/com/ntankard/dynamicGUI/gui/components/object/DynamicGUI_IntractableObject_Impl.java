@@ -136,7 +136,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
         super.createUIComponents();
         intractableObjects.clear();
 
-        for (DataField_Schema dataFieldSchema : TrackingDatabase_Schema.getFieldContainer(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema dataFieldSchema : TrackingDatabase_Schema.get().getClassSchema(aClass).getVerbosityDataFields(verbosity)) {
 
 
             // find a compatible filter type
