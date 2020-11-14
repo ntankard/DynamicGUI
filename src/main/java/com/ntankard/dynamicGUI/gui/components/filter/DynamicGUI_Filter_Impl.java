@@ -5,7 +5,7 @@ import com.ntankard.dynamicGUI.gui.util.containers.PanelContainer;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
 import com.ntankard.javaObjectDatabase.coreObject.field.properties.Display_Properties;
-import com.ntankard.javaObjectDatabase.database.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -30,7 +30,7 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     /**
      * Core display schema
      */
-    private final TrackingDatabase_Schema schema;
+    private final Database_Schema schema;
 
     /**
      * Constructor
@@ -39,7 +39,7 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
      * @param predicates All the predicates for each of the individual controls
      * @param master     The parent of this object to be notified if data changes
      */
-    public DynamicGUI_Filter_Impl(TrackingDatabase_Schema schema, Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
+    public DynamicGUI_Filter_Impl(Database_Schema schema, Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
         this.schema = schema;
         this.aClass = aClass;

@@ -8,7 +8,7 @@ import com.ntankard.dynamicGUI.gui.util.table.TableColumnAdjuster;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.dynamicGUI.gui.util.update.UpdatableJScrollPane;
 import com.ntankard.javaObjectDatabase.coreObject.field.properties.Display_Properties;
-import com.ntankard.javaObjectDatabase.database.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -56,7 +56,7 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     private CurrencyDecoder_NumberFormatSource localeSource;
 
     // Core schema
-    private final TrackingDatabase_Schema schema;
+    private final Database_Schema schema;
 
     /**
      * Constructor
@@ -65,7 +65,7 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
      * @param rowData The list of rowData to display
      * @param master  The parent of this object to be notified if data changes
      */
-    public DynamicGUI_DisplayTable_Impl(TrackingDatabase_Schema schema, Class<T> aClass, List<T> rowData, Updatable master) {
+    public DynamicGUI_DisplayTable_Impl(Database_Schema schema, Class<T> aClass, List<T> rowData, Updatable master) {
         super(master);
         this.schema = schema;
         this.rowData = rowData;

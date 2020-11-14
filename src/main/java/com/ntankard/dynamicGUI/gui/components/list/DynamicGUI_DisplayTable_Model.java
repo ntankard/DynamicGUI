@@ -6,7 +6,7 @@ import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSour
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
 import com.ntankard.javaObjectDatabase.coreObject.DataObject;
-import com.ntankard.javaObjectDatabase.database.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -39,7 +39,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master    The top level GUI
      */
-    public DynamicGUI_DisplayTable_Model(TrackingDatabase_Schema schema, Class aClass, List rowData, int verbosity, Updatable master) {
+    public DynamicGUI_DisplayTable_Model(Database_Schema schema, Class aClass, List rowData, int verbosity, Updatable master) {
         this.rowData = rowData;
         this.master = master;
 

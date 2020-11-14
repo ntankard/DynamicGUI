@@ -5,7 +5,7 @@ import com.ntankard.dynamicGUI.gui.util.containers.ControllablePanel;
 import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.javaObjectDatabase.coreObject.DataObject;
-import com.ntankard.javaObjectDatabase.database.TrackingDatabase_Schema;
+import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -73,14 +73,14 @@ public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePa
     /**
      * Core Schema
      */
-    private final TrackingDatabase_Schema schema;
+    private final Database_Schema schema;
 
     /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
      */
-    public DynamicGUI_DisplayList(TrackingDatabase_Schema schema, List<T> base, Class<T> aClass, Updatable master) {
+    public DynamicGUI_DisplayList(Database_Schema schema, List<T> base, Class<T> aClass, Updatable master) {
         super(master);
         this.schema = schema;
         this.base = base;
