@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.gui.components.filter.component;
 
-import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
-import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 /**
  * A MemberFilter used to filter an object string value (toString) with either an exact, partial, or case sensitive match

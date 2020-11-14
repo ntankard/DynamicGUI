@@ -4,8 +4,8 @@ import com.ntankard.dynamicGUI.gui.components.list.component.MemberColumn;
 import com.ntankard.dynamicGUI.gui.components.list.component.MemberColumn_List;
 import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
-import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
-import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
+import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.table.AbstractTableModel;

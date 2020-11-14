@@ -4,7 +4,7 @@ import com.ntankard.dynamicGUI.gui.components.object.DynamicGUI_IntractableObjec
 import com.ntankard.dynamicGUI.gui.util.containers.ControllablePanel;
 import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
-import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 import javax.swing.*;
 

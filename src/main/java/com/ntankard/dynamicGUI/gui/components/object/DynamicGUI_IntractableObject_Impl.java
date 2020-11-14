@@ -7,9 +7,9 @@ import com.ntankard.dynamicGUI.gui.components.object.component.IntractableObject
 import com.ntankard.dynamicGUI.gui.util.containers.PanelContainer;
 import com.ntankard.dynamicGUI.gui.util.decoder.*;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
-import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
-import com.ntankard.javaObjectDatabase.coreObject.field.properties.Display_Properties;
-import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
+import com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties;
+import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;

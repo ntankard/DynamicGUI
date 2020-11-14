@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.gui.components.list.component;
 
-import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.components.list.DynamicGUI_DisplayTable_Model;
 
 public class MemberColumn_List extends MemberColumn {

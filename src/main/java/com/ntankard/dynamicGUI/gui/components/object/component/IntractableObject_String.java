@@ -2,8 +2,8 @@ package com.ntankard.dynamicGUI.gui.components.object.component;
 
 import com.ntankard.dynamicGUI.gui.util.decoder.Decoder;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
-import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
-import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
+import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 import javax.swing.*;
 import java.awt.*;

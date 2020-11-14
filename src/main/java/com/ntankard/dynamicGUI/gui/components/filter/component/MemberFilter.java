@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.gui.components.filter.component;
 
-import com.ntankard.javaObjectDatabase.coreObject.field.DataField_Schema;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.util.update.UpdatableJPanel;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 

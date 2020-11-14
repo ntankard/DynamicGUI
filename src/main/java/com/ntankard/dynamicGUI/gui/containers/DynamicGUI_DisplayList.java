@@ -4,7 +4,7 @@ import com.ntankard.dynamicGUI.gui.components.list.DynamicGUI_DisplayTable_Impl;
 import com.ntankard.dynamicGUI.gui.util.containers.ControllablePanel;
 import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
-import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.ntankard.javaObjectDatabase.coreObject.field.properties.Display_Properties.ALWAYS_DISPLAY;
+import static com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
 
