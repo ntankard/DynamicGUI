@@ -27,6 +27,10 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
      */
     private int verbosity;
 
+    /**
+     * Core display schema
+     */
+    private final TrackingDatabase_Schema schema;
 
     /**
      * Constructor
@@ -35,8 +39,9 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
      * @param predicates All the predicates for each of the individual controls
      * @param master     The parent of this object to be notified if data changes
      */
-    public DynamicGUI_Filter_Impl(Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
+    public DynamicGUI_Filter_Impl(TrackingDatabase_Schema schema, Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
+        this.schema = schema;
         this.aClass = aClass;
         this.predicates = predicates;
         this.verbosity = Display_Properties.ALWAYS_DISPLAY;
@@ -68,7 +73,7 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     protected void createUIComponents() {
         super.createUIComponents();
 
-        for (DataField_Schema<?> dataFieldSchema : TrackingDatabase_Schema.get().getClassSchema(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema<?> dataFieldSchema : schema.getClassSchema(aClass).getVerbosityDataFields(verbosity)) {
 
             // find a compatible filter type
             MemberFilter filterable;

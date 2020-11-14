@@ -3,6 +3,7 @@ package com.ntankard.dynamicGUI.gui.containers;
 import com.ntankard.dynamicGUI.gui.components.filter.DynamicGUI_Filter_Impl;
 import com.ntankard.dynamicGUI.gui.util.containers.ControllablePanel;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
+import com.ntankard.javaObjectDatabase.database.TrackingDatabase_Schema;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -14,9 +15,9 @@ public class DynamicGUI_Filter<T> extends ControllablePanel<DynamicGUI_Filter_Im
      *
      * @param master The parent of this object to be notified if data changes
      */
-    public DynamicGUI_Filter(Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
+    public DynamicGUI_Filter(TrackingDatabase_Schema schema, Class<T> aClass, List<Predicate<T>> predicates, Updatable master) {
         super(master);
-        setMainPanel(new DynamicGUI_Filter_Impl<>(aClass, predicates, master));
+        setMainPanel(new DynamicGUI_Filter_Impl<>(schema, aClass, predicates, master));
     }
 
     /**

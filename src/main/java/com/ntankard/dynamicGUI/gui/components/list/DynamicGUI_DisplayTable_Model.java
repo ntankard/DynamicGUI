@@ -39,11 +39,11 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      * @param verbosity What level of verbosity should be shown? (compared against MemberProperties verbosity)
      * @param master    The top level GUI
      */
-    public DynamicGUI_DisplayTable_Model(Class aClass, List rowData, int verbosity, Updatable master) {
+    public DynamicGUI_DisplayTable_Model(TrackingDatabase_Schema schema, Class aClass, List rowData, int verbosity, Updatable master) {
         this.rowData = rowData;
         this.master = master;
 
-        List<DataField_Schema<?>> dataFieldSchemas = TrackingDatabase_Schema.get().getClassSchema(aClass).getVerbosityDataFields(verbosity);
+        List<DataField_Schema<?>> dataFieldSchemas = schema.getClassSchema(aClass).getVerbosityDataFields(verbosity);
         for (DataField_Schema<?> dataFieldSchema : dataFieldSchemas) {
             MemberColumn column;
             if (dataFieldSchema.getSource() != null) {

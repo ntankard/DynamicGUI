@@ -5,6 +5,7 @@ import com.ntankard.dynamicGUI.gui.util.containers.ControllablePanel;
 import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSource;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.javaObjectDatabase.coreObject.DataObject;
+import com.ntankard.javaObjectDatabase.database.TrackingDatabase_Schema;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -70,16 +71,22 @@ public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePa
     private ListControl_Button<T> newEditBtn = null;
 
     /**
+     * Core Schema
+     */
+    private final TrackingDatabase_Schema schema;
+
+    /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
      */
-    public DynamicGUI_DisplayList(List<T> base, Class<T> aClass, Updatable master) {
+    public DynamicGUI_DisplayList(TrackingDatabase_Schema schema, List<T> base, Class<T> aClass, Updatable master) {
         super(master);
+        this.schema = schema;
         this.base = base;
         this.aClass = aClass;
 
-        setMainPanel(new DynamicGUI_DisplayTable_Impl<>(aClass, filtered, this));
+        setMainPanel(new DynamicGUI_DisplayTable_Impl<>(schema, aClass, filtered, this));
     }
 
     /**
@@ -120,7 +127,7 @@ public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePa
     @SuppressWarnings("UnusedReturnValue")
     public DynamicGUI_DisplayList<T> addFilter() {
         predicates = new ArrayList<>();
-        setControlPanel(new DynamicGUI_Filter<>(aClass, predicates, this));
+        setControlPanel(new DynamicGUI_Filter<>(schema, aClass, predicates, this));
         getControlPanel().setVerbosity(verbosity);
 
         return this;
