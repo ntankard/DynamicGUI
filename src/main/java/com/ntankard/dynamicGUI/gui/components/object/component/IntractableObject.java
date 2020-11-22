@@ -60,7 +60,7 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     protected void revert() {
@@ -68,7 +68,7 @@ public abstract class IntractableObject<T> extends BufferedJPanel<T> {
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     protected void executeValue(T value) {

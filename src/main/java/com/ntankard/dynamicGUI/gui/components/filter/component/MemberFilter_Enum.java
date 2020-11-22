@@ -69,7 +69,7 @@ public class MemberFilter_Enum extends MemberFilter {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     public Predicate<? extends DataObject> getPredicate() {

@@ -49,7 +49,7 @@ public class IntractableObject_Enum extends IntractableObject<Enum<?>> implement
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     public void valueChanged(ListSelectionEvent e) {
@@ -57,7 +57,7 @@ public class IntractableObject_Enum extends IntractableObject<Enum<?>> implement
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     protected void load() {

@@ -26,7 +26,7 @@ public abstract class UpdatableJScrollPane extends JScrollPane implements Updata
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     public void notifyUpdate() {

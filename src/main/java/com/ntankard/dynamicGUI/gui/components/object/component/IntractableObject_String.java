@@ -77,7 +77,7 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     protected void load() {

@@ -26,7 +26,7 @@ public abstract class UpdatableJPanel extends JPanel implements Updatable {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     public void notifyUpdate() {

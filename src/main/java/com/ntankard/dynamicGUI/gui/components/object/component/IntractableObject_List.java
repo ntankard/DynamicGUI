@@ -50,7 +50,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
@@ -58,7 +58,7 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     @SuppressWarnings("unchecked")

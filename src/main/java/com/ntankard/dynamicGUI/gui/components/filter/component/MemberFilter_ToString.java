@@ -24,7 +24,7 @@ public class MemberFilter_ToString extends MemberFilter_String {
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     @Override
     protected String getInstanceValue(DataObject o) {
