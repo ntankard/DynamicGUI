@@ -7,7 +7,7 @@ import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSour
 import com.ntankard.dynamicGUI.gui.util.table.TableColumnAdjuster;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.dynamicGUI.gui.util.update.UpdatableJScrollPane;
-import com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties;
+import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
 import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.*;

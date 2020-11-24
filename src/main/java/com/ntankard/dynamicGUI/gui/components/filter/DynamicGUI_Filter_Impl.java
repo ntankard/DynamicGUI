@@ -4,7 +4,7 @@ import com.ntankard.dynamicGUI.gui.components.filter.component.*;
 import com.ntankard.dynamicGUI.gui.util.containers.PanelContainer;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
-import com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties;
+import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
 import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import java.util.List;

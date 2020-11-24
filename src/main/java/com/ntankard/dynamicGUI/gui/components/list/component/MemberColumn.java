@@ -1,7 +1,7 @@
 package com.ntankard.dynamicGUI.gui.components.list.component;
 
 import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
-import com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties;
+import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
 import com.ntankard.dynamicGUI.gui.components.list.component.renderer.*;
 import com.ntankard.dynamicGUI.gui.components.list.DynamicGUI_DisplayTable_Model;
 import com.ntankard.dynamicGUI.gui.util.decoder.*;
@@ -42,8 +42,8 @@ public class MemberColumn {
         this.dataFieldSchema = dataFieldSchema;
 
         // Extract any properties
-        Display_Properties properties = getDataFieldSchema().getDisplayProperties();
-        Display_Properties.DataType dataType = getDataFieldSchema().getDisplayProperties().getDataType();
+        Display_Properties properties = getDataFieldSchema().getProperty(Display_Properties.class);
+        Display_Properties.DataType dataType = getDataFieldSchema().getProperty(Display_Properties.class).getDataType();
         order = getDataFieldSchema().getOrder();
         name = getDataFieldSchema().getDisplayName();
 
@@ -59,7 +59,7 @@ public class MemberColumn {
             }
         }
         if (getDataFieldSchema().getType().equals(Boolean.class)) {
-            if (getDataFieldSchema().getDisplayProperties().getDataContext() == Display_Properties.DataContext.NOT_FALSE) {
+            if (getDataFieldSchema().getProperty(Display_Properties.class).getDataContext() == Display_Properties.DataContext.NOT_FALSE) {
                 renderer = new FalseHighlightRenderer(model);
             }
         }
@@ -81,7 +81,7 @@ public class MemberColumn {
             } else if (dataType.equals(Display_Properties.DataType.CURRENCY_YEN)) {
                 decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), getDataFieldSchema().getDisplayName());
             } else {
-                decoder = new DoubleDecoder(getDataFieldSchema().getDisplayProperties().getDisplayDecimal());
+                decoder = new DoubleDecoder(getDataFieldSchema().getProperty(Display_Properties.class).getDisplayDecimal());
             }
         } else if (getDataFieldSchema().getType().equals(String.class)) {
             decoder = new StringDecoder();

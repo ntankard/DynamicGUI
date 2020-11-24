@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties.ALWAYS_DISPLAY;
+import static com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties.ALWAYS_DISPLAY;
 
 public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePanel<DynamicGUI_DisplayTable_Impl<T>, DynamicGUI_Filter<T>> {
 

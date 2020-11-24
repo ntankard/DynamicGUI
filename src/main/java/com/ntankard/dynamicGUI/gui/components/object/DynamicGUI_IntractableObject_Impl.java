@@ -8,7 +8,7 @@ import com.ntankard.dynamicGUI.gui.util.containers.PanelContainer;
 import com.ntankard.dynamicGUI.gui.util.decoder.*;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
-import com.ntankard.javaObjectDatabase.dataField.properties.Display_Properties;
+import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
 import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 import java.text.NumberFormat;
@@ -144,7 +144,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
             IntractableObject<?> intractableObject;
             Class<?> theClass = dataFieldSchema.getType();
 
-            Display_Properties.DataType dataType = dataFieldSchema.getDisplayProperties().getDataType();
+            Display_Properties.DataType dataType = ((Display_Properties)dataFieldSchema.<Display_Properties>getProperty(Display_Properties.class)).getDataType();
             int order = dataFieldSchema.getOrder();
 
             if (theClass.isEnum()) {
@@ -159,7 +159,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
                 } else if (dataType.equals(Display_Properties.DataType.CURRENCY_YEN)) {
                     intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.JAPAN), dataFieldSchema.getDisplayName(), localeSource), this);
                 } else {
-                    intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new DoubleDecoder(dataFieldSchema.getDisplayProperties().getDisplayDecimal()), this);
+                    intractableObject = new IntractableObject_String<Double>(dataFieldSchema, baseInstance, saveOnUpdate, order, new DoubleDecoder(((Display_Properties)dataFieldSchema.<Display_Properties>getProperty(Display_Properties.class)).getDisplayDecimal()), this);
                 }
             } else if (theClass.equals(Integer.class)) {
                 intractableObject = new IntractableObject_String<Integer>(dataFieldSchema, baseInstance, saveOnUpdate, order, new IntegerDecoder(), this);

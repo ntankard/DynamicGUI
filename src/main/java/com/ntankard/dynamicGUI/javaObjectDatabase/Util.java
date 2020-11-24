@@ -11,10 +11,10 @@ public class Util {
     public static List<DataField_Schema<?>> getVerbosityDataFields(DataObject_Schema dataObject_schema, int verbosity) {
         List<DataField_Schema<?>> fields = new ArrayList<>();
         for (DataField_Schema<?> f : dataObject_schema.getList()) {
-            if (f.getDisplayProperties().getVerbosityLevel() > verbosity) {
+            if (f.getProperty(Display_Properties.class).getVerbosityLevel() > verbosity) {
                 continue;
             }
-            if (!f.getDisplayProperties().getShouldDisplay()) {
+            if (!f.getProperty(Display_Properties.class).getShouldDisplay()) {
                 continue;
             }
             fields.add(f);

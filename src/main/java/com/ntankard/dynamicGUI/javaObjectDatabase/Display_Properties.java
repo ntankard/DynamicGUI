@@ -1,4 +1,6 @@
-package com.ntankard.javaObjectDatabase.dataField.properties;
+package com.ntankard.dynamicGUI.javaObjectDatabase;
+
+import com.ntankard.javaObjectDatabase.dataField.properties.CustomProperty;
 
 public class Display_Properties implements CustomProperty {
 
