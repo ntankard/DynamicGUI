@@ -36,7 +36,7 @@ public class MemberColumn {
      * Constructor, parameters are set from the DisplayProperties set to the member
      *
      * @param dataFieldSchema The DataField that this column is built around
-     * @param model     The model used to generate the columns containing this render.
+     * @param model           The model used to generate the columns containing this render.
      */
     public MemberColumn(DataField_Schema<?> dataFieldSchema, DynamicGUI_DisplayTable_Model model) {
         this.dataFieldSchema = dataFieldSchema;
@@ -44,7 +44,7 @@ public class MemberColumn {
         // Extract any properties
         Display_Properties properties = getDataFieldSchema().getDisplayProperties();
         Display_Properties.DataType dataType = getDataFieldSchema().getDisplayProperties().getDataType();
-        order = getDataFieldSchema().getDisplayProperties().getOrder();
+        order = getDataFieldSchema().getOrder();
         name = getDataFieldSchema().getDisplayName();
 
         if (getDataFieldSchema().getType().equals(Double.class)) {

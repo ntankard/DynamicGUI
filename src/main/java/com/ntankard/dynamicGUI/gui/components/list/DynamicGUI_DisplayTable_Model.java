@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.ntankard.dynamicGUI.javaObjectDatabase.Util.getVerbosityDataFields;
+
 public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements Updatable {
 
     /**
@@ -43,7 +45,7 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
         this.rowData = rowData;
         this.master = master;
 
-        List<DataField_Schema<?>> dataFieldSchemas = schema.getClassSchema(aClass).getVerbosityDataFields(verbosity);
+        List<DataField_Schema<?>> dataFieldSchemas = getVerbosityDataFields(schema.getClassSchema(aClass), verbosity);
         for (DataField_Schema<?> dataFieldSchema : dataFieldSchemas) {
             MemberColumn column;
             if (dataFieldSchema.getSource() != null) {

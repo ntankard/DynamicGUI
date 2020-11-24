@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ntankard.dynamicGUI.javaObjectDatabase.Util.getVerbosityDataFields;
+
 public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends PanelContainer {
 
     /**
@@ -135,7 +137,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
         super.createUIComponents();
         intractableObjects.clear();
 
-        for (DataField_Schema dataFieldSchema : baseInstance.getTrackingDatabase().getSchema().getClassSchema(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema dataFieldSchema : getVerbosityDataFields(baseInstance.getTrackingDatabase().getSchema().getClassSchema(aClass), verbosity)) {
 
 
             // find a compatible filter type
@@ -143,7 +145,7 @@ public class DynamicGUI_IntractableObject_Impl<T extends DataObject> extends Pan
             Class<?> theClass = dataFieldSchema.getType();
 
             Display_Properties.DataType dataType = dataFieldSchema.getDisplayProperties().getDataType();
-            int order = dataFieldSchema.getDisplayProperties().getOrder();
+            int order = dataFieldSchema.getOrder();
 
             if (theClass.isEnum()) {
                 intractableObject = new IntractableObject_Enum(dataFieldSchema, baseInstance, saveOnUpdate, order, this);

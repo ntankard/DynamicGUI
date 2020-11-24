@@ -10,6 +10,8 @@ import com.ntankard.javaObjectDatabase.database.Database_Schema;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.ntankard.dynamicGUI.javaObjectDatabase.Util.getVerbosityDataFields;
+
 public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
 
     /**
@@ -73,7 +75,7 @@ public class DynamicGUI_Filter_Impl<T> extends PanelContainer {
     protected void createUIComponents() {
         super.createUIComponents();
 
-        for (DataField_Schema<?> dataFieldSchema : schema.getClassSchema(aClass).getVerbosityDataFields(verbosity)) {
+        for (DataField_Schema<?> dataFieldSchema : getVerbosityDataFields(schema.getClassSchema(aClass), verbosity)) {
 
             // find a compatible filter type
             MemberFilter filterable;
