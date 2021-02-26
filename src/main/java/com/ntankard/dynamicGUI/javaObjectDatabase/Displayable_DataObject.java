@@ -15,6 +15,7 @@ public abstract class Displayable_DataObject extends DataObject {
         // Add display properties
         dataObjectSchema.addPropertyBuilder(dataFieldSchema -> dataFieldSchema.setProperty(new Display_Properties()));
         dataObjectSchema.get(DataObject_Id).getProperty(Display_Properties.class).setVerbosityLevel(Display_Properties.INFO_DISPLAY);
+        dataObjectSchema.get(DataObject_ChildrenField).getProperty(Display_Properties.class).setVerbosityLevel(Display_Properties.TRACE_DISPLAY);
 
         return dataObjectSchema.endLayer(Displayable_DataObject.class);
     }
