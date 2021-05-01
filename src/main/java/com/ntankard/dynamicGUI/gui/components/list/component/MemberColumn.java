@@ -8,6 +8,7 @@ import com.ntankard.dynamicGUI.gui.util.decoder.*;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class MemberColumn {
@@ -73,6 +74,8 @@ public class MemberColumn {
         Decoder decoder = null;
         if (getDataFieldSchema().getType().equals(Calendar.class)) {
             decoder = new CalendarDecoder();
+        }else if(getDataFieldSchema().getType().equals(Date.class)) {
+            decoder = new DateDecoder();
         } else if (getDataFieldSchema().getType().equals(Double.class)) {
             if (dataType.equals(Display_Properties.DataType.CURRENCY)) {
                 decoder = new CurrencyDecoder(NumberFormat.getCurrencyInstance(Locale.US), getDataFieldSchema().getDisplayName());

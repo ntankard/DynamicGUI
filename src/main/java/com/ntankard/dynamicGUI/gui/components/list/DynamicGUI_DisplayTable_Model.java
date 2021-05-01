@@ -112,9 +112,9 @@ public class DynamicGUI_DisplayTable_Model extends AbstractTableModel implements
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if (orderList.get(columnIndex).getDataFieldSchema().getType().equals(Double.class)) {
-            return String.class;
-        }
+//        if (orderList.get(columnIndex).getDataFieldSchema().getType().equals(Double.class)) {
+//            return String.class;
+//        }
         return orderList.get(columnIndex).getDataFieldSchema().getType();
     }
 
