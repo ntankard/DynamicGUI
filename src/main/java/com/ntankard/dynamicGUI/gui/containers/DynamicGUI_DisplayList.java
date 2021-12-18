@@ -285,12 +285,17 @@ public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePa
         /**
          * In what situation should the button be enabled?
          */
-        private ListControl_Button.EnableCondition enableCondition;
+        private final ListControl_Button.EnableCondition enableCondition;
 
         /**
          * The list containing this button
          */
-        private DynamicGUI_DisplayTable_Impl<T> coreList;
+        private final DynamicGUI_DisplayTable_Impl<T> coreList;
+
+        /**
+         * If not null, should the button be enabled irregardless of the select state
+         */
+        private Boolean forceOverride = null;
 
         /**
          * Constructor
@@ -318,6 +323,16 @@ public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePa
         }
 
         /**
+         * Set the enable override state of the button. If null the selection state w ill be used, if not the value of the coll will be used
+         *
+         * @param forceOverride If not null, should the button be enabled irregardless of the select state
+         */
+        public void setForceOverride(Boolean forceOverride) {
+            this.forceOverride = forceOverride;
+            valueChanged(null);
+        }
+
+        /**
          * @inheritDoc
          */
         @Override
@@ -325,30 +340,23 @@ public class DynamicGUI_DisplayList<T extends DataObject> extends ControllablePa
             List<?> selected = coreList.getSelectedItems();
             int noSelected = selected == null ? 0 : selected.size();
 
+            if (forceOverride != null) {
+                this.setEnabled(forceOverride);
+                return;
+            }
+
             switch (enableCondition) {
                 case ANY:
                     this.setEnabled(true);
                     break;
                 case NONE:
-                    if (noSelected == 0) {
-                        this.setEnabled(true);
-                    } else {
-                        this.setEnabled(false);
-                    }
+                    this.setEnabled(noSelected == 0);
                     break;
                 case SINGLE:
-                    if (noSelected == 1) {
-                        this.setEnabled(true);
-                    } else {
-                        this.setEnabled(false);
-                    }
+                    this.setEnabled(noSelected == 1);
                     break;
                 case MULTI:
-                    if (noSelected >= 1) {
-                        this.setEnabled(true);
-                    } else {
-                        this.setEnabled(false);
-                    }
+                    this.setEnabled(noSelected >= 1);
                     break;
             }
         }

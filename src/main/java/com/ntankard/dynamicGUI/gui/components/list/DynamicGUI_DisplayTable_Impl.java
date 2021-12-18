@@ -180,6 +180,23 @@ public class DynamicGUI_DisplayTable_Impl<T> extends UpdatableJScrollPane {
     }
 
     /**
+     * Select the following, and only the following items in the list. It is safe for the list to contain items that
+     * are not displays, they will be ignored
+     *
+     * @param toSelect The items to select
+     */
+    public void setSelectedItems(List<T> toSelect) {
+        ListSelectionModel lsm = getListSelectionModel();
+        lsm.clearSelection();
+        for (int i = 0; i < structure_table.getRowCount(); i++) {
+            T toCheck = getItemFromSelectIndex(i);
+            if (toSelect.contains(toCheck)) {
+                lsm.addSelectionInterval(i, i);
+            }
+        }
+    }
+
+    /**
      * Get the ListSelectionModel used by the child
      *
      * @return The ListSelectionModel used by the child
