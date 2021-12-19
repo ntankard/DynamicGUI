@@ -17,7 +17,7 @@ public class Renderer extends DefaultTableCellRenderer {
     /**
      * The row of the last cell to fire getTableCellRendererComponent
      */
-    private Object rowObject = null;
+    protected Object rowObject = null;
 
     /**
      * The model containing this render, used to get row data

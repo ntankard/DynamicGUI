@@ -48,7 +48,9 @@ public class MemberColumn {
         order = getDataFieldSchema().getOrder();
         name = getDataFieldSchema().getDisplayName();
 
-        if (getDataFieldSchema().getType().equals(Double.class)) {
+        if (properties.getDataContext() == Display_Properties.DataContext.CUSTOM) {
+            renderer = new CustomRenderer(model, properties.getColorSelector());
+        } else if (getDataFieldSchema().getType().equals(Double.class)) {
             if (properties.getDataContext() == Display_Properties.DataContext.ZERO_BELOW_BAD) {
                 renderer = new NegativeHighlightRenderer(model, false);
             } else if (properties.getDataContext() == Display_Properties.DataContext.ZERO_BINARY) {
@@ -74,7 +76,7 @@ public class MemberColumn {
         Decoder decoder = null;
         if (getDataFieldSchema().getType().equals(Calendar.class)) {
             decoder = new CalendarDecoder();
-        }else if(getDataFieldSchema().getType().equals(Date.class)) {
+        } else if (getDataFieldSchema().getType().equals(Date.class)) {
             decoder = new DateDecoder();
         } else if (getDataFieldSchema().getType().equals(Double.class)) {
             if (dataType.equals(Display_Properties.DataType.CURRENCY)) {

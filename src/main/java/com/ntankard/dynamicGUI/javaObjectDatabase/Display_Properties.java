@@ -2,6 +2,8 @@ package com.ntankard.dynamicGUI.javaObjectDatabase;
 
 import com.ntankard.javaObjectDatabase.dataField.properties.CustomProperty;
 
+import java.awt.*;
+
 public class Display_Properties implements CustomProperty {
 
     public static final int ALWAYS_DISPLAY = 0;
@@ -23,6 +25,11 @@ public class Display_Properties implements CustomProperty {
         ZERO_SCALE,     // Data is centered on zero, values above or below are note worthy compared to the range of all values
         ZERO_TARGET,    // Values other than 0 are noteworthy
         NOT_FALSE,      // Boolean false values are highlighted
+        CUSTOM,         // Sets a custom user generated color based on the value
+    }
+
+    public interface ColorSelector{
+        Color getColor(Object rowObject, Object value);
     }
 
     private boolean isFinished = false;
@@ -33,6 +40,7 @@ public class Display_Properties implements CustomProperty {
     private DataContext dataContext = DataContext.NONE;
     private int displayDecimal = 2;
     private boolean displaySet = true;
+    private ColorSelector colorSelector;
 
     @Override
     public void finalise() {
@@ -63,6 +71,10 @@ public class Display_Properties implements CustomProperty {
         return displayDecimal;
     }
 
+    public ColorSelector getColorSelector() {
+        return colorSelector;
+    }
+
     public Display_Properties setShouldDisplay(boolean shouldDisplay) {
         if (this.isFinished)
             throw new IllegalStateException("Cant set values once the properties are finalised");
@@ -88,6 +100,12 @@ public class Display_Properties implements CustomProperty {
         if (this.isFinished)
             throw new IllegalStateException("Cant set values once the properties are finalised");
         this.dataContext = dataContext;
+        return this;
+    }
+
+    public Display_Properties setCustomColor(ColorSelector colorSelector){
+        setDataContext(DataContext.CUSTOM);
+        this.colorSelector = colorSelector;
         return this;
     }
 
