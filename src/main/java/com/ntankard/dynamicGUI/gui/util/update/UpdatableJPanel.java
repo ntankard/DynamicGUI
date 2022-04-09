@@ -13,6 +13,11 @@ public abstract class UpdatableJPanel extends JPanel implements Updatable {
     private Updatable master;
 
     /**
+     * Is there a general error on this panel (invalid data)
+     */
+    private boolean hasFault = false;
+
+    /**
      * Constructor
      *
      * @param master The parent of this object to be notified if data changes
@@ -31,5 +36,21 @@ public abstract class UpdatableJPanel extends JPanel implements Updatable {
     @Override
     public void notifyUpdate() {
         master.notifyUpdate();
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //##################################################### Getters ####################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    public boolean isHasFault() {
+        return hasFault;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //##################################################### Setters ####################################################
+    //------------------------------------------------------------------------------------------------------------------
+
+    public void setHasFault(boolean hasFault) {
+        this.hasFault = hasFault;
     }
 }
