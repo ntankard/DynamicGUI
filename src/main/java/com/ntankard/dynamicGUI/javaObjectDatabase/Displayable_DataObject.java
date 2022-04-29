@@ -21,9 +21,9 @@ public abstract class Displayable_DataObject extends DataObject {
     }
 
     /**
-     * @see DataObject#DataObject(Database)
+     * @see DataObject#DataObject(Database, Object...)
      */
-    public Displayable_DataObject(Database database) {
-        super(database);
+    public Displayable_DataObject(Database database, Object... args) {
+        super(database, args);
     }
 }
