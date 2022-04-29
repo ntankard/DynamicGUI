@@ -1,6 +1,5 @@
 package com.ntankard.dynamicGUI.gui.components.list;
 
-import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.components.list.component.MemberColumn;
 import com.ntankard.dynamicGUI.gui.components.list.component.MemberColumn_List;
 import com.ntankard.dynamicGUI.gui.util.decoder.CurrencyDecoder_NumberFormatSource;
@@ -8,6 +7,7 @@ import com.ntankard.dynamicGUI.gui.util.table.TableColumnAdjuster;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.dynamicGUI.gui.util.update.UpdatableJScrollPane;
 import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.javaObjectDatabase.database.Database_Schema;
 
 import javax.swing.*;

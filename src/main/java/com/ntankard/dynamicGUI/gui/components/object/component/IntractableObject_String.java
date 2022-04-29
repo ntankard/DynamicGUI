@@ -31,10 +31,10 @@ public class IntractableObject_String<T> extends IntractableObject<T> {
      * Constructor
      *
      * @param dataFieldSchema The DataField that this panel is built around
-     * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
-     * @param order        The order of this object
-     * @param decoder      The decoder used to convert to and from a string
-     * @param master       The parent of this object to be notified if data changes
+     * @param saveOnUpdate    Should the action of the panel be done as soon as an update is received? or on command
+     * @param order           The order of this object
+     * @param decoder         The decoder used to convert to and from a string
+     * @param master          The parent of this object to be notified if data changes
      */
     public IntractableObject_String(DataField_Schema<T> dataFieldSchema, DataObject dataObject, boolean saveOnUpdate, int order, Decoder<T> decoder, Updatable master) {
         super(dataFieldSchema, dataObject, saveOnUpdate, order, master);

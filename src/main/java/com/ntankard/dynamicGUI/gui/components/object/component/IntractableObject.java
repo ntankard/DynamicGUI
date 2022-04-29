@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.gui.components.object.component;
 
-import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.util.containers.BufferedJPanel;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 public abstract class IntractableObject<T> extends BufferedJPanel<T> {

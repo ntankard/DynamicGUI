@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.gui.util.update;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * A JPanel with as much of the Updatable implementation as possible

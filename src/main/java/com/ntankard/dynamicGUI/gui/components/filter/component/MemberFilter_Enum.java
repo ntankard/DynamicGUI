@@ -1,7 +1,7 @@
 package com.ntankard.dynamicGUI.gui.components.filter.component;
 
-import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class MemberFilter_Enum extends MemberFilter {
      * Constructor
      *
      * @param dataFieldSchema The DataField that this panel is built around
-     * @param master    The top level GUI
+     * @param master          The top level GUI
      */
     public MemberFilter_Enum(DataField_Schema dataFieldSchema, Updatable master) {
         super(dataFieldSchema, master);

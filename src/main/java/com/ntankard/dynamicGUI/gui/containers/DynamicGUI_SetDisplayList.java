@@ -7,7 +7,7 @@ import com.ntankard.javaObjectDatabase.util.set.ObjectSet;
 
 import java.util.ArrayList;
 
-public class DynamicGUI_SetDisplayList <T extends DataObject> extends DynamicGUI_DisplayList<T> {
+public class DynamicGUI_SetDisplayList<T extends DataObject> extends DynamicGUI_DisplayList<T> {
 
     /**
      * The source of data for the list

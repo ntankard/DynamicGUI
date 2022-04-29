@@ -28,7 +28,7 @@ public class Display_Properties implements CustomProperty {
         CUSTOM,         // Sets a custom user generated color based on the value
     }
 
-    public interface ColorSelector{
+    public interface ColorSelector {
         Color getColor(Object rowObject, Object value);
     }
 
@@ -103,7 +103,7 @@ public class Display_Properties implements CustomProperty {
         return this;
     }
 
-    public Display_Properties setCustomColor(ColorSelector colorSelector){
+    public Display_Properties setCustomColor(ColorSelector colorSelector) {
         setDataContext(DataContext.CUSTOM);
         this.colorSelector = colorSelector;
         return this;

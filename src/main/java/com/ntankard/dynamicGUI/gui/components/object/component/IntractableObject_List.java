@@ -1,7 +1,7 @@
 package com.ntankard.dynamicGUI.gui.components.object.component;
 
-import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 import com.ntankard.javaObjectDatabase.dataObject.DataObject;
 
 import javax.swing.*;
@@ -21,9 +21,9 @@ public class IntractableObject_List extends IntractableObject<Object> implements
     /**
      * Constructor
      *
-     * @param dataFieldSchema    The DataField that this panel is built around
-     * @param saveOnUpdate Should the action of the panel be done as soon as an update is received? or on command
-     * @param master       The parent of this object to be notified if data changes
+     * @param dataFieldSchema The DataField that this panel is built around
+     * @param saveOnUpdate    Should the action of the panel be done as soon as an update is received? or on command
+     * @param master          The parent of this object to be notified if data changes
      */
     public IntractableObject_List(DataField_Schema<Object> dataFieldSchema, DataObject dataObject, boolean saveOnUpdate, int order, Updatable master) {
         super(dataFieldSchema, dataObject, saveOnUpdate, order, master);

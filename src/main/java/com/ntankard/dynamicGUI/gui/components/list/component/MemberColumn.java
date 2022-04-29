@@ -1,10 +1,10 @@
 package com.ntankard.dynamicGUI.gui.components.list.component;
 
-import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
-import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
-import com.ntankard.dynamicGUI.gui.components.list.component.renderer.*;
 import com.ntankard.dynamicGUI.gui.components.list.DynamicGUI_DisplayTable_Model;
+import com.ntankard.dynamicGUI.gui.components.list.component.renderer.*;
 import com.ntankard.dynamicGUI.gui.util.decoder.*;
+import com.ntankard.dynamicGUI.javaObjectDatabase.Display_Properties;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 
 import java.text.NumberFormat;
 import java.util.Calendar;

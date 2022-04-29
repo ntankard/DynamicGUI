@@ -1,6 +1,6 @@
 package com.ntankard.dynamicGUI.gui.util.update;
 
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 /**
  * A JScrollPane with as much of the Updatable implementation as possible

@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.gui.components.filter.component;
 
-import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
-import com.ntankard.dynamicGUI.gui.util.update.UpdatableJPanel;
 import com.ntankard.dynamicGUI.gui.util.update.Updatable;
+import com.ntankard.dynamicGUI.gui.util.update.UpdatableJPanel;
+import com.ntankard.javaObjectDatabase.dataField.DataField_Schema;
 
 import java.util.function.Predicate;
 
@@ -20,7 +20,7 @@ public abstract class MemberFilter extends UpdatableJPanel {
      * Constructor
      *
      * @param dataFieldSchema The DataField that this panel is built around
-     * @param master    The top level GUI
+     * @param master          The top level GUI
      */
     MemberFilter(DataField_Schema<?> dataFieldSchema, Updatable master) {
         super(master);

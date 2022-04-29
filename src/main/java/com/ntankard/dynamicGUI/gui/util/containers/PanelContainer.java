@@ -1,8 +1,8 @@
 package com.ntankard.dynamicGUI.gui.util.containers;
 
+import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 import com.ntankard.dynamicGUI.gui.util.update.UpdatableJPanel;
 import com.ntankard.dynamicGUI.gui.util.update.UpdatableJScrollPane;
-import com.ntankard.dynamicGUI.gui.util.update.Updatable;
 
 import javax.swing.*;
 import java.awt.*;
